@@ -270,7 +270,7 @@ body.lb-open { overflow: hidden; }
 
 /* Overlay escuro */
 .share-overlay {
-  display: none; position: fixed; inset: 0; z-index: 500;
+  display: none; position: fixed; inset: 0; z-index: 1100;
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   align-items: center; justify-content: center;
@@ -553,6 +553,7 @@ body.lb-open { overflow: hidden; }
   </div>
 </div>
 
+
 <!-- SHARE OVERLAY -->
 <div class="share-overlay" id="share-overlay" onclick="closeShareOutside(event)">
   <div class="share-menu">
@@ -562,7 +563,6 @@ body.lb-open { overflow: hidden; }
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
       </svg>
-      <span class="share-copy-label" id="share-copy-label">Copiar link</span>
     </button>
     <button class="share-close" onclick="closeShare()">×</button>
   </div>
