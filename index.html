@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabriel Poubel</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #000; color: #e8e8e8; font-family: 'Georgia', serif; min-height: 100vh; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 2.5rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+  }
+  .logo {
+    font-size: 1.5rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #fff; font-family: 'Georgia', serif; font-weight: normal; font-style: italic;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+  .nav-links a {
+    color: #666; text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.22em; text-transform: uppercase; transition: color 0.3s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+  .nav-links .ig-link { display: flex; align-items: center; }
+  .nav-links .ig-link svg { width: 18px; height: 18px; fill: none; stroke: #666; stroke-width: 1.5; transition: stroke 0.3s; }
+  .nav-links .ig-link:hover svg { stroke: #fff; }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* HOME */
+  .photo-feed {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 0 0 6px 0;
+  }
+  .feed-item {
+    width: 100%; cursor: pointer; overflow: hidden; position: relative; background: #050505;
+  }
+  .feed-item img {
+    width: 100%; display: block;
+    filter: grayscale(100%) contrast(1.06);
+    transition: opacity 0.5s;
+    opacity: 0.88;
+  }
+  .feed-item:hover img { opacity: 1; }
+
+  /* GALERIA */
+  #galeria { padding: 5.5rem 1.5rem 3rem; }
+  .grid-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .grid-item {
+    overflow: hidden; cursor: pointer; background: #050505; aspect-ratio: 1;
+  }
+  .grid-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%) contrast(1.06);
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.4s;
+    opacity: 0.82;
+  }
+  .grid-item:hover img { transform: scale(1.04); opacity: 1; }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.97); z-index: 1000;
+    flex-direction: column; align-items: center; justify-content: center;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox-close {
+    position: absolute; top: 1.2rem; right: 1.8rem;
+    background: none; border: none; color: #444; font-size: 2rem;
+    cursor: pointer; transition: color 0.3s; font-family: 'Georgia', serif; line-height: 1;
+  }
+  .lightbox-close:hover { color: #fff; }
+  .lightbox img {
+    max-width: 90vw; max-height: 88vh; object-fit: contain;
+    filter: grayscale(100%) contrast(1.06); display: block;
+  }
+  .lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #333; font-size: 2.5rem;
+    cursor: pointer; padding: 1rem; transition: color 0.3s; line-height: 1;
+  }
+  .lb-nav:hover { color: #fff; }
+  .lb-prev { left: 1rem; }
+  .lb-next { right: 1rem; }
+  .lb-counter {
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    font-size: 0.6rem; letter-spacing: 0.3em; color: #333; text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Gabriel Poubel</span>
+  <ul class="nav-links">
+    <li><a class="active" onclick="showPage('home', this)">Início</a></li>
+    <li><a onclick="showPage('galeria', this)">Galeria</a></li>
+    <li>
+      <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="ig-link" title="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="#666" stroke="none"/>
+        </svg>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div id="home" class="page active">
+  <div class="photo-feed" id="feed"></div>
+</div>
+
+<div id="galeria" class="page">
+  <div class="grid-gallery" id="grid"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLB()">×</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<script>
+  // ─── FOTOS ───────────────────────────────────────────────────────────────
+  // Adicione ou remova entradas aqui para controlar quais fotos aparecem
+  // e em qual ordem. O arquivo deve estar na pasta "fotos/" ao lado do index.html
+  const fotos = [
+    1,2,3,4,5,6,7,8,9,10,
+    11,12,13,14,15,16,17,18,19,20,
+    21,22,23,24,25,26,27,28,29,30,
+    31,32,33,34,35,36,37,38,39,40,
+    41,42,43,44,45,46,47,48,49,50,
+    51,52,53,54,55,56,57,58,59,60,
+    61,62,63,64,65,66,67,68,69,70,
+    71,72,73,74,75,76,77,78,79,80,
+    81,82,83,84,85,86,87,88,89,90,
+    91,92,93,94,95,96,97,98,99,100,
+    101,102,103,104,105,106,107,108,109,110,
+    111,112,113,114,115,116,117,118,119,120,
+    121,122,123,124,125,126,127,128,129,130,
+    131,132,133,134,135,136,137,138,139,140,
+    141,142,143,144,145,146,147,148,149,150,
+    151,152,153,154,155,156,157,158,159,160,
+    161,162,163,164,165,166,167,168,169,170,
+    171,172,173,174,175,176,177,178,179,180,
+    181,182,183,184,185,186,187,188,189,190,
+    191,192,193,194,195,196,197,198,199,200,
+  ].map(n => ({ src: `fotos/${n}.jpg`, alt: `${n}` }));
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const feed = document.getElementById('feed');
+  const grid = document.getElementById('grid');
+
+  fotos.forEach((p, i) => {
+    // feed
+    const fdiv = document.createElement('div');
+    fdiv.className = 'feed-item';
+    fdiv.onclick = () => openLB(i);
+    const fimg = document.createElement('img');
+    fimg.src = p.src; fimg.alt = p.alt; fimg.loading = 'lazy';
+    fdiv.appendChild(fimg);
+    feed.appendChild(fdiv);
+
+    // grid
+    const gdiv = document.createElement('div');
+    gdiv.className = 'grid-item';
+    gdiv.onclick = () => openLB(i);
+    const gimg = document.createElement('img');
+    gimg.src = p.src; gimg.alt = p.alt; gimg.loading = 'lazy';
+    gdiv.appendChild(gimg);
+    grid.appendChild(gdiv);
+  });
+
+  function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-links a:not(.ig-link)').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  let lbIndex = 0;
+  function openLB(i) { lbIndex = i; updateLB(); document.getElementById('lightbox').classList.add('active'); }
+  function closeLB() { document.getElementById('lightbox').classList.remove('active'); }
+  function lbNav(d) { lbIndex = (lbIndex + d + fotos.length) % fotos.length; updateLB(); }
+  function updateLB() {
+    document.getElementById('lb-img').src = fotos[lbIndex].src;
+    document.getElementById('lb-counter').textContent = `${lbIndex + 1} / ${fotos.length}`;
+  }
+
+  document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLB(); });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'Escape') closeLB();
+  });
+</script>
+</body>
+</html>
