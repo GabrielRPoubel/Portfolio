@@ -246,8 +246,82 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   .grid-gallery { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* botão rotate removido — substituído por swipe */
+/* botão rotate removido */
 .rotate-btn { display: none !important; }
+
+/* Barra de progresso */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  z-index: 200; pointer-events: none;
+  background: rgba(255,255,255,0.06);
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: rgba(255,255,255,0.55);
+  transition: width 0.15s ease;
+}
+
+/* Spinner de carregamento */
+.feed-item {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  position: relative;
+}
+.feed-item.loaded { opacity: 1; }
+.feed-spinner {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; z-index: 1;
+  min-height: 120px;
+}
+.feed-spinner svg {
+  width: 36px; height: 36px;
+}
+.feed-spinner circle {
+  fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 2;
+}
+.feed-spinner .arc {
+  fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0 100;
+  animation: fillArc 1.4s cubic-bezier(0.4,0,0.2,1) infinite;
+  transform-origin: center; transform: rotate(-90deg);
+}
+@keyframes fillArc {
+  0%   { stroke-dasharray: 0 100; opacity: 0.3; }
+  50%  { stroke-dasharray: 75 100; opacity: 1; }
+  100% { stroke-dasharray: 100 100; opacity: 0.3; }
+}
+.feed-item.loaded .feed-spinner { display: none; }
+
+/* Painel EXIF */
+.exif-panel {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 2.5rem 1.5rem 1.2rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 60%, transparent);
+  color: rgba(255,255,255,0.75);
+  font-family: 'NexaHeavy', Georgia, serif;
+  font-size: 0.62rem; letter-spacing: 0.18em;
+  line-height: 1.9;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+}
+.exif-panel.visible { opacity: 1; }
+.exif-row { display: flex; gap: 1rem; }
+.exif-label { color: rgba(255,255,255,0.35); min-width: 80px; }
+.exif-val   { color: rgba(255,255,255,0.8); }
+
+/* Botão info no lightbox */
+.lb-btn-info svg { width: 20px; height: 20px; }
+
+/* Glow no logo */
+.logo {
+  transition: text-shadow 0.5s ease;
+}
+.logo:hover {
+  text-shadow: 0 0 18px rgba(255,255,255,0.25), 0 0 40px rgba(255,255,255,0.08);
+}
 
 /* Seta voltar ao topo */
 .back-top {
@@ -281,6 +355,8 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 </style>
 </head>
 <body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
 <!-- NAV DESKTOP -->
 <nav id="nav">
@@ -331,11 +407,12 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <div class="lb-toolbar">
-    <!-- Rotate (mobile only) -->
-    <button class="lb-btn rotate-btn" id="rotate-btn" onclick="rotateLB()" title="Girar">
+    <!-- Info EXIF -->
+    <button class="lb-btn lb-btn-info" id="info-btn" onclick="toggleExif()" title="Informações">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 2v6h-6"/>
-        <path d="M21 8C19.5 5 16.5 3 13 3a9 9 0 1 0 8.46 12"/>
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="8.5" stroke-width="2"/>
+        <line x1="12" y1="11" x2="12" y2="17"/>
       </svg>
     </button>
     <!-- Fullscreen -->
@@ -361,6 +438,26 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   </div>
   <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
   <div class="lb-counter" id="lb-counter"></div>
+  <div class="exif-panel" id="exif-panel">
+    <div class="exif-row" id="exif-camera-row" style="display:none">
+      <span class="exif-label">CÂMERA</span><span class="exif-val" id="exif-camera"></span>
+    </div>
+    <div class="exif-row" id="exif-lens-row" style="display:none">
+      <span class="exif-label">LENTE</span><span class="exif-val" id="exif-lens"></span>
+    </div>
+    <div class="exif-row" id="exif-exp-row" style="display:none">
+      <span class="exif-label">EXPOSIÇÃO</span><span class="exif-val" id="exif-exp"></span>
+    </div>
+    <div class="exif-row" id="exif-ap-row" style="display:none">
+      <span class="exif-label">ABERTURA</span><span class="exif-val" id="exif-ap"></span>
+    </div>
+    <div class="exif-row" id="exif-iso-row" style="display:none">
+      <span class="exif-label">ISO</span><span class="exif-val" id="exif-iso"></span>
+    </div>
+    <div class="exif-row" id="exif-fl-row" style="display:none">
+      <span class="exif-label">FOCAL</span><span class="exif-val" id="exif-fl"></span>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -423,15 +520,25 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     // feed
     const fdiv = document.createElement('div');
     fdiv.className = 'feed-item'; fdiv.onclick = () => openLB(i);
+
+    // spinner
+    const spinner = document.createElement('div');
+    spinner.className = 'feed-spinner';
+    spinner.innerHTML = `<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16"/><circle class="arc" cx="18" cy="18" r="16" pathLength="100"/></svg>`;
+    fdiv.appendChild(spinner);
+
     const fimg = document.createElement('img');
     fimg.dataset.src = p.src; fimg.alt = p.alt;
-    // primeira foto carrega imediato
-    if (i === 0) { fimg.src = p.src; fimg.onload = () => fdiv.classList.add('loaded'); if(fimg.complete) fdiv.classList.add('loaded'); }
+    if (i === 0) {
+      fimg.src = p.src;
+      fimg.onload = () => fdiv.classList.add('loaded');
+      if (fimg.complete && fimg.naturalWidth > 0) fdiv.classList.add('loaded');
+    }
     fdiv.appendChild(fimg);
     feed.appendChild(fdiv);
     feedObserver.observe(fdiv);
 
-    // grid (lazy nativo é suficiente aqui)
+    // grid
     const gdiv = document.createElement('div');
     gdiv.className = 'grid-item'; gdiv.onclick = () => openLB(i);
     const gimg = document.createElement('img');
@@ -445,6 +552,48 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     document.querySelectorAll('.nav-links a:not(.ig-link), .drawer a').forEach(a => a.classList.remove('active'));
     if (el) el.classList.add('active');
     window.scrollTo(0, 0);
+  }
+
+  // ── Carrega EXIF do JSON gerado pelo gerar.py ──
+  let exifData = {};
+  fetch('fotos.json')
+    .then(r => r.json())
+    .then(data => { data.forEach(f => { exifData[f.n] = f.exif || {}; }); })
+    .catch(() => {});
+
+  // Barra de progresso
+  const progressFill = document.getElementById('progress-fill');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docH > 0 ? (scrollTop / docH) * 100 : 0;
+    progressFill.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // EXIF panel
+  let exifVisible = false;
+  function toggleExif() {
+    exifVisible = !exifVisible;
+    document.getElementById('exif-panel').classList.toggle('visible', exifVisible);
+  }
+  function renderExif(n) {
+    const e = exifData[n] || {};
+    const set = (rowId, valId, val) => {
+      const row = document.getElementById(rowId);
+      const el  = document.getElementById(valId);
+      if (val) { el.textContent = val; row.style.display = 'flex'; }
+      else row.style.display = 'none';
+    };
+    set('exif-camera-row','exif-camera', e.camera);
+    set('exif-lens-row',  'exif-lens',   e.lens);
+    set('exif-exp-row',   'exif-exp',    e.exposure);
+    set('exif-ap-row',    'exif-ap',     e.aperture);
+    set('exif-iso-row',   'exif-iso',    e.iso);
+    set('exif-fl-row',    'exif-fl',     e.focal);
+    // esconde painel ao trocar foto
+    exifVisible = false;
+    document.getElementById('exif-panel').classList.remove('visible');
   }
 
   // Proteção de download
@@ -463,6 +612,14 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 
   // Scroll fade + seta topo
   const backTop = document.getElementById('back-top');
+  // Espaço volta ao topo (quando lightbox fechado)
+  window.addEventListener('keydown', e => {
+    if (e.key === ' ' && !lb.classList.contains('active')) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
   window.addEventListener('scroll', () => {
     const gone = window.scrollY > 80;
     document.getElementById('nav').classList.toggle('scrolled', gone);
@@ -514,11 +671,10 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     lbImg.src = fotos[lbIndex].src;
     lbImg.style.transform = '';
     lbCnt.textContent = (lbIndex + 1) + ' / ' + fotos.length;
-    // Preload vizinhas
+    renderExif(fotos[lbIndex].alt); // alt = número da foto
     [-1, 1].forEach(d => {
       const idx = (lbIndex + d + fotos.length) % fotos.length;
-      const pre = new Image();
-      pre.src = fotos[idx].src;
+      const pre = new Image(); pre.src = fotos[idx].src;
     });
   }
 
@@ -643,6 +799,7 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     if (e.key === 'ArrowLeft')  lbNav(-1);
     if (e.key === 'Escape')     { if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
     if (e.key === 'f' || e.key === 'F') toggleFS();
+    if (e.key === ' ') { e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); }
   });
 </script>
 </body>
