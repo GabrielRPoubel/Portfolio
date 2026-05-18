@@ -131,11 +131,11 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 .lightbox.active { display: flex; }
 
 .lb-toolbar {
-  position: absolute; top: 0; left: 0; z-index: 10;
+  position: absolute; top: 0; right: 0; z-index: 10;
   display: flex; align-items: center;
   padding: 0.8rem 1rem; gap: 0.6rem;
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.6), transparent);
-  border-radius: 0 0 12px 0;
+  background: linear-gradient(to bottom left, rgba(0,0,0,0.6), transparent);
+  border-radius: 0 0 0 12px;
   transition: opacity 0.4s;
 }
 .lightbox.ui-hidden .lb-toolbar { opacity: 0; pointer-events: none; }
@@ -151,13 +151,45 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   display: flex; align-items: center; justify-content: center;
   width: 100%; height: 100%;
 }
+.lb-img-wrap {
+  position: relative;
+}
 .lb-img-wrap img {
   max-width: 90vw; max-height: 90vh; object-fit: contain;
   filter: grayscale(100%) contrast(1.06); display: block;
   transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  -webkit-user-select: none; user-select: none;
+  pointer-events: none;
 }
 .lightbox.fullscreen-mode .lb-img-wrap img {
   max-width: 100vw; max-height: 100vh;
+  width: 100vw; height: 100vh; object-fit: contain;
+}
+.lightbox.fullscreen-mode {
+  padding: 0;
+}
+.lightbox.fullscreen-mode .lb-img-wrap {
+  width: 100vw; height: 100vh;
+}
+/* landscape forçado no mobile */
+@media (max-width: 768px) {
+  .lightbox.landscape-mode .lb-img-wrap img {
+    max-width: 100vw; max-height: 100vh;
+    width: 100vw; height: 100vh; object-fit: contain;
+  }
+}
+/* Camada invisível sobre a imagem — bloqueia clique direito e drag */
+.lb-img-wrap::after {
+  content: ''; position: absolute; inset: 0;
+  z-index: 2; cursor: default;
+}
+/* Proteção nas fotos do feed e grid */
+.feed-item img, .grid-item img {
+  -webkit-user-select: none; user-select: none;
+  pointer-events: none; -webkit-user-drag: none;
+}
+.feed-item, .grid-item {
+  -webkit-user-select: none; user-select: none;
 }
 
 .lb-nav {
@@ -297,7 +329,7 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 </div>
 
 <script>
-        // ─── FOTOS ───────────────────────────────────────────────────────────────
+    // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
     1,
@@ -348,6 +380,20 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     if (el) el.classList.add('active');
     window.scrollTo(0, 0);
   }
+
+  // Proteção de download
+  document.addEventListener('contextmenu', e => {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('dragstart', e => {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('keydown', e => {
+    // bloqueia Ctrl+S, Ctrl+U, F12 quando lightbox aberto
+    if (document.getElementById('lightbox').classList.contains('active')) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) e.preventDefault();
+    }
+  }, true);
 
   // Scroll fade
   window.addEventListener('scroll', () => {
@@ -402,21 +448,44 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     lbCnt.textContent = (lbIndex + 1) + ' / ' + fotos.length;
   }
 
+  // Detecta mobile
+  const isMobile = () => window.innerWidth <= 768 || ('ontouchstart' in window);
+
   function rotateLB() {
-    lbRotation = (lbRotation + 90) % 360;
-    lbImg.style.transform = 'rotate(' + lbRotation + 'deg)';
+    // No mobile: força landscape + fullscreen real
+    if (isMobile()) {
+      enterLandscapeFS();
+    }
   }
 
-  // Fullscreen: entra no modo CSS + tenta API nativa
+  function enterLandscapeFS() {
+    lb.classList.add('fullscreen-mode', 'landscape-mode');
+    updateFSIcon(true);
+    // Fullscreen nativo
+    const req = lb.requestFullscreen || lb.webkitRequestFullscreen || lb.mozRequestFullScreen;
+    if (req) {
+      req.call(lb).then(() => {
+        // Força orientação landscape
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        } else if (window.screen.lockOrientation) {
+          window.screen.lockOrientation('landscape');
+        }
+      }).catch(() => {
+        // Se fullscreen nativo falhar, fica só no CSS
+      });
+    }
+    scheduleHideUI();
+  }
+
+  // Fullscreen desktop e botão expand
   function toggleFS() {
     const isFS = lb.classList.contains('fullscreen-mode');
     if (!isFS) {
       lb.classList.add('fullscreen-mode');
       updateFSIcon(true);
-      // tenta tela cheia nativa
       const req = lb.requestFullscreen || lb.webkitRequestFullscreen || lb.mozRequestFullScreen;
       if (req) req.call(lb).catch(() => {});
-      // esconde UI após 2s de inatividade
       scheduleHideUI();
     } else {
       exitFS();
@@ -424,9 +493,15 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   }
 
   function exitFS() {
-    lb.classList.remove('fullscreen-mode', 'ui-hidden');
+    lb.classList.remove('fullscreen-mode', 'ui-hidden', 'landscape-mode');
     updateFSIcon(false);
     clearTimeout(uiTimeout);
+    // Libera orientação
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    } else if (window.screen.unlockOrientation) {
+      window.screen.unlockOrientation();
+    }
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       const ex = document.exitFullscreen || document.webkitExitFullscreen;
       if (ex) ex.call(document).catch(() => {});
