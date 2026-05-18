@@ -131,46 +131,55 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 .lightbox.active { display: flex; }
 
 .lb-toolbar {
-  position: absolute; top: 0; left: 0; right: 0;
-  display: flex; justify-content: flex-end; align-items: center;
-  padding: 1rem 1.5rem; gap: 1rem;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+  position: absolute; top: 0; left: 0; z-index: 10;
+  display: flex; align-items: center;
+  padding: 0.8rem 1rem; gap: 0.6rem;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.6), transparent);
+  border-radius: 0 0 12px 0;
+  transition: opacity 0.4s;
 }
+.lightbox.ui-hidden .lb-toolbar { opacity: 0; pointer-events: none; }
 .lb-btn {
   background: none; border: none; cursor: pointer;
   color: #666; transition: color 0.3s; padding: 4px;
   display: flex; align-items: center; justify-content: center;
 }
 .lb-btn:hover { color: #fff; }
-.lb-btn svg { width: 22px; height: 22px; }
+.lb-btn svg { width: 20px; height: 20px; }
 
 .lb-img-wrap {
   display: flex; align-items: center; justify-content: center;
   width: 100%; height: 100%;
-  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .lb-img-wrap img {
-  max-width: 90vw; max-height: 88vh; object-fit: contain;
+  max-width: 90vw; max-height: 90vh; object-fit: contain;
   filter: grayscale(100%) contrast(1.06); display: block;
   transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.lightbox.fullscreen-mode .lb-img-wrap img {
+  max-width: 100vw; max-height: 100vh;
 }
 
 .lb-nav {
   position: absolute; top: 50%; transform: translateY(-50%);
-  background: none; border: none; color: #333; font-size: 2.5rem;
-  cursor: pointer; padding: 1rem; transition: color 0.3s; line-height: 1;
+  background: none; border: none; color: rgba(255,255,255,0.15); font-size: 2.5rem;
+  cursor: pointer; padding: 1.5rem 1rem; transition: color 0.3s; line-height: 1;
+  z-index: 10;
 }
-.lb-nav:hover { color: #fff; }
-.lb-prev { left: 0.5rem; }
-.lb-next { right: 0.5rem; }
+.lb-nav:hover { color: rgba(255,255,255,0.9); }
+.lb-prev { left: 0; }
+.lb-next { right: 0; }
+.lightbox.ui-hidden .lb-nav { opacity: 0; pointer-events: none; }
 
 .lb-counter {
   position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
   font-size: 0.7rem; letter-spacing: 0.3em; color: #444;
-  font-family: 'NexaHeavy', Georgia, serif;
+  font-family: 'NexaHeavy', Georgia, serif; z-index: 10;
+  transition: opacity 0.4s;
 }
+.lightbox.ui-hidden .lb-counter { opacity: 0; }
 
-/* fullscreen */
+/* fullscreen nativo */
 .lightbox:-webkit-full-screen { background: #000; }
 .lightbox:-moz-full-screen    { background: #000; }
 .lightbox:fullscreen           { background: #000; }
@@ -213,7 +222,7 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
 
 <!-- NAV DESKTOP -->
 <nav id="nav">
-  <span class="logo">GABRIEL POUBEL</span>
+  <span class="logo" onclick="showPage('home', document.querySelector('.nav-links a'))" style="cursor:pointer">GABRIEL POUBEL</span>
   <ul class="nav-links">
     <li><a class="active" onclick="showPage('home',this)">INÍCIO</a></li>
     <li><a onclick="showPage('galeria',this)">GALERIA</a></li>
@@ -230,7 +239,7 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   <button class="hamburger" onclick="openDrawer()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
-  <span class="mobile-logo">GABRIEL POUBEL</span>
+  <span class="mobile-logo" onclick="showPage('home', document.querySelector('.drawer a'))" style="cursor:pointer">GABRIEL POUBEL</span>
   <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="mobile-ig" title="Instagram">
     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#777" stroke="none"/></svg>
   </a>
@@ -342,58 +351,116 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   // Lightbox
   let lbIndex = 0;
   let lbRotation = 0;
+  let uiTimeout = null;
+
+  const lb       = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lb-img');
+  const lbCnt    = document.getElementById('lb-counter');
+  const fsIcon   = document.getElementById('fs-icon');
 
   function openLB(i) {
     lbIndex = i; lbRotation = 0;
     updateLB();
-    document.getElementById('lightbox').classList.add('active');
+    lb.classList.add('active');
+    lb.classList.remove('fullscreen-mode', 'ui-hidden');
   }
+
   function closeLB() {
-    document.getElementById('lightbox').classList.remove('active');
+    lb.classList.remove('active', 'fullscreen-mode', 'ui-hidden');
     if (document.fullscreenElement) document.exitFullscreen();
+    clearTimeout(uiTimeout);
   }
+
   function lbNav(d) {
     lbIndex = (lbIndex + d + fotos.length) % fotos.length;
     lbRotation = 0;
     updateLB();
+    showUI();
   }
+
   function updateLB() {
-    document.getElementById('lb-img').src = fotos[lbIndex].src;
-    document.getElementById('lb-img').style.transform = '';
-    document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + fotos.length;
+    lbImg.src = fotos[lbIndex].src;
+    lbImg.style.transform = '';
+    lbCnt.textContent = (lbIndex + 1) + ' / ' + fotos.length;
   }
 
   function rotateLB() {
     lbRotation = (lbRotation + 90) % 360;
-    document.getElementById('lb-img').style.transform = 'rotate(' + lbRotation + 'deg)';
+    lbImg.style.transform = 'rotate(' + lbRotation + 'deg)';
   }
 
+  // Fullscreen: entra no modo CSS + tenta API nativa
   function toggleFS() {
-    const lb = document.getElementById('lightbox');
-    if (!document.fullscreenElement) {
-      lb.requestFullscreen && lb.requestFullscreen();
+    const isFS = lb.classList.contains('fullscreen-mode');
+    if (!isFS) {
+      lb.classList.add('fullscreen-mode');
+      updateFSIcon(true);
+      // tenta tela cheia nativa
+      const req = lb.requestFullscreen || lb.webkitRequestFullscreen || lb.mozRequestFullScreen;
+      if (req) req.call(lb).catch(() => {});
+      // esconde UI após 2s de inatividade
+      scheduleHideUI();
     } else {
-      document.exitFullscreen && document.exitFullscreen();
+      exitFS();
     }
   }
 
-  document.addEventListener('fullscreenchange', () => {
-    const icon = document.getElementById('fs-icon');
-    if (document.fullscreenElement) {
-      icon.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
+  function exitFS() {
+    lb.classList.remove('fullscreen-mode', 'ui-hidden');
+    updateFSIcon(false);
+    clearTimeout(uiTimeout);
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      const ex = document.exitFullscreen || document.webkitExitFullscreen;
+      if (ex) ex.call(document).catch(() => {});
+    }
+  }
+
+  function updateFSIcon(full) {
+    if (full) {
+      fsIcon.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>';
     } else {
-      icon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
+      fsIcon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>';
+    }
+  }
+
+  // Esconder/mostrar UI no fullscreen
+  function scheduleHideUI() {
+    clearTimeout(uiTimeout);
+    uiTimeout = setTimeout(() => {
+      if (lb.classList.contains('fullscreen-mode')) lb.classList.add('ui-hidden');
+    }, 2500);
+  }
+
+  function showUI() {
+    lb.classList.remove('ui-hidden');
+    if (lb.classList.contains('fullscreen-mode')) scheduleHideUI();
+  }
+
+  lb.addEventListener('mousemove', showUI);
+  lb.addEventListener('touchstart', showUI, { passive: true });
+
+  // Sai do fullscreen CSS se API nativa sair
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && lb.classList.contains('fullscreen-mode')) {
+      exitFS();
+    }
+  });
+  document.addEventListener('webkitfullscreenchange', () => {
+    if (!document.webkitFullscreenElement && lb.classList.contains('fullscreen-mode')) {
+      exitFS();
     }
   });
 
-  document.getElementById('lightbox').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeLB();
+  // Clique no fundo fecha
+  lb.addEventListener('click', e => {
+    if (e.target === lb || e.target === document.getElementById('lb-wrap')) closeLB();
   });
+
   document.addEventListener('keydown', e => {
-    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (!lb.classList.contains('active')) return;
     if (e.key === 'ArrowRight') lbNav(1);
-    if (e.key === 'ArrowLeft') lbNav(-1);
-    if (e.key === 'Escape') closeLB();
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'Escape')     { if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
     if (e.key === 'f' || e.key === 'F') toggleFS();
   });
 </script>
