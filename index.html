@@ -441,33 +441,6 @@ body.lb-open { overflow: hidden; }
 </head>
 <body>
 
-<!-- BOTÃO COMPARTILHAR -->
-<button class="share-btn" onclick="openShare()" title="Compartilhar">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-  </svg>
-</button>
-
-<!-- SHARE OVERLAY -->
-<div class="share-overlay" id="share-overlay" onclick="closeShareOutside(event)">
-  <div class="share-menu">
-    <div class="share-menu-bg"></div>
-    <button class="share-copy-btn" onclick="copyLink()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-      </svg>
-      <span class="share-copy-label">Copiar link</span>
-    </button>
-    <button class="share-close" onclick="closeShare()">×</button>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">LINK COPIADO</div>
-
 <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
 <!-- NAV DESKTOP -->
@@ -519,6 +492,14 @@ body.lb-open { overflow: hidden; }
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <div class="lb-toolbar">
+    <!-- Compartilhar -->
+    <button class="lb-btn" id="share-btn" onclick="openShare()" title="Compartilhar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
     <!-- Info EXIF -->
     <button class="lb-btn lb-btn-info" id="info-btn" onclick="toggleExif()" title="Informações">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -571,6 +552,24 @@ body.lb-open { overflow: hidden; }
     </div>
   </div>
 </div>
+
+<!-- SHARE OVERLAY -->
+<div class="share-overlay" id="share-overlay" onclick="closeShareOutside(event)">
+  <div class="share-menu">
+    <div class="share-menu-bg"></div>
+    <button class="share-copy-btn" id="share-copy-btn" onclick="copyLink()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <span class="share-copy-label" id="share-copy-label">Copiar link</span>
+    </button>
+    <button class="share-close" onclick="closeShare()">×</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">LINK COPIADO</div>
 
 <script>
     // ─── FOTOS ───────────────────────────────────────────────────────────────
@@ -708,8 +707,11 @@ body.lb-open { overflow: hidden; }
     document.getElementById('exif-panel').classList.remove('visible');
   }
 
-  // Share
+  // Share — copia link direto da foto atual
   function openShare() {
+    // Reseta estado do botão
+    document.getElementById('share-copy-label').textContent = 'Copiar link';
+    document.getElementById('share-copy-btn').style.opacity = '1';
     document.getElementById('share-overlay').classList.add('open');
   }
   function closeShare() {
@@ -719,18 +721,27 @@ body.lb-open { overflow: hidden; }
     if (e.target === document.getElementById('share-overlay')) closeShare();
   }
   function copyLink() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      closeShare();
-      showToast();
-    }).catch(() => {
-      // fallback
+    // URL base + path direto para a foto
+    const base = window.location.origin + window.location.pathname;
+    const url = base + '?foto=' + fotos[lbIndex].alt;
+    navigator.clipboard.writeText(url).then(doAfterCopy).catch(() => {
       const ta = document.createElement('textarea');
       ta.value = url; document.body.appendChild(ta);
       ta.select(); document.execCommand('copy');
       document.body.removeChild(ta);
-      closeShare(); showToast();
+      doAfterCopy();
     });
+  }
+  function doAfterCopy() {
+    // Ícone desaparece, label some, overlay fecha
+    const btn = document.getElementById('share-copy-btn');
+    btn.style.transition = 'opacity 0.3s';
+    btn.style.opacity = '0';
+    setTimeout(() => {
+      closeShare();
+      btn.style.opacity = '1';
+      showToast();
+    }, 320);
   }
   function showToast() {
     const t = document.getElementById('toast');
