@@ -281,31 +281,32 @@ body.lb-open { overflow: hidden; }
 
 /* Menu circular */
 .share-menu {
-  position: relative; width: 160px; height: 160px;
+  display: flex; gap: 20px; align-items: center;
+  position: relative;
 }
-.share-menu-bg {
-  position: absolute; inset: 0; border-radius: 50%;
-  background: rgba(12,12,12,0.92);
+.share-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(0,0,0,0.96);
   border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.25s, background 0.25s;
+  flex-shrink: 0;
 }
-.share-copy-btn {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px; background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,0.8); transition: color 0.3s, transform 0.3s;
-  border-radius: 50%; z-index: 1;
-}
-.share-copy-btn:hover { color: #fff; transform: scale(1.06); }
-.share-copy-btn svg { width: 32px; height: 32px; }
-.share-copy-label {
-  font-family: 'NexaHeavy', Georgia, serif;
-  font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-}
+.share-circle:hover { transform: scale(1.08); background: rgba(20,20,20,0.98); }
+.share-circle svg { width: 46px; height: 46px; }
+.share-circle.copy-btn { border: none; background: #000; }
+.share-circle.copy-btn svg { stroke: rgba(255,255,255,0.85); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.share-circle.copy-btn:hover svg { stroke: #fff; }
+.share-circle.wa-btn  { background: #000; }
+.share-circle.wa-btn svg  { fill: rgba(255,255,255,0.85); transition: fill 0.25s; }
+.share-circle.wa-btn:hover svg { fill: #fff; }
+.share-circle.ig-btn  { background: #000; }
+.share-circle.ig-btn svg  { fill: none; stroke: rgba(255,255,255,0.85); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.25s; }
+.share-circle.ig-btn:hover svg { stroke: #fff; }
 .share-close {
-  position: absolute; top: -10px; right: -10px;
-  background: rgba(30,30,30,0.95); border: 1px solid rgba(255,255,255,0.1);
+  position: absolute; top: -14px; right: -14px;
+  background: rgba(20,20,20,0.98); border: 1px solid rgba(255,255,255,0.1);
   color: #555; width: 26px; height: 26px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; font-size: 0.9rem; transition: color 0.3s; z-index: 2;
@@ -557,11 +558,26 @@ body.lb-open { overflow: hidden; }
 <!-- SHARE OVERLAY -->
 <div class="share-overlay" id="share-overlay" onclick="closeShareOutside(event)">
   <div class="share-menu">
-    <div class="share-menu-bg"></div>
-    <button class="share-copy-btn" id="share-copy-btn" onclick="copyLink()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+    <!-- Copiar link -->
+    <button class="share-circle copy-btn" id="share-copy-btn" onclick="copyLink()" title="Copiar link">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </button>
+    <!-- WhatsApp -->
+    <button class="share-circle wa-btn" onclick="shareWhatsapp()" title="Compartilhar no WhatsApp">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.123 1.522 5.858L0 24l6.335-1.493A11.951 11.951 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.876 9.876 0 0 1-5.031-1.378l-.36-.214-3.742.882.938-3.63-.235-.374A9.861 9.861 0 0 1 2.118 12C2.118 6.58 6.58 2.118 12 2.118c5.42 0 9.882 4.462 9.882 9.882 0 5.42-4.462 9.882-9.882 9.882z"/>
+      </svg>
+    </button>
+    <!-- Instagram -->
+    <button class="share-circle ig-btn" onclick="shareInstagram()" title="Compartilhar no Instagram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4.5"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
       </svg>
     </button>
     <button class="share-close" onclick="closeShare()">×</button>
@@ -709,8 +725,6 @@ body.lb-open { overflow: hidden; }
 
   // Share — copia link direto da foto atual
   function openShare() {
-    // Reseta estado do botão
-    document.getElementById('share-copy-label').textContent = 'Copiar link';
     document.getElementById('share-copy-btn').style.opacity = '1';
     document.getElementById('share-overlay').classList.add('open');
   }
@@ -720,10 +734,12 @@ body.lb-open { overflow: hidden; }
   function closeShareOutside(e) {
     if (e.target === document.getElementById('share-overlay')) closeShare();
   }
-  function copyLink() {
-    // URL base + path direto para a foto
+  function getShareUrl() {
     const base = window.location.origin + window.location.pathname;
-    const url = base + '?foto=' + fotos[lbIndex].alt;
+    return base + '?foto=' + fotos[lbIndex].alt;
+  }
+  function copyLink() {
+    const url = getShareUrl();
     navigator.clipboard.writeText(url).then(doAfterCopy).catch(() => {
       const ta = document.createElement('textarea');
       ta.value = url; document.body.appendChild(ta);
@@ -732,14 +748,22 @@ body.lb-open { overflow: hidden; }
       doAfterCopy();
     });
   }
+  function shareWhatsapp() {
+    const url = 'https://wa.me/?text=' + encodeURIComponent(getShareUrl());
+    window.open(url, '_blank');
+    closeShare();
+  }
+  function shareInstagram() {
+    window.open('https://instagram.com/gabrielrpoubel', '_blank');
+    closeShare();
+  }
   function doAfterCopy() {
-    // Ícone desaparece, label some, overlay fecha
     const btn = document.getElementById('share-copy-btn');
     btn.style.transition = 'opacity 0.3s';
     btn.style.opacity = '0';
     setTimeout(() => {
       closeShare();
-      btn.style.opacity = '1';
+      setTimeout(() => { btn.style.opacity = '1'; }, 300);
       showToast();
     }, 320);
   }
@@ -765,6 +789,20 @@ body.lb-open { overflow: hidden; }
 
   // Scroll fade + seta topo
   const backTop = document.getElementById('back-top');
+  const navEl = document.getElementById('nav');
+  const mobileNavEl = document.getElementById('mobile-nav');
+  let lastScrollY = window.scrollY;
+  let navHideTimer = null;
+
+  function showNav() {
+    navEl.classList.remove('scrolled');
+    mobileNavEl.classList.remove('scrolled');
+    clearTimeout(navHideTimer);
+    navHideTimer = setTimeout(() => {
+      navEl.classList.add('scrolled');
+      mobileNavEl.classList.add('scrolled');
+    }, 2000);
+  }
   // Espaço volta ao topo (quando lightbox fechado)
   window.addEventListener('keydown', e => {
     if (e.key === ' ' && !lb.classList.contains('active')) {
@@ -774,10 +812,23 @@ body.lb-open { overflow: hidden; }
   });
 
   window.addEventListener('scroll', () => {
-    const gone = window.scrollY > 80;
-    document.getElementById('nav').classList.toggle('scrolled', gone);
-    document.getElementById('mobile-nav').classList.toggle('scrolled', gone);
-    backTop.classList.toggle('visible', gone);
+    const currentY = window.scrollY;
+    const delta = currentY - lastScrollY;
+    lastScrollY = currentY;
+
+    backTop.classList.toggle('visible', currentY > 80);
+
+    if (currentY <= 80) {
+      clearTimeout(navHideTimer);
+      navEl.classList.remove('scrolled');
+      mobileNavEl.classList.remove('scrolled');
+    } else if (delta < 0) {
+      showNav();
+    } else if (delta > 0) {
+      clearTimeout(navHideTimer);
+      navEl.classList.add('scrolled');
+      mobileNavEl.classList.add('scrolled');
+    }
   }, { passive: true });
 
   // Drawer
