@@ -4,10 +4,11 @@ echo.
 echo === Portfolio de Gabriel Poubel ===
 echo.
 
-echo [1/4] Contando fotos na pasta fotos\...
+echo [1/4] Processando fotos e atualizando index...
 python gerar.py
 if errorlevel 1 (
-    echo Erro ao gerar lista de fotos. Verifique se o Python esta instalado.
+    echo Erro ao processar fotos. Verifique se o Python e o Pillow estao instalados.
+    echo Execute: pip install Pillow
     pause
     exit /b 1
 )
@@ -21,7 +22,7 @@ echo.
 echo [3/4] Sincronizando com o GitHub...
 git pull origin main --rebase
 if errorlevel 1 (
-    echo Erro ao sincronizar com o GitHub. Verifique sua conexao.
+    echo Erro ao sincronizar. Verifique sua conexao.
     pause
     exit /b 1
 )
