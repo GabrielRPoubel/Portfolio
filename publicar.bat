@@ -4,7 +4,7 @@ echo.
 echo === Portfolio de Gabriel Poubel ===
 echo.
 
-echo [1/3] Contando fotos na pasta fotos\...
+echo [1/4] Contando fotos na pasta fotos\...
 python gerar.py
 if errorlevel 1 (
     echo Erro ao gerar lista de fotos. Verifique se o Python esta instalado.
@@ -13,9 +13,21 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/3] Enviando para o GitHub...
+echo [2/4] Salvando alteracoes locais...
 git add .
 git commit -m "atualiza fotos"
+
+echo.
+echo [3/4] Sincronizando com o GitHub...
+git pull origin main --rebase
+if errorlevel 1 (
+    echo Erro ao sincronizar com o GitHub. Verifique sua conexao.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [4/4] Enviando para o GitHub...
 git push
 if errorlevel 1 (
     echo Erro ao enviar para o GitHub.
@@ -24,6 +36,6 @@ if errorlevel 1 (
 )
 
 echo.
-echo [3/3] Pronto! Site atualizado em instantes no Vercel.
+echo Pronto! Site atualizado em instantes no Vercel.
 echo.
 pause
