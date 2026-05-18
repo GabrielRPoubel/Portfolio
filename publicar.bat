@@ -14,35 +14,44 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/4] Salvando alteracoes locais...
-git add .
-git commit -m "atualiza fotos"
-
+echo [2/4] Verificando arquivos alterados...
+git status --short
 echo.
-echo [3/4] Sincronizando com o GitHub...
-git fetch origin
-if errorlevel 1 (
-    echo Erro ao conectar com o GitHub. Verifique sua conexao.
+
+rem Adiciona apenas arquivos rastreados que mudaram + novos thumbs e fotos
+git add -u
+git add fotos/thumbs/
+git add fotos/*.jpg 2>nul
+
+rem Verifica se ha algo para commitar
+git diff --cached --quiet
+if not errorlevel 1 (
+    echo Nenhuma alteracao detectada. Site ja esta atualizado.
     pause
-    exit /b 1
+    exit /b 0
 )
-git rebase origin/main
-if errorlevel 1 (
-    echo Erro ao sincronizar. Tente rodar: git rebase --abort
-    pause
-    exit /b 1
-)
+
+echo [3/4] Salvando alteracoes...
+git commit -m "atualiza portfolio"
 
 echo.
 echo [4/4] Enviando para o GitHub...
+git fetch origin
+git rebase origin/main
+if errorlevel 1 (
+    echo Erro ao sincronizar. Execute: git rebase --abort
+    pause
+    exit /b 1
+)
 git push origin main
 if errorlevel 1 (
-    echo Erro ao enviar. Tente rodar manualmente: git push origin main
+    echo Erro ao enviar. Tente: git push origin main
     pause
     exit /b 1
 )
 
 echo.
-echo Pronto! Site atualizado em instantes no Vercel.
+echo Pronto! Apenas os arquivos alterados foram enviados.
+echo O Vercel atualiza o site em instantes.
 echo.
 pause
