@@ -20,18 +20,24 @@ git commit -m "atualiza fotos"
 
 echo.
 echo [3/4] Sincronizando com o GitHub...
-git pull origin main --rebase
+git fetch origin
 if errorlevel 1 (
-    echo Erro ao sincronizar. Verifique sua conexao.
+    echo Erro ao conectar com o GitHub. Verifique sua conexao.
+    pause
+    exit /b 1
+)
+git rebase origin/main
+if errorlevel 1 (
+    echo Erro ao sincronizar. Tente rodar: git rebase --abort
     pause
     exit /b 1
 )
 
 echo.
 echo [4/4] Enviando para o GitHub...
-git push
+git push origin main
 if errorlevel 1 (
-    echo Erro ao enviar para o GitHub.
+    echo Erro ao enviar. Tente rodar manualmente: git push origin main
     pause
     exit /b 1
 )
