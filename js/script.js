@@ -1,8 +1,5 @@
 // --- Otimizações Aplicadas ---
-// Cache de seletores DOM
 const lbWrap = lbWrap;
-
-// Função de Throttle para eventos contínuos
 function throttle(func, limit) {
   let inThrottle;
   return function() {
@@ -16,13 +13,13 @@ function throttle(func, limit) {
   }
 }
 
-    // ─── FOTOS ───────────────────────────────────────────────────────────────
+      // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
     1,
     2,
     3,
-  ].map(n => ({ src: `fotos/${n}.jpg`, alt: `${n}` }));
+  ].map(n => ({ src: `fotos/${n}.jpg`, alt: `Fotografia ${n} do portfólio` }));
   // ─────────────────────────────────────────────────────────────────────────
 
   const feed = document.getElementById('feed');
