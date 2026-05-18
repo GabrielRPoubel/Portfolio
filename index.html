@@ -246,8 +246,38 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   .grid-gallery { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* botão rotate só aparece no mobile */
-.rotate-btn { display: none; }
+/* botão rotate removido — substituído por swipe */
+.rotate-btn { display: none !important; }
+
+/* Seta voltar ao topo */
+.back-top {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(12px);
+  z-index: 90; opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.back-top.visible {
+  opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0);
+}
+.back-top svg {
+  width: 28px; height: 28px; stroke: rgba(255,255,255,0.5);
+  transition: stroke 0.3s;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.15));
+  animation: floatArrow 2.5s ease-in-out infinite;
+}
+.back-top:hover svg { stroke: rgba(255,255,255,0.95); }
+@keyframes floatArrow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Feed: fade in por foto */
+.feed-item {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.feed-item.loaded { opacity: 1; }
 </style>
 </head>
 <body>
@@ -359,13 +389,44 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
   const feed = document.getElementById('feed');
   const grid = document.getElementById('grid');
 
+  // ── Feed com IntersectionObserver (lazy + fade in) ──
+  const feedObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const div = entry.target;
+      const img = div.querySelector('img');
+      if (img.dataset.src && !img.src.includes('fotos/')) {
+        img.src = img.dataset.src;
+      }
+      img.onload = () => div.classList.add('loaded');
+      // Se já carregou (cache)
+      if (img.complete && img.naturalWidth > 0) div.classList.add('loaded');
+      feedObserver.unobserve(div);
+      // Preload da próxima
+      const next = div.nextElementSibling;
+      if (next) {
+        const nimg = next.querySelector('img');
+        if (nimg && nimg.dataset.src) {
+          const pre = new Image();
+          pre.src = nimg.dataset.src;
+        }
+      }
+    });
+  }, { rootMargin: '200px 0px' });
+
   fotos.forEach((p, i) => {
+    // feed
     const fdiv = document.createElement('div');
     fdiv.className = 'feed-item'; fdiv.onclick = () => openLB(i);
     const fimg = document.createElement('img');
-    fimg.src = p.src; fimg.alt = p.alt; fimg.loading = 'lazy';
-    fdiv.appendChild(fimg); feed.appendChild(fdiv);
+    fimg.dataset.src = p.src; fimg.alt = p.alt;
+    // primeira foto carrega imediato
+    if (i === 0) { fimg.src = p.src; fimg.onload = () => fdiv.classList.add('loaded'); if(fimg.complete) fdiv.classList.add('loaded'); }
+    fdiv.appendChild(fimg);
+    feed.appendChild(fdiv);
+    feedObserver.observe(fdiv);
 
+    // grid (lazy nativo é suficiente aqui)
     const gdiv = document.createElement('div');
     gdiv.className = 'grid-item'; gdiv.onclick = () => openLB(i);
     const gimg = document.createElement('img');
@@ -395,11 +456,13 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     }
   }, true);
 
-  // Scroll fade
+  // Scroll fade + seta topo
+  const backTop = document.getElementById('back-top');
   window.addEventListener('scroll', () => {
     const gone = window.scrollY > 80;
     document.getElementById('nav').classList.toggle('scrolled', gone);
     document.getElementById('mobile-nav').classList.toggle('scrolled', gone);
+    backTop.classList.toggle('visible', gone);
   }, { passive: true });
 
   // Drawer
@@ -446,6 +509,12 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     lbImg.src = fotos[lbIndex].src;
     lbImg.style.transform = '';
     lbCnt.textContent = (lbIndex + 1) + ' / ' + fotos.length;
+    // Preload vizinhas
+    [-1, 1].forEach(d => {
+      const idx = (lbIndex + d + fotos.length) % fotos.length;
+      const pre = new Image();
+      pre.src = fotos[idx].src;
+    });
   }
 
   // Detecta mobile
@@ -549,6 +618,20 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     if (e.target === lb || e.target === document.getElementById('lb-wrap')) closeLB();
   });
 
+  // Swipe horizontal no lightbox (mobile)
+  let swipeStartX = 0, swipeStartY = 0;
+  lb.addEventListener('touchstart', e => {
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+  }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      lbNav(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
   document.addEventListener('keydown', e => {
     if (!lb.classList.contains('active')) return;
     if (e.key === 'ArrowRight') lbNav(1);
@@ -557,5 +640,8 @@ nav:hover { opacity: 1 !important; pointer-events: all !important; background: r
     if (e.key === 'f' || e.key === 'F') toggleFS();
   });
 </script>
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 </body>
 </html>
