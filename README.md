@@ -1,1 +1,1 @@
-﻿# Site feito para manter meu site de fotografia
+﻿# Repositório feito para manter meu site de fotografia
