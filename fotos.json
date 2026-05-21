@@ -593,10 +593,10 @@
       "camera": "NIKON D3300",
       "make": "NIKON CORPORATION",
       "lens": "18.0-105.0 mm f/3.5-5.6",
-      "exposure": "1/400s",
+      "exposure": "1/500s",
       "aperture": "f/11.0",
-      "iso": "ISO 400",
-      "focal": "30mm"
+      "iso": "ISO 220",
+      "focal": "105mm"
     }
   },
   {
@@ -629,10 +629,10 @@
       "camera": "NIKON D3300",
       "make": "NIKON CORPORATION",
       "lens": "18.0-105.0 mm f/3.5-5.6",
-      "exposure": "1/15s",
-      "aperture": "f/6.3",
-      "iso": "ISO 900",
-      "focal": "18mm"
+      "exposure": "1/500s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "105mm"
     }
   },
   {
@@ -665,10 +665,10 @@
       "camera": "NIKON D3300",
       "make": "NIKON CORPORATION",
       "lens": "18.0-105.0 mm f/3.5-5.6",
-      "exposure": "1/400s",
-      "aperture": "f/11.0",
-      "iso": "ISO 400",
-      "focal": "52mm"
+      "exposure": "1/15s",
+      "aperture": "f/6.3",
+      "iso": "ISO 1600",
+      "focal": "32mm"
     }
   },
   {
@@ -677,10 +677,58 @@
       "camera": "NIKON D3300",
       "make": "NIKON CORPORATION",
       "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/400s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "30mm"
+    }
+  },
+  {
+    "n": 58,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/400s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "98mm"
+    }
+  },
+  {
+    "n": 59,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/500s",
+      "aperture": "f/11.0",
+      "iso": "ISO 200",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 60,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
       "exposure": "1/15s",
       "aperture": "f/6.3",
-      "iso": "ISO 1600",
-      "focal": "32mm"
+      "iso": "ISO 900",
+      "focal": "18mm"
+    }
+  },
+  {
+    "n": 61,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/400s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "52mm"
     }
   }
 ]
