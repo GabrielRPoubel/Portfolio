@@ -4,7 +4,7 @@ echo.
 echo === Portfolio de Gabriel Poubel ===
 echo.
 
-echo [1/6] Processando fotos e atualizando index...
+echo [1/5] Processando fotos e atualizando fotos.js...
 python gerar.py
 if errorlevel 1 (
     echo Erro ao processar fotos. Verifique se o Python e o Pillow estao instalados.
@@ -13,20 +13,17 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/6] Instalando ferramentas de build (se necessario)...
-call npm list javascript-obfuscator --prefix . >nul 2>&1
+echo [2/5] Instalando dependencias (se necessario)...
+call npm install --silent
 if errorlevel 1 (
-    call npm install javascript-obfuscator --save-dev --silent
-    if errorlevel 1 (
-        echo Erro ao instalar javascript-obfuscator.
-        pause
-        exit /b 1
-    )
+    echo Erro ao instalar dependencias.
+    pause
+    exit /b 1
 )
 
 echo.
-echo [3/6] Gerando build ofuscado em dist/...
-call node js/build.js
+echo [3/5] Gerando build em dist/...
+call npm run build
 if errorlevel 1 (
     echo Erro no build.
     pause
@@ -34,13 +31,8 @@ if errorlevel 1 (
 )
 
 echo.
-echo [4/6] Verificando alteracoes...
-git status --short
-git add -u
-git add fotos/thumbs/
-git add fotos/*.jpg 2>nul
-git add dist/index.html
-
+echo [4/5] Verificando alteracoes...
+git add -A
 git diff --cached --quiet
 if not errorlevel 1 (
     echo Nenhuma alteracao detectada. Site ja esta atualizado.
@@ -49,11 +41,8 @@ if not errorlevel 1 (
 )
 
 echo.
-echo [5/6] Salvando alteracoes...
+echo [5/5] Salvando e enviando para o GitHub...
 git commit -m "atualiza portfolio"
-
-echo.
-echo [6/6] Enviando para o GitHub...
 git fetch origin
 git rebase origin/main
 if errorlevel 1 (
@@ -69,6 +58,6 @@ if errorlevel 1 (
 )
 
 echo.
-echo Pronto! Build ofuscado enviado. Vercel atualiza em instantes.
+echo Pronto! Vercel atualiza em instantes.
 echo.
 pause
