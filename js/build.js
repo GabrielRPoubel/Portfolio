@@ -27,7 +27,7 @@ const cssMin = cssRaw
 
 // ── JS: lê o bloco de fotos do index.html e concatena com os módulos ──────────
 const indexSrc = fs.readFileSync('index.html', 'utf8');
-const fotosMatch = indexSrc.match(/\/\/ [─]+\s*FOTOS[\s\S]*?\/\/ [─]+/);
+const fotosMatch = indexSrc.match(/\/\/ ─── FOTOS ─+[\s\S]*?\/\/ ─+/);
 if (!fotosMatch) { console.error('Bloco de fotos não encontrado no index.html'); process.exit(1); }
 const fotosBlock = fotosMatch[0];
 
