@@ -26,6 +26,7 @@
   <ul class="nav-links">
     <li><a class="active" onclick="showPage('home',this)">INÍCIO</a></li>
     <li><a onclick="showPage('galeria',this)">GALERIA</a></li>
+    <li><a onclick="showPage('novas',this)">NOVAS</a></li>
     <li>
       <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="ig-link" title="Instagram">
         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#777" stroke="none"/></svg>
@@ -50,6 +51,7 @@
   <button class="drawer-close" onclick="closeDrawer()">×</button>
   <a class="active" onclick="showPage('home',this);closeDrawer()">INÍCIO</a>
   <a onclick="showPage('galeria',this);closeDrawer()">GALERIA</a>
+  <a onclick="showPage('novas',this);closeDrawer()">NOVAS</a>
 </div>
 
 <!-- PAGES -->
@@ -58,6 +60,9 @@
 </div>
 <div id="galeria" class="page">
   <div class="grid-gallery" id="grid"></div>
+</div>
+<div id="novas" class="page">
+  <div class="grid-gallery" id="grid-novas"></div>
 </div>
 
 <!-- BACK TO TOP -->
@@ -147,7 +152,7 @@
 
 <!-- JS: ordem importa -->
 <script>
-                            // ─── FOTOS ───────────────────────────────────────────────────────────────
+                                // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
     1,2,3,4,5,6,7,8,9,10,
@@ -166,6 +171,7 @@
 <script src="js/lightbox.js"></script>
 <script src="js/feed.js"></script>
 <script src="js/galeria.js"></script>
+<script src="js/novas.js"></script>
 <script src="js/share.js"></script>
 <script src="js/ui.js"></script>
 

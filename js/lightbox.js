@@ -6,6 +6,7 @@ const fsIcon   = document.getElementById('fs-icon');
 
 let lbIndex    = 0;
 let uiTimeout  = null;
+let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas, etc.)
 
 // ── EXIF ─────────────────────────────────────────────────────────────────────
 let exifData = {};
@@ -37,13 +38,14 @@ function renderExif(n) {
 }
 
 // ── Abrir / fechar ────────────────────────────────────────────────────────────
-function openLB(i) {
+function openLB(i, list) {
+  activeFotos = list || fotos;
   lbIndex = i;
   updateLB();
   lb.classList.add('active');
   lb.classList.remove('fullscreen-mode', 'ui-hidden');
   document.body.classList.add('lb-open');
-  history.replaceState(null, '', '?foto=' + fotos[i].n);
+  history.replaceState(null, '', '?foto=' + activeFotos[i].n);
 }
 
 function closeLB() {
@@ -55,21 +57,21 @@ function closeLB() {
 }
 
 function lbNav(d) {
-  lbIndex = (lbIndex + d + fotos.length) % fotos.length;
+  lbIndex = (lbIndex + d + activeFotos.length) % activeFotos.length;
   updateLB();
   showUI();
-  history.replaceState(null, '', '?foto=' + fotos[lbIndex].n);
+  history.replaceState(null, '', '?foto=' + activeFotos[lbIndex].n);
 }
 
 function updateLB() {
-  lbImg.src = fotos[lbIndex].src;
+  lbImg.src = activeFotos[lbIndex].src;
   lbImg.style.transform = '';
-  lbCnt.textContent = (lbIndex + 1) + ' / ' + fotos.length;
-  renderExif(fotos[lbIndex].n);
+  lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
+  renderExif(activeFotos[lbIndex].n);
   // Preload vizinhas
   [-1, 1].forEach(d => {
-    const idx = (lbIndex + d + fotos.length) % fotos.length;
-    const pre = new Image(); pre.src = fotos[idx].src;
+    const idx = (lbIndex + d + activeFotos.length) % activeFotos.length;
+    const pre = new Image(); pre.src = activeFotos[idx].src;
   });
 }
 

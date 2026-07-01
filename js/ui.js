@@ -14,4 +14,5 @@ document.addEventListener('keydown', e => {
 // ── Init ──────────────────────────────────────────────────────────────────────
 buildFeed(fotos);
 buildGrid(fotos);
+buildNovas(novasFotos);
 openFromUrl();
