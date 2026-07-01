@@ -36,6 +36,7 @@ const jsFiles = [
   'js/lightbox.js',
   'js/feed.js',
   'js/galeria.js',
+  'js/novas.js',
   'js/share.js',
   'js/ui.js',
 ];
