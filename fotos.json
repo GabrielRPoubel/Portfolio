@@ -1042,5 +1042,389 @@
       "iso": "ISO 100",
       "focal": "54mm"
     }
+  },
+  {
+    "n": 88,
+    "exif": {}
+  },
+  {
+    "n": 89,
+    "exif": {}
+  },
+  {
+    "n": 90,
+    "exif": {}
+  },
+  {
+    "n": 91,
+    "exif": {}
+  },
+  {
+    "n": 92,
+    "exif": {}
+  },
+  {
+    "n": 93,
+    "exif": {}
+  },
+  {
+    "n": 94,
+    "exif": {}
+  },
+  {
+    "n": 95,
+    "exif": {}
+  },
+  {
+    "n": 96,
+    "exif": {}
+  },
+  {
+    "n": 97,
+    "exif": {}
+  },
+  {
+    "n": 98,
+    "exif": {}
+  },
+  {
+    "n": 99,
+    "exif": {}
+  },
+  {
+    "n": 100,
+    "exif": {}
+  },
+  {
+    "n": 101,
+    "exif": {}
+  },
+  {
+    "n": 102,
+    "exif": {}
+  },
+  {
+    "n": 103,
+    "exif": {}
+  },
+  {
+    "n": 104,
+    "exif": {}
+  },
+  {
+    "n": 105,
+    "exif": {}
+  },
+  {
+    "n": 106,
+    "exif": {}
+  },
+  {
+    "n": 107,
+    "exif": {}
+  },
+  {
+    "n": 108,
+    "exif": {}
+  },
+  {
+    "n": 109,
+    "exif": {}
+  },
+  {
+    "n": 110,
+    "exif": {}
+  },
+  {
+    "n": 111,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/800s",
+      "aperture": "f/5.0",
+      "iso": "ISO 80",
+      "focal": "13mm"
+    }
+  },
+  {
+    "n": 112,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/6s",
+      "aperture": "f/5.6",
+      "iso": "ISO 800",
+      "focal": "26mm"
+    }
+  },
+  {
+    "n": 113,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/500s",
+      "aperture": "f/5.8",
+      "iso": "ISO 125",
+      "focal": "129mm"
+    }
+  },
+  {
+    "n": 114,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/4s",
+      "aperture": "f/5.6",
+      "iso": "ISO 800",
+      "focal": "123mm"
+    }
+  },
+  {
+    "n": 115,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/125s",
+      "aperture": "f/5.0",
+      "iso": "ISO 400",
+      "focal": "15mm"
+    }
+  },
+  {
+    "n": 116,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/8s",
+      "aperture": "f/5.8",
+      "iso": "ISO 800",
+      "focal": "129mm"
+    }
+  },
+  {
+    "n": 117,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/25s",
+      "aperture": "f/5.8",
+      "iso": "ISO 800",
+      "focal": "129mm"
+    }
+  },
+  {
+    "n": 118,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/125s",
+      "aperture": "f/5.6",
+      "iso": "ISO 800",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 119,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/160s",
+      "aperture": "f/5.0",
+      "iso": "ISO 80",
+      "focal": "13mm"
+    }
+  },
+  {
+    "n": 120,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/1000s",
+      "aperture": "f/5.6",
+      "iso": "ISO 100",
+      "focal": "10mm"
+    }
+  },
+  {
+    "n": 121,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/160s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "31mm"
+    }
+  },
+  {
+    "n": 122,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/1600s",
+      "aperture": "f/5.0",
+      "iso": "ISO 80",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 123,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/1000s",
+      "aperture": "f/7.1",
+      "iso": "ISO 100",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 124,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/400s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "28mm"
+    }
+  },
+  {
+    "n": 125,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/800s",
+      "aperture": "f/4.0",
+      "iso": "ISO 160",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 126,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/15s",
+      "aperture": "f/5.6",
+      "iso": "ISO 80",
+      "focal": "113mm"
+    }
+  },
+  {
+    "n": 127,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/400s",
+      "aperture": "f/5.6",
+      "iso": "ISO 80",
+      "focal": "80mm"
+    }
+  },
+  {
+    "n": 128,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/400s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "21mm"
+    }
+  },
+  {
+    "n": 129,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/500s",
+      "aperture": "f/5.8",
+      "iso": "ISO 80",
+      "focal": "129mm"
+    }
+  },
+  {
+    "n": 130,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/160s",
+      "aperture": "f/4.0",
+      "iso": "ISO 160",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 131,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/800s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "61mm"
+    }
+  },
+  {
+    "n": 132,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/60s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "21mm"
+    }
+  },
+  {
+    "n": 133,
+    "exif": {}
+  },
+  {
+    "n": 134,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/50s",
+      "aperture": "f/5.8",
+      "iso": "ISO 80",
+      "focal": "129mm"
+    }
+  },
+  {
+    "n": 135,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/40s",
+      "aperture": "f/8.0",
+      "iso": "ISO 80",
+      "focal": "18mm"
+    }
   }
 ]
