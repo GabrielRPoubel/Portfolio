@@ -1,5 +1,5 @@
 /* ── GALERIA / NOVAS ── */
-#galeria, #novas { padding: 5.5rem 1.5rem 3rem; }
+#galeria, #novas { padding: 7rem 1.5rem 3rem; }
 
 /* Seletor de colunas */
 .col-switch {
@@ -57,7 +57,7 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-  #galeria, #novas { padding: 4.5rem 0.5rem 2rem; }
+  #galeria, #novas { padding: 5.5rem 0.5rem 2rem; }
   .grid-gallery { gap: 3px; }
   .col-switch { margin-bottom: 0.6rem; gap: 0.4rem; }
   .col-btn { width: 24px; height: 24px; font-size: 0.68rem; }
