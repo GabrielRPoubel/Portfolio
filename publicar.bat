@@ -36,7 +36,7 @@ if errorlevel 1 (
 echo.
 echo [4/6] Verificando alteracoes...
 git status --short
-git add -u
+git add -A
 git add fotos/thumbs/
 git add fotos/*.jpg 2>nul
 git add dist/index.html
