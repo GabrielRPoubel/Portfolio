@@ -37,6 +37,7 @@ const jsFiles = [
   'js/feed.js',
   'js/galeria.js',
   'js/novas.js',
+  'js/columns.js',
   'js/share.js',
   'js/ui.js',
 ];

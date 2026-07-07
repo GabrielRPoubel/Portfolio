@@ -59,9 +59,19 @@
   <div class="photo-feed" id="feed"></div>
 </div>
 <div id="galeria" class="page">
+  <div class="col-switch" data-target="grid">
+    <button class="col-btn" data-cols="2">2</button>
+    <button class="col-btn" data-cols="3">3</button>
+    <button class="col-btn" data-cols="5">5</button>
+  </div>
   <div class="grid-gallery" id="grid"></div>
 </div>
 <div id="novas" class="page">
+  <div class="col-switch" data-target="grid-novas">
+    <button class="col-btn" data-cols="2">2</button>
+    <button class="col-btn" data-cols="3">3</button>
+    <button class="col-btn" data-cols="5">5</button>
+  </div>
   <div class="grid-gallery" id="grid-novas"></div>
 </div>
 
@@ -152,7 +162,7 @@
 
 <!-- JS: ordem importa -->
 <script>
-                                                  // ─── FOTOS ───────────────────────────────────────────────────────────────
+                                                      // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
     1,2,3,4,5,6,7,8,9,10,
@@ -177,6 +187,7 @@
 <script src="js/feed.js"></script>
 <script src="js/galeria.js"></script>
 <script src="js/novas.js"></script>
+<script src="js/columns.js"></script>
 <script src="js/share.js"></script>
 <script src="js/ui.js"></script>
 
