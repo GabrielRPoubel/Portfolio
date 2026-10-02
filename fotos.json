@@ -1683,5 +1683,173 @@
       "iso": "ISO 400",
       "focal": "9mm"
     }
+  },
+  {
+    "n": 159,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/320s",
+      "aperture": "f/5.0",
+      "iso": "ISO 160",
+      "focal": "12mm"
+    }
+  },
+  {
+    "n": 160,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/125s",
+      "aperture": "f/9.0",
+      "iso": "ISO 640",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 161,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/320s",
+      "aperture": "f/10.0",
+      "iso": "ISO 400",
+      "focal": "40mm"
+    }
+  },
+  {
+    "n": 162,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/320s",
+      "aperture": "f/10.0",
+      "iso": "ISO 400",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 163,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/320s",
+      "aperture": "f/10.0",
+      "iso": "ISO 400",
+      "focal": "18mm"
+    }
+  },
+  {
+    "n": 164,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/25s",
+      "aperture": "f/7.1",
+      "iso": "ISO 400",
+      "focal": "18mm"
+    }
+  },
+  {
+    "n": 165,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/1000s",
+      "aperture": "f/7.1",
+      "iso": "ISO 80",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 166,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/25s",
+      "aperture": "f/7.1",
+      "iso": "ISO 400",
+      "focal": "45mm"
+    }
+  },
+  {
+    "n": 167,
+    "exif": {
+      "camera": "Canon PowerShot SX510 HS",
+      "make": "Canon",
+      "lens": "4.3-129.0 mm",
+      "exposure": "1/1600s",
+      "aperture": "f/7.1",
+      "iso": "ISO 3200",
+      "focal": "19mm"
+    }
+  },
+  {
+    "n": 168,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/60s",
+      "aperture": "f/8.0",
+      "iso": "ISO 400",
+      "focal": "62mm"
+    }
+  },
+  {
+    "n": 169,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/250s",
+      "aperture": "f/10.0",
+      "iso": "ISO 400",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 170,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/500s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "18mm"
+    }
+  },
+  {
+    "n": 171,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/400s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "62mm"
+    }
+  },
+  {
+    "n": 172,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/500s",
+      "aperture": "f/11.0",
+      "iso": "ISO 400",
+      "focal": "105mm"
+    }
   }
 ]
