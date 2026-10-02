@@ -1426,5 +1426,262 @@
       "iso": "ISO 80",
       "focal": "18mm"
     }
+  },
+  {
+    "n": 136,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/250s",
+      "aperture": "f/3.5",
+      "iso": "ISO 80",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 137,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/45s",
+      "aperture": "f/3.5",
+      "iso": "ISO 200",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 138,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/20s",
+      "aperture": "f/3.9",
+      "iso": "ISO 200",
+      "focal": "13mm"
+    }
+  },
+  {
+    "n": 139,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/125s",
+      "aperture": "f/3.5",
+      "iso": "ISO 80",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 140,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/750s",
+      "aperture": "f/3.5",
+      "iso": "ISO 80",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 141,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/10s",
+      "aperture": "f/3.5",
+      "iso": "ISO 400",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 142,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/60s",
+      "aperture": "f/5.6",
+      "iso": "ISO 80",
+      "focal": "11mm"
+    }
+  },
+  {
+    "n": 143,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/60s",
+      "aperture": "f/5.6",
+      "iso": "ISO 200",
+      "focal": "11mm"
+    }
+  },
+  {
+    "n": 144,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/60s",
+      "aperture": "f/5.0",
+      "iso": "ISO 80",
+      "focal": "20mm"
+    }
+  },
+  {
+    "n": 145,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/60s",
+      "aperture": "f/3.5",
+      "iso": "ISO 80",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 146,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/60s",
+      "aperture": "f/5.9",
+      "iso": "ISO 200",
+      "focal": "24mm"
+    }
+  },
+  {
+    "n": 147,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/100s",
+      "aperture": "f/9.0",
+      "iso": "ISO 400",
+      "focal": "25mm"
+    }
+  },
+  {
+    "n": 148,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/45s",
+      "aperture": "f/3.5",
+      "iso": "ISO 200",
+      "focal": "5mm"
+    }
+  },
+  {
+    "n": 149,
+    "exif": {
+      "camera": "moto e20",
+      "make": "motorola",
+      "exposure": "1/20s",
+      "aperture": "f/2.0",
+      "iso": "ISO 400",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 150,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/500s",
+      "aperture": "f/5.0",
+      "iso": "ISO 80",
+      "focal": "9mm"
+    }
+  },
+  {
+    "n": 151,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1s",
+      "aperture": "f/5.6",
+      "iso": "ISO 400",
+      "focal": "11mm"
+    }
+  },
+  {
+    "n": 152,
+    "exif": {
+      "camera": "moto e20",
+      "make": "motorola",
+      "exposure": "1/490s",
+      "aperture": "f/2.0",
+      "iso": "ISO 50",
+      "focal": "4mm"
+    }
+  },
+  {
+    "n": 153,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/45s",
+      "aperture": "f/5.9",
+      "iso": "ISO 200",
+      "focal": "24mm"
+    }
+  },
+  {
+    "n": 154,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/125s",
+      "aperture": "f/9.0",
+      "iso": "ISO 1000",
+      "focal": "75mm"
+    }
+  },
+  {
+    "n": 155,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/160s",
+      "aperture": "f/9.0",
+      "iso": "ISO 400",
+      "focal": "52mm"
+    }
+  },
+  {
+    "n": 156,
+    "exif": {
+      "camera": "NIKON D3300",
+      "make": "NIKON CORPORATION",
+      "lens": "18.0-105.0 mm f/3.5-5.6",
+      "exposure": "1/500s",
+      "aperture": "f/11.0",
+      "iso": "ISO 220",
+      "focal": "105mm"
+    }
+  },
+  {
+    "n": 157,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1/125s",
+      "aperture": "f/5.9",
+      "iso": "ISO 80",
+      "focal": "24mm"
+    }
+  },
+  {
+    "n": 158,
+    "exif": {
+      "camera": "SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151",
+      "make": "SAMSUNG",
+      "exposure": "1s",
+      "aperture": "f/5.0",
+      "iso": "ISO 400",
+      "focal": "9mm"
+    }
   }
 ]
