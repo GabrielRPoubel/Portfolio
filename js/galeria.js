@@ -32,7 +32,9 @@ function buildGrid(fotos) {
 
     const gimg = document.createElement('img');
     gimg.dataset.src = p.thumb;
-    gimg.alt = String(p.n);
+    gimg.alt = 'Foto ' + p.n;
+    gimg.loading = 'lazy';
+    gimg.decoding = 'async';
 
     gdiv.appendChild(gsp);
     gdiv.appendChild(gimg);

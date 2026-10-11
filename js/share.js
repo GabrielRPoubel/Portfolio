@@ -1,6 +1,9 @@
 // ── Share ─────────────────────────────────────────────────────────────────────
+// Usa a lista ativa do lightbox (galeria/novas/feed) — não só `fotos`.
 function getShareUrl() {
-  return window.location.origin + window.location.pathname + '?foto=' + fotos[lbIndex].n;
+  const list = (typeof activeFotos !== 'undefined' && activeFotos && activeFotos.length) ? activeFotos : fotos;
+  const idx = (typeof lbIndex === 'number' && lbIndex >= 0 && lbIndex < list.length) ? lbIndex : 0;
+  return window.location.origin + window.location.pathname + '?foto=' + list[idx].n;
 }
 
 function openShare() {

@@ -4,28 +4,16 @@ echo.
 echo === Portfolio de Gabriel Poubel ===
 echo.
 
-echo [1/6] Processando fotos e atualizando index...
+echo [1/5] Processando fotos e atualizando index...
 python gerar.py
 if errorlevel 1 (
-    echo Erro ao processar fotos. Verifique se o Python e o Pillow estao instalados.
+    echo Erro ao processar fotos. Verifique se o Python e o Pillow estao instalados: pip install Pillow
     pause
     exit /b 1
 )
 
 echo.
-echo [2/6] Instalando ferramentas de build (se necessario)...
-call npm list javascript-obfuscator --prefix . >nul 2>&1
-if errorlevel 1 (
-    call npm install javascript-obfuscator --save-dev --silent
-    if errorlevel 1 (
-        echo Erro ao instalar javascript-obfuscator.
-        pause
-        exit /b 1
-    )
-)
-
-echo.
-echo [3/6] Gerando build ofuscado em dist/...
+echo [2/5] Gerando build em dist/...
 call node js/build.js
 if errorlevel 1 (
     echo Erro no build.
@@ -34,13 +22,10 @@ if errorlevel 1 (
 )
 
 echo.
-echo [4/6] Verificando alteracoes...
+echo [3/5] Verificando alteracoes...
+git rm -r --cached node_modules >nul 2>&1
 git status --short
-git add -A
-git add fotos/thumbs/
-git add fotos/*.jpg 2>nul
-git add dist/index.html
-
+git add index.html fotos.json fotos/thumbs/ dist/index.html css/ js/ vercel.json package.json gerar.py publicar.bat favicon.png .gitignore
 git diff --cached --quiet
 if not errorlevel 1 (
     echo Nenhuma alteracao detectada. Site ja esta atualizado.
@@ -49,11 +34,12 @@ if not errorlevel 1 (
 )
 
 echo.
-echo [5/6] Salvando alteracoes...
-git commit -m "atualiza portfolio"
+echo [4/5] Salvando alteracoes...
+for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd"') do set HOJE=%%i
+git commit -m "atualiza portfolio %HOJE%"
 
 echo.
-echo [6/6] Enviando para o GitHub...
+echo [5/5] Enviando para o GitHub...
 git fetch origin
 git rebase origin/main
 if errorlevel 1 (
@@ -69,6 +55,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo Pronto! Build ofuscado enviado. Vercel atualiza em instantes.
+echo Pronto! Vercel atualiza em instantes.
+echo Lembrete: node_modules/ nao vai mais para o git (.gitignore).
 echo.
 pause

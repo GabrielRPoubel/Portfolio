@@ -37,10 +37,12 @@ function buildFeed(fotos) {
     fsp.innerHTML = `<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16"/><circle class="arc" cx="18" cy="18" r="16" pathLength="100"/></svg>`;
 
     const fimg = document.createElement('img');
-    fimg.dataset.src = p.src;
-    fimg.alt = String(p.n);
+    fimg.dataset.src = p.thumb;
+    fimg.alt = 'Foto ' + p.n;
+    fimg.loading = 'lazy';
+    fimg.decoding = 'async';
     if (i === 0) {
-      fimg.src = p.src;
+      fimg.src = p.thumb;
       if (fimg.complete && fimg.naturalWidth > 0) {
         fdiv.classList.add('loaded');
       } else {

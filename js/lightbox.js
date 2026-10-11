@@ -159,5 +159,4 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft')  lbNav(-1);
   if (e.key === 'Escape')     { lb.classList.contains('fullscreen-mode') ? exitFS() : closeLB(); }
   if (e.key === 'f' || e.key === 'F') toggleFS();
-  if (e.key === ' ')          { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 });
