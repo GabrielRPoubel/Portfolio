@@ -27,15 +27,22 @@
 .lb-img-wrap {
   display: flex; align-items: center; justify-content: center;
   width: 100%; height: 100%; position: relative;
-}
-.lb-img-wrap::after {
-  content: ''; position: absolute; inset: 0; z-index: 2; cursor: default;
+  overflow: auto;
 }
 .lb-img-wrap img {
   max-width: 90vw; max-height: 90vh; object-fit: contain;
   filter: grayscale(100%) contrast(1.06); display: block;
   transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-  -webkit-user-select: none; user-select: none; pointer-events: none;
+  -webkit-user-select: none; user-select: none;
+  pointer-events: auto; -webkit-user-drag: none;
+  cursor: zoom-in;
+}
+
+/* Zoom: clique na foto alterna entre caber na tela e tamanho real (1:1) com rolagem */
+.lb-img-wrap.zoomed { cursor: zoom-out; }
+.lb-img-wrap.zoomed img {
+  max-width: none; max-height: none;
+  cursor: zoom-out;
 }
 
 /* Fullscreen */

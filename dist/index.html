@@ -263,15 +263,20 @@ display: flex; align-items: center; justify-content: center;
 .lb-img-wrap {
 display: flex; align-items: center; justify-content: center;
 width: 100%; height: 100%; position: relative;
-}
-.lb-img-wrap::after {
-content: ''; position: absolute; inset: 0; z-index: 2; cursor: default;
+overflow: auto;
 }
 .lb-img-wrap img {
 max-width: 90vw; max-height: 90vh; object-fit: contain;
 filter: grayscale(100%) contrast(1.06); display: block;
 transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
--webkit-user-select: none; user-select: none; pointer-events: none;
+-webkit-user-select: none; user-select: none;
+pointer-events: auto; -webkit-user-drag: none;
+cursor: zoom-in;
+}
+.lb-img-wrap.zoomed { cursor: zoom-out; }
+.lb-img-wrap.zoomed img {
+max-width: none; max-height: none;
+cursor: zoom-out;
 }
 .lightbox.fullscreen-mode { padding: 0; }
 .lightbox.fullscreen-mode .lb-img-wrap { width: 100vw; height: 100vh; }
@@ -392,6 +397,7 @@ white-space: nowrap;
     <li><a class="active" tabindex="0" role="button" onclick="showPage('home',this)">INÍCIO</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('galeria',this)">GALERIA</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('novas',this)">NOVAS</a></li>
+    <li><a tabindex="0" role="button" onclick="showPage('loja',this)">LOJA</a></li>
     <li>
       <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="ig-link" title="Instagram">
         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#777" stroke="none"/></svg>
@@ -417,6 +423,7 @@ white-space: nowrap;
   <a class="active" onclick="showPage('home',this);closeDrawer()">INÍCIO</a>
   <a onclick="showPage('galeria',this);closeDrawer()">GALERIA</a>
   <a onclick="showPage('novas',this);closeDrawer()">NOVAS</a>
+  <a onclick="showPage('loja',this);closeDrawer()">LOJA</a>
 </div>
 
 <!-- PAGES -->
@@ -439,6 +446,9 @@ white-space: nowrap;
     <button class="col-btn" data-cols="5">5</button>
   </div>
   <div class="grid-gallery" id="grid-novas"></div>
+</div>
+<div id="loja" class="page">
+  <!-- LOJA: conteúdo futuro -->
 </div>
 
 <!-- BACK TO TOP -->
@@ -616,12 +626,14 @@ window.addEventListener('keydown', e => {
 
 const lb       = document.getElementById('lightbox');
 const lbImg    = document.getElementById('lb-img');
+const lbWrap   = document.getElementById('lb-wrap');
 const lbCnt    = document.getElementById('lb-counter');
 const fsIcon   = document.getElementById('fs-icon');
 
 let lbIndex    = 0;
 let uiTimeout  = null;
 let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas, etc.)
+let lbZoomed   = false;
 
 let exifData = {};
 fetch('fotos.json')
@@ -662,6 +674,7 @@ function openLB(i, list) {
 }
 
 function closeLB() {
+  resetZoom();
   lb.classList.remove('active', 'fullscreen-mode', 'ui-hidden');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   clearTimeout(uiTimeout);
@@ -677,7 +690,9 @@ function lbNav(d) {
 }
 
 function updateLB() {
+  resetZoom();
   lbImg.src = activeFotos[lbIndex].src;
+  lbImg.alt = 'Foto ' + activeFotos[lbIndex].n;
   lbImg.style.transform = '';
   lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
   renderExif(activeFotos[lbIndex].n);
@@ -747,8 +762,24 @@ document.addEventListener('webkitfullscreenchange', () => {
   if (!document.webkitFullscreenElement && lb.classList.contains('fullscreen-mode')) exitFS();
 });
 
+function toggleZoom() {
+  lbZoomed = !lbZoomed;
+  lbWrap.classList.toggle('zoomed', lbZoomed);
+  lbWrap.scrollTo(0, 0);
+  showUI();
+}
+
+function resetZoom() {
+  lbZoomed = false;
+  if (lbWrap) {
+    lbWrap.classList.remove('zoomed');
+    lbWrap.scrollTo(0, 0);
+  }
+}
+
 lb.addEventListener('click', e => {
-  if (e.target === lb || e.target === document.getElementById('lb-wrap')) closeLB();
+  if (e.target === lbImg) { toggleZoom(); return; }
+  if (e.target === lb || e.target === lbWrap) closeLB();
 });
 
 let swipeX = 0, swipeY = 0;
@@ -757,6 +788,7 @@ lb.addEventListener('touchstart', e => {
   swipeY = e.touches[0].clientY;
 }, { passive: true });
 lb.addEventListener('touchend', e => {
+  if (lbZoomed) return; // com zoom: gesto vira rolagem da foto, não troca de foto
   const dx = e.changedTouches[0].clientX - swipeX;
   const dy = e.changedTouches[0].clientY - swipeY;
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1);
@@ -766,7 +798,7 @@ document.addEventListener('keydown', e => {
   if (!lb.classList.contains('active')) return;
   if (e.key === 'ArrowRight') lbNav(1);
   if (e.key === 'ArrowLeft')  lbNav(-1);
-  if (e.key === 'Escape')     { lb.classList.contains('fullscreen-mode') ? exitFS() : closeLB(); }
+  if (e.key === 'Escape')     { if (lbZoomed) resetZoom(); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
   if (e.key === 'f' || e.key === 'F') toggleFS();
 });
 

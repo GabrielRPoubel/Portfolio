@@ -1,12 +1,14 @@
 // ── Referências ──────────────────────────────────────────────────────────────
 const lb       = document.getElementById('lightbox');
 const lbImg    = document.getElementById('lb-img');
+const lbWrap   = document.getElementById('lb-wrap');
 const lbCnt    = document.getElementById('lb-counter');
 const fsIcon   = document.getElementById('fs-icon');
 
 let lbIndex    = 0;
 let uiTimeout  = null;
 let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas, etc.)
+let lbZoomed   = false;
 
 // ── EXIF ─────────────────────────────────────────────────────────────────────
 let exifData = {};
@@ -49,6 +51,7 @@ function openLB(i, list) {
 }
 
 function closeLB() {
+  resetZoom();
   lb.classList.remove('active', 'fullscreen-mode', 'ui-hidden');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   clearTimeout(uiTimeout);
@@ -64,7 +67,9 @@ function lbNav(d) {
 }
 
 function updateLB() {
+  resetZoom();
   lbImg.src = activeFotos[lbIndex].src;
+  lbImg.alt = 'Foto ' + activeFotos[lbIndex].n;
   lbImg.style.transform = '';
   lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
   renderExif(activeFotos[lbIndex].n);
@@ -135,9 +140,26 @@ document.addEventListener('webkitfullscreenchange', () => {
   if (!document.webkitFullscreenElement && lb.classList.contains('fullscreen-mode')) exitFS();
 });
 
-// ── Fechar ao clicar no fundo ─────────────────────────────────────────────────
+// ── Zoom por clique na foto ───────────────────────────────────────────────────
+function toggleZoom() {
+  lbZoomed = !lbZoomed;
+  lbWrap.classList.toggle('zoomed', lbZoomed);
+  lbWrap.scrollTo(0, 0);
+  showUI();
+}
+
+function resetZoom() {
+  lbZoomed = false;
+  if (lbWrap) {
+    lbWrap.classList.remove('zoomed');
+    lbWrap.scrollTo(0, 0);
+  }
+}
+
+// ── Fechar ao clicar no fundo (clique na foto alterna o zoom) ────────────────
 lb.addEventListener('click', e => {
-  if (e.target === lb || e.target === document.getElementById('lb-wrap')) closeLB();
+  if (e.target === lbImg) { toggleZoom(); return; }
+  if (e.target === lb || e.target === lbWrap) closeLB();
 });
 
 // ── Swipe mobile ──────────────────────────────────────────────────────────────
@@ -147,6 +169,7 @@ lb.addEventListener('touchstart', e => {
   swipeY = e.touches[0].clientY;
 }, { passive: true });
 lb.addEventListener('touchend', e => {
+  if (lbZoomed) return; // com zoom: gesto vira rolagem da foto, não troca de foto
   const dx = e.changedTouches[0].clientX - swipeX;
   const dy = e.changedTouches[0].clientY - swipeY;
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1);
@@ -157,6 +180,6 @@ document.addEventListener('keydown', e => {
   if (!lb.classList.contains('active')) return;
   if (e.key === 'ArrowRight') lbNav(1);
   if (e.key === 'ArrowLeft')  lbNav(-1);
-  if (e.key === 'Escape')     { lb.classList.contains('fullscreen-mode') ? exitFS() : closeLB(); }
+  if (e.key === 'Escape')     { if (lbZoomed) resetZoom(); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
   if (e.key === 'f' || e.key === 'F') toggleFS();
 });
