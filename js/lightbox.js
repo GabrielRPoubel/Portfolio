@@ -18,7 +18,11 @@ const LENS_ZOOM = 2.5;
 let exifData = {};
 fetch('fotos.json')
   .then(r => r.json())
-  .then(data => { data.forEach(f => { exifData[f.n] = f.exif || {}; }); })
+  .then(data => {
+    data.forEach(f => { exifData[f.n] = f.exif || {}; });
+    // Se o fetch chegou depois do lightbox abrir, preenche o painel atual.
+    if (lb.classList.contains('active')) renderExif(activeFotos[lbIndex].n);
+  })
   .catch(() => {});
 
 let exifVisible = false;
@@ -39,8 +43,8 @@ function renderExif(n) {
   set('exif-ap-row',     'exif-ap',     e.aperture);
   set('exif-iso-row',    'exif-iso',    e.iso);
   set('exif-fl-row',     'exif-fl',     e.focal);
-  exifVisible = false;
-  document.getElementById('exif-panel').classList.remove('visible');
+  const hasAny = Boolean(e.camera || e.lens || e.exposure || e.aperture || e.iso || e.focal);
+  document.getElementById('exif-empty-row').style.display = hasAny ? 'none' : 'flex';
 }
 
 // ── Abrir / fechar ────────────────────────────────────────────────────────────
@@ -78,6 +82,9 @@ function updateLB() {
   if (lbLens) lbLens.style.backgroundImage = `url("${activeFotos[lbIndex].src}")`;
   lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
   renderExif(activeFotos[lbIndex].n);
+  // Troca de foto fecha o painel (reabre pelo botão se quiser)
+  exifVisible = false;
+  document.getElementById('exif-panel').classList.remove('visible');
   // Preload vizinhas
   [-1, 1].forEach(d => {
     const idx = (lbIndex + d + activeFotos.length) % activeFotos.length;
