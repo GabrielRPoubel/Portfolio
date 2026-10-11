@@ -14,16 +14,8 @@ let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas,
 let lensOn = false;
 const LENS_ZOOM = 2.5;
 
-// ── EXIF ─────────────────────────────────────────────────────────────────────
-let exifData = {};
-fetch('fotos.json')
-  .then(r => r.json())
-  .then(data => {
-    data.forEach(f => { exifData[f.n] = f.exif || {}; });
-    // Se o fetch chegou depois do lightbox abrir, preenche o painel atual.
-    if (lb.classList.contains('active')) renderExif(activeFotos[lbIndex].n);
-  })
-  .catch(() => {});
+// ── EXIF (embutido no index.html pelo gerar.py; funciona até em file://) ─────
+let exifData = (typeof fotosExif !== 'undefined' && fotosExif) ? fotosExif : {};
 
 let exifVisible = false;
 function toggleExif() {

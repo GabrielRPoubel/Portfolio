@@ -24,7 +24,7 @@ python gerar.py
 node js/build.js
 ```
 
-- `python gerar.py` → gera `fotos/thumbs/`, `fotos.json` (EXIF) e atualiza o bloco `// ─── FOTOS` no `index.html`
+- `python gerar.py` → gera `fotos/thumbs/`, `fotos.json` (referência) e atualiza o bloco `// ─── FOTOS` no `index.html` (lista + EXIF embutido `fotosExif`, sem fetch)
 - `node js/build.js` (`npm run build`) → gera `dist/index.html` inline (CSS+JS, sem dependências)
 
 Requer Python 3 + Pillow (`pip install Pillow`) e Node 18+.

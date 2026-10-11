@@ -192,11 +192,14 @@ for i in range(0, len(arquivos), 10):
     linhas.append("    " + ",".join(str(n) for n in chunk) + ",")
 
 lista = "\n".join(linhas)
+exif_map = {f["n"]: f["exif"] for f in fotos_data}
+exif_json = json.dumps(exif_map, ensure_ascii=False, separators=(",", ":"))
 bloco = f"""  // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
 {lista}
   ].map(n => ({{ n, src: `fotos/${{n}}.jpg`, thumb: `fotos/thumbs/${{n}}.jpg` }}));
+  const fotosExif = {exif_json};
   // ─────────────────────────────────────────────────────────────────────────"""
 
 with open(INDEX, "r", encoding="utf-8") as f:
