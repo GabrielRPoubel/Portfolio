@@ -2,6 +2,14 @@ import os
 import re
 import json
 import hashlib
+import sys
+
+# Console Windows (cp1252) quebra em caracteres como → — força UTF-8.
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 PASTA_FOTOS = "fotos"
 PASTA_THUMBS = os.path.join(PASTA_FOTOS, "thumbs")
@@ -53,10 +61,19 @@ def frac(val):
 def get_exif(path):
     try:
         with Image.open(path) as img:
-            raw = img.getexif()
-            if not raw:
+            exif = img.getexif()
+            if not exif:
                 return {}
-            lookup = {TAGS.get(k, k): v for k, v in raw.items()}
+            # getexif() itera só o IFD0 (Model/Make); os dados da foto
+            # (exposição, abertura, ISO, focal, lente) ficam no SubIFD EXIF.
+            # IDs numéricos (nomes do enum mudam entre versões do Pillow).
+            merged = dict(exif)
+            for ifd_id in (34665, 34853, 40965):
+                try:
+                    merged.update(exif.get_ifd(ifd_id))
+                except Exception:
+                    pass
+            lookup = {TAGS.get(k, k): v for k, v in merged.items()}
             data = {}
 
             def safe(v):
@@ -114,7 +131,7 @@ if not arquivos:
     print("Nenhuma foto encontrada em fotos/")
     raise SystemExit(1)
 
-print(f"Encontradas {len(arquivos)} fotos: {arquivos[0]}.jpg → {arquivos[-1]}.jpg")
+print(f"Encontradas {len(arquivos)} fotos: {arquivos[0]}.jpg -> {arquivos[-1]}.jpg")
 
 # ── Processa fotos ──
 cache = load_cache()
