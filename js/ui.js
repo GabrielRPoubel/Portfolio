@@ -16,3 +16,8 @@ buildFeed(fotos);
 buildGrid(fotos);
 buildNovas(novasFotos);
 openFromUrl();
+
+// file:// bloqueia fetch('fotos.json') — EXIF só funciona via http(s).
+if (window.location.protocol === 'file:') {
+  showToast('ABRA VIA RODAR-LOCAL.BAT PARA O EXIF FUNCIONAR');
+}
