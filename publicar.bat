@@ -35,6 +35,10 @@ if not errorlevel 1 (
 
 echo.
 echo [4/5] Salvando alteracoes...
+git config user.email >nul 2>&1
+if errorlevel 1 git config user.email "gabrielrpoubel@users.noreply.github.com"
+git config user.name >nul 2>&1
+if errorlevel 1 git config user.name "GabrielRPoubel"
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd"') do set HOJE=%%i
 git commit -m "atualiza portfolio %HOJE%"
 
