@@ -164,11 +164,19 @@ function hideLens() {
 
 function moveLens(clientX, clientY) {
   if (!lensOn || !lb.classList.contains('active')) return;
+  const natW = lbImg.naturalWidth, natH = lbImg.naturalHeight;
+  if (!natW || !natH) return;
   const imgR = lbImg.getBoundingClientRect();
   if (imgR.width === 0 || imgR.height === 0) return;
-  const x = clientX - imgR.left;
-  const y = clientY - imgR.top;
-  if (x < 0 || y < 0 || x > imgR.width || y > imgR.height) { hideLens(); return; }
+  // A foto usa object-fit:contain e pode ter letterbox (ex: fullscreen força
+  // 100vw/100vh no elemento) — calcula o retângulo real da foto dentro dele.
+  const s = Math.min(imgR.width / natW, imgR.height / natH);
+  const photoW = natW * s, photoH = natH * s;
+  const photoL = imgR.left + (imgR.width - photoW) / 2;
+  const photoT = imgR.top + (imgR.height - photoH) / 2;
+  const x = clientX - photoL;
+  const y = clientY - photoT;
+  if (x < 0 || y < 0 || x > photoW || y > photoH) { hideLens(); return; }
 
   const wrapR = lbWrap.getBoundingClientRect();
   lbLens.classList.add('visible');
@@ -180,7 +188,7 @@ function moveLens(clientX, clientY) {
   top = Math.max(0, Math.min(top, wrapR.height - lh));
   lbLens.style.left = left + 'px';
   lbLens.style.top = top + 'px';
-  lbLens.style.backgroundSize = (imgR.width * LENS_ZOOM) + 'px ' + (imgR.height * LENS_ZOOM) + 'px';
+  lbLens.style.backgroundSize = (photoW * LENS_ZOOM) + 'px ' + (photoH * LENS_ZOOM) + 'px';
   lbLens.style.backgroundPosition = (-(x * LENS_ZOOM - lw / 2)) + 'px ' + (-(y * LENS_ZOOM - lh / 2)) + 'px';
   showUI();
 }
