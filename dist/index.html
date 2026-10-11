@@ -259,11 +259,12 @@ color: #666; transition: color 0.3s; padding: 4px;
 display: flex; align-items: center; justify-content: center;
 }
 .lb-btn:hover { color: #fff; }
+.lb-btn.active { color: #fff; }
 .lb-btn svg { width: 20px; height: 20px; }
 .lb-img-wrap {
 display: flex; align-items: center; justify-content: center;
 width: 100%; height: 100%; position: relative;
-overflow: auto;
+overflow: hidden;
 }
 .lb-img-wrap img {
 max-width: 90vw; max-height: 90vh; object-fit: contain;
@@ -271,13 +272,19 @@ filter: grayscale(100%) contrast(1.06); display: block;
 transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
 -webkit-user-select: none; user-select: none;
 pointer-events: auto; -webkit-user-drag: none;
-cursor: zoom-in;
 }
-.lb-img-wrap.zoomed { cursor: zoom-out; }
-.lb-img-wrap.zoomed img {
-max-width: none; max-height: none;
-cursor: zoom-out;
+.lb-img-wrap.lens-on { cursor: crosshair; }
+.lb-img-wrap.lens-on img { cursor: crosshair; }
+.lb-lens {
+display: none; position: absolute; z-index: 5;
+width: 250px; height: 180px;
+border: 1px solid rgba(255,255,255,0.5);
+box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+background-repeat: no-repeat;
+filter: grayscale(100%) contrast(1.06);
+pointer-events: none;
 }
+.lb-lens.visible { display: block; }
 .lightbox.fullscreen-mode { padding: 0; }
 .lightbox.fullscreen-mode .lb-img-wrap { width: 100vw; height: 100vh; }
 .lightbox.fullscreen-mode .lb-img-wrap img {
@@ -318,6 +325,7 @@ transition: opacity 0.35s ease; z-index: 5;
 .exif-label { color: rgba(255,255,255,0.35); min-width: 100px; }
 .exif-val   { color: rgba(255,255,255,0.88); }
 @media (max-width: 768px) {
+.lb-lens { width: 160px; height: 120px; }
 .exif-panel { font-size: 0.62rem; letter-spacing: 0.12em; padding: 2.5rem 1.2rem 1.2rem; }
 .exif-label { min-width: 72px; }
 .lb-img-wrap img { max-width: 100vw; max-height: 82vh; }
@@ -475,6 +483,12 @@ white-space: nowrap;
         <line x1="12" y1="11" x2="12" y2="17"/>
       </svg>
     </button>
+    <button class="lb-btn" id="lens-btn" onclick="toggleLens()" title="Lupa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+    </button>
     <button class="lb-btn" id="fs-btn" onclick="toggleFS()" title="Tela cheia">
       <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
@@ -493,6 +507,7 @@ white-space: nowrap;
   <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
   <div class="lb-img-wrap" id="lb-wrap">
     <img id="lb-img" src="" alt="">
+    <div class="lb-lens" id="lb-lens"></div>
   </div>
   <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
   <div class="lb-counter" id="lb-counter"></div>
@@ -627,13 +642,16 @@ window.addEventListener('keydown', e => {
 const lb       = document.getElementById('lightbox');
 const lbImg    = document.getElementById('lb-img');
 const lbWrap   = document.getElementById('lb-wrap');
+const lbLens   = document.getElementById('lb-lens');
 const lbCnt    = document.getElementById('lb-counter');
 const fsIcon   = document.getElementById('fs-icon');
 
 let lbIndex    = 0;
 let uiTimeout  = null;
 let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas, etc.)
-let lbZoomed   = false;
+
+let lensOn = false;
+const LENS_ZOOM = 2.5;
 
 let exifData = {};
 fetch('fotos.json')
@@ -674,7 +692,7 @@ function openLB(i, list) {
 }
 
 function closeLB() {
-  resetZoom();
+  setLens(false);
   lb.classList.remove('active', 'fullscreen-mode', 'ui-hidden');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   clearTimeout(uiTimeout);
@@ -690,10 +708,11 @@ function lbNav(d) {
 }
 
 function updateLB() {
-  resetZoom();
+  hideLens();
   lbImg.src = activeFotos[lbIndex].src;
   lbImg.alt = 'Foto ' + activeFotos[lbIndex].n;
   lbImg.style.transform = '';
+  if (lbLens) lbLens.style.backgroundImage = `url("${activeFotos[lbIndex].src}")`;
   lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
   renderExif(activeFotos[lbIndex].n);
   // Preload vizinhas
@@ -762,23 +781,54 @@ document.addEventListener('webkitfullscreenchange', () => {
   if (!document.webkitFullscreenElement && lb.classList.contains('fullscreen-mode')) exitFS();
 });
 
-function toggleZoom() {
-  lbZoomed = !lbZoomed;
-  lbWrap.classList.toggle('zoomed', lbZoomed);
-  lbWrap.scrollTo(0, 0);
+function setLens(on) {
+  lensOn = on;
+  document.getElementById('lens-btn').classList.toggle('active', on);
+  lbWrap.classList.toggle('lens-on', on);
+  if (!on) hideLens();
   showUI();
 }
 
-function resetZoom() {
-  lbZoomed = false;
-  if (lbWrap) {
-    lbWrap.classList.remove('zoomed');
-    lbWrap.scrollTo(0, 0);
-  }
+function toggleLens() {
+  setLens(!lensOn);
 }
 
+function hideLens() {
+  if (lbLens) lbLens.classList.remove('visible');
+}
+
+function moveLens(clientX, clientY) {
+  if (!lensOn || !lb.classList.contains('active')) return;
+  const imgR = lbImg.getBoundingClientRect();
+  if (imgR.width === 0 || imgR.height === 0) return;
+  const x = clientX - imgR.left;
+  const y = clientY - imgR.top;
+  if (x < 0 || y < 0 || x > imgR.width || y > imgR.height) { hideLens(); return; }
+
+  const wrapR = lbWrap.getBoundingClientRect();
+  lbLens.classList.add('visible');
+  const lw = lbLens.offsetWidth;
+  const lh = lbLens.offsetHeight;
+  let left = clientX - wrapR.left - lw / 2;
+  let top = clientY - wrapR.top - lh / 2;
+  left = Math.max(0, Math.min(left, wrapR.width - lw));
+  top = Math.max(0, Math.min(top, wrapR.height - lh));
+  lbLens.style.left = left + 'px';
+  lbLens.style.top = top + 'px';
+  lbLens.style.backgroundSize = (imgR.width * LENS_ZOOM) + 'px ' + (imgR.height * LENS_ZOOM) + 'px';
+  lbLens.style.backgroundPosition = (-(x * LENS_ZOOM - lw / 2)) + 'px ' + (-(y * LENS_ZOOM - lh / 2)) + 'px';
+  showUI();
+}
+
+lbWrap.addEventListener('mousemove', e => moveLens(e.clientX, e.clientY));
+lbWrap.addEventListener('mouseleave', hideLens);
+lbWrap.addEventListener('touchmove', e => {
+  if (!lensOn || e.touches.length === 0) return;
+  moveLens(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: true });
+lbWrap.addEventListener('touchend', hideLens);
+
 lb.addEventListener('click', e => {
-  if (e.target === lbImg) { toggleZoom(); return; }
   if (e.target === lb || e.target === lbWrap) closeLB();
 });
 
@@ -788,7 +838,7 @@ lb.addEventListener('touchstart', e => {
   swipeY = e.touches[0].clientY;
 }, { passive: true });
 lb.addEventListener('touchend', e => {
-  if (lbZoomed) return; // com zoom: gesto vira rolagem da foto, não troca de foto
+  if (lensOn) return; // com lupa: gesto move o retângulo, não troca de foto
   const dx = e.changedTouches[0].clientX - swipeX;
   const dy = e.changedTouches[0].clientY - swipeY;
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1);
@@ -798,7 +848,7 @@ document.addEventListener('keydown', e => {
   if (!lb.classList.contains('active')) return;
   if (e.key === 'ArrowRight') lbNav(1);
   if (e.key === 'ArrowLeft')  lbNav(-1);
-  if (e.key === 'Escape')     { if (lbZoomed) resetZoom(); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
+  if (e.key === 'Escape')     { if (lensOn) setLens(false); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
   if (e.key === 'f' || e.key === 'F') toggleFS();
 });
 

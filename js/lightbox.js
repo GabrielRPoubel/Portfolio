@@ -2,13 +2,17 @@
 const lb       = document.getElementById('lightbox');
 const lbImg    = document.getElementById('lb-img');
 const lbWrap   = document.getElementById('lb-wrap');
+const lbLens   = document.getElementById('lb-lens');
 const lbCnt    = document.getElementById('lb-counter');
 const fsIcon   = document.getElementById('fs-icon');
 
 let lbIndex    = 0;
 let uiTimeout  = null;
 let activeFotos = fotos; // lista atualmente aberta no lightbox (galeria, novas, etc.)
-let lbZoomed   = false;
+
+// ── Lupa: retângulo que mostra um segmento ampliado da foto ───────────────────
+let lensOn = false;
+const LENS_ZOOM = 2.5;
 
 // ── EXIF ─────────────────────────────────────────────────────────────────────
 let exifData = {};
@@ -51,7 +55,7 @@ function openLB(i, list) {
 }
 
 function closeLB() {
-  resetZoom();
+  setLens(false);
   lb.classList.remove('active', 'fullscreen-mode', 'ui-hidden');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   clearTimeout(uiTimeout);
@@ -67,10 +71,11 @@ function lbNav(d) {
 }
 
 function updateLB() {
-  resetZoom();
+  hideLens();
   lbImg.src = activeFotos[lbIndex].src;
   lbImg.alt = 'Foto ' + activeFotos[lbIndex].n;
   lbImg.style.transform = '';
+  if (lbLens) lbLens.style.backgroundImage = `url("${activeFotos[lbIndex].src}")`;
   lbCnt.textContent = (lbIndex + 1) + ' / ' + activeFotos.length;
   renderExif(activeFotos[lbIndex].n);
   // Preload vizinhas
@@ -140,25 +145,56 @@ document.addEventListener('webkitfullscreenchange', () => {
   if (!document.webkitFullscreenElement && lb.classList.contains('fullscreen-mode')) exitFS();
 });
 
-// ── Zoom por clique na foto ───────────────────────────────────────────────────
-function toggleZoom() {
-  lbZoomed = !lbZoomed;
-  lbWrap.classList.toggle('zoomed', lbZoomed);
-  lbWrap.scrollTo(0, 0);
+// ── Lupa: liga/desliga, posiciona o retângulo e amplia o segmento ────────────
+function setLens(on) {
+  lensOn = on;
+  document.getElementById('lens-btn').classList.toggle('active', on);
+  lbWrap.classList.toggle('lens-on', on);
+  if (!on) hideLens();
   showUI();
 }
 
-function resetZoom() {
-  lbZoomed = false;
-  if (lbWrap) {
-    lbWrap.classList.remove('zoomed');
-    lbWrap.scrollTo(0, 0);
-  }
+function toggleLens() {
+  setLens(!lensOn);
 }
 
-// ── Fechar ao clicar no fundo (clique na foto alterna o zoom) ────────────────
+function hideLens() {
+  if (lbLens) lbLens.classList.remove('visible');
+}
+
+function moveLens(clientX, clientY) {
+  if (!lensOn || !lb.classList.contains('active')) return;
+  const imgR = lbImg.getBoundingClientRect();
+  if (imgR.width === 0 || imgR.height === 0) return;
+  const x = clientX - imgR.left;
+  const y = clientY - imgR.top;
+  if (x < 0 || y < 0 || x > imgR.width || y > imgR.height) { hideLens(); return; }
+
+  const wrapR = lbWrap.getBoundingClientRect();
+  lbLens.classList.add('visible');
+  const lw = lbLens.offsetWidth;
+  const lh = lbLens.offsetHeight;
+  let left = clientX - wrapR.left - lw / 2;
+  let top = clientY - wrapR.top - lh / 2;
+  left = Math.max(0, Math.min(left, wrapR.width - lw));
+  top = Math.max(0, Math.min(top, wrapR.height - lh));
+  lbLens.style.left = left + 'px';
+  lbLens.style.top = top + 'px';
+  lbLens.style.backgroundSize = (imgR.width * LENS_ZOOM) + 'px ' + (imgR.height * LENS_ZOOM) + 'px';
+  lbLens.style.backgroundPosition = (-(x * LENS_ZOOM - lw / 2)) + 'px ' + (-(y * LENS_ZOOM - lh / 2)) + 'px';
+  showUI();
+}
+
+lbWrap.addEventListener('mousemove', e => moveLens(e.clientX, e.clientY));
+lbWrap.addEventListener('mouseleave', hideLens);
+lbWrap.addEventListener('touchmove', e => {
+  if (!lensOn || e.touches.length === 0) return;
+  moveLens(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: true });
+lbWrap.addEventListener('touchend', hideLens);
+
+// ── Fechar ao clicar no fundo (clique na foto não faz nada com a lupa off) ───
 lb.addEventListener('click', e => {
-  if (e.target === lbImg) { toggleZoom(); return; }
   if (e.target === lb || e.target === lbWrap) closeLB();
 });
 
@@ -169,7 +205,7 @@ lb.addEventListener('touchstart', e => {
   swipeY = e.touches[0].clientY;
 }, { passive: true });
 lb.addEventListener('touchend', e => {
-  if (lbZoomed) return; // com zoom: gesto vira rolagem da foto, não troca de foto
+  if (lensOn) return; // com lupa: gesto move o retângulo, não troca de foto
   const dx = e.changedTouches[0].clientX - swipeX;
   const dy = e.changedTouches[0].clientY - swipeY;
   if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1);
@@ -180,6 +216,6 @@ document.addEventListener('keydown', e => {
   if (!lb.classList.contains('active')) return;
   if (e.key === 'ArrowRight') lbNav(1);
   if (e.key === 'ArrowLeft')  lbNav(-1);
-  if (e.key === 'Escape')     { if (lbZoomed) resetZoom(); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
+  if (e.key === 'Escape')     { if (lensOn) setLens(false); else if (lb.classList.contains('fullscreen-mode')) exitFS(); else closeLB(); }
   if (e.key === 'f' || e.key === 'F') toggleFS();
 });

@@ -22,12 +22,13 @@
   display: flex; align-items: center; justify-content: center;
 }
 .lb-btn:hover { color: #fff; }
+.lb-btn.active { color: #fff; }
 .lb-btn svg { width: 20px; height: 20px; }
 
 .lb-img-wrap {
   display: flex; align-items: center; justify-content: center;
   width: 100%; height: 100%; position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 .lb-img-wrap img {
   max-width: 90vw; max-height: 90vh; object-fit: contain;
@@ -35,15 +36,21 @@
   transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
   -webkit-user-select: none; user-select: none;
   pointer-events: auto; -webkit-user-drag: none;
-  cursor: zoom-in;
 }
+.lb-img-wrap.lens-on { cursor: crosshair; }
+.lb-img-wrap.lens-on img { cursor: crosshair; }
 
-/* Zoom: clique na foto alterna entre caber na tela e tamanho real (1:1) com rolagem */
-.lb-img-wrap.zoomed { cursor: zoom-out; }
-.lb-img-wrap.zoomed img {
-  max-width: none; max-height: none;
-  cursor: zoom-out;
+/* Lupa: retângulo que acompanha o cursor mostrando o segmento ampliado */
+.lb-lens {
+  display: none; position: absolute; z-index: 5;
+  width: 250px; height: 180px;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+  background-repeat: no-repeat;
+  filter: grayscale(100%) contrast(1.06);
+  pointer-events: none;
 }
+.lb-lens.visible { display: block; }
 
 /* Fullscreen */
 .lightbox.fullscreen-mode { padding: 0; }
@@ -94,6 +101,7 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+  .lb-lens { width: 160px; height: 120px; }
   .exif-panel { font-size: 0.62rem; letter-spacing: 0.12em; padding: 2.5rem 1.2rem 1.2rem; }
   .exif-label { min-width: 72px; }
   .lb-img-wrap img { max-width: 100vw; max-height: 82vh; }

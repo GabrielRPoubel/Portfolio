@@ -111,6 +111,12 @@
         <line x1="12" y1="11" x2="12" y2="17"/>
       </svg>
     </button>
+    <button class="lb-btn" id="lens-btn" onclick="toggleLens()" title="Lupa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+    </button>
     <button class="lb-btn" id="fs-btn" onclick="toggleFS()" title="Tela cheia">
       <svg id="fs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
@@ -129,6 +135,7 @@
   <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
   <div class="lb-img-wrap" id="lb-wrap">
     <img id="lb-img" src="" alt="">
+    <div class="lb-lens" id="lb-lens"></div>
   </div>
   <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
   <div class="lb-counter" id="lb-counter"></div>
