@@ -163,9 +163,10 @@ class LojaAdmin(tk.Tk):
 
         self.data = load_data()
         self.current_id = None
-        # Imagens em edição: [{"src": caminho|relativo, "externa": bool}]
+        # Imagens em edição: [{"src": relativo, "externa": bool}]
         self.edit_images = []
         self.thumbs_refs = []
+        self._sweep_orfaos()
 
         self._build_layout()
         self.refresh_list()
@@ -272,6 +273,20 @@ class LojaAdmin(tk.Tk):
         self.status.pack(side=tk.LEFT, padx=(12, 0))
 
     # ── Produtos ────────────────────────────────────────────────────────
+    def _sweep_orfaos(self):
+        """Apaga pastas loja-fotos/<id> sem produto correspondente.
+        Só roda com produtos.json íntegro — nunca encosta em nada sem base."""
+        try:
+            with open(PRODUTOS_JSON, "r", encoding="utf-8") as f:
+                json.load(f)
+        except (FileNotFoundError, ValueError, json.JSONDecodeError):
+            return
+        if not FOTOS_DIR.exists():
+            return
+        ids = {str(p.get("id")) for p in self.data["produtos"]}
+        for pasta in FOTOS_DIR.iterdir():
+            if pasta.is_dir() and pasta.name not in ids:
+                shutil.rmtree(pasta, ignore_errors=True)
     def refresh_list(self):
         sel = self.current_id
         self.prod_list.delete(0, tk.END)
@@ -378,6 +393,7 @@ class LojaAdmin(tk.Tk):
             ttk.Label(f, text=f"{i + 1}").pack()
 
     def add_images(self):
+        """Ingestão imediata: já grava web + thumb na pasta (sem esperar o Salvar)."""
         if not self.current_id:
             messagebox.showinfo("Aviso", "Crie ou selecione um produto antes.")
             return
@@ -385,9 +401,34 @@ class LojaAdmin(tk.Tk):
             title="Imagens do produto",
             filetypes=[("Imagens", "*.jpg *.jpeg *.png *.webp"), ("Todos", "*.*")],
         )
+        if not paths:
+            return
+        pasta = FOTOS_DIR / self.current_id
+        thumbs = pasta / "thumbs"
+        pasta.mkdir(parents=True, exist_ok=True)
+        thumbs.mkdir(parents=True, exist_ok=True)
+        existentes = {p.name for p in pasta.glob("*.jpg")} | {p.name for p in thumbs.glob("*.jpg")}
+        k = 0
+        ok, falhas = 0, []
         for path in paths:
-            self.edit_images.append({"src": path, "externa": True})
+            k += 1
+            # Nome temporário único; o Salvar renumera para 1..N na ordem da lista.
+            base = f"new_{len(self.edit_images) + k}"
+            while f"{base}.jpg" in existentes:
+                k += 1
+                base = f"new_{len(self.edit_images) + k}"
+            existentes.add(f"{base}.jpg")
+            try:
+                process_image(path, pasta / f"{base}.jpg", WEB_MAX, quality=82)
+                process_image(pasta / f"{base}.jpg", thumbs / f"{base}.jpg", THUMB_MAX, quality=75)
+                self.edit_images.append({"src": f"loja-fotos/{self.current_id}/{base}.jpg", "externa": False})
+                ok += 1
+            except Exception as e:
+                falhas.append(f"{Path(path).name}: {e}")
         self.render_img_bar()
+        if falhas:
+            messagebox.showwarning("Algumas falharam", "\n".join(falhas))
+        self.set_status(f"{ok} imagem(ns) na pasta (salve para concluir).")
 
     def remove_image(self):
         i = self.var_sel_img.get()
@@ -463,10 +504,11 @@ class LojaAdmin(tk.Tk):
         p["ativo"] = bool(self.var_ativo.get())
 
     def materialize_images(self, p):
-        """Grava loja-fotos/<id>/ na ordem da lista (1ª = capa)."""
+        """Consolida loja-fotos/<id>/: renumera a lista para 1..N (1ª = capa),
+        garante os thumbs e apaga sobras. Arquivos já entram prontos no Adicionar."""
         faltando = [
             item["src"] for item in self.edit_images
-            if not item["externa"] and not (ROOT / item["src"]).exists()
+            if not (ROOT / item["src"]).exists()
         ]
         if faltando:
             raise ValueError(
@@ -478,21 +520,34 @@ class LojaAdmin(tk.Tk):
         pasta.mkdir(parents=True, exist_ok=True)
         thumbs.mkdir(parents=True, exist_ok=True)
         finais = []
+        # Renomeia via temporários para não colidir (ex: 2.jpg -> 1.jpg).
         for k, item in enumerate(self.edit_images, start=1):
-            nome = f"{k}.jpg"
-            dest = pasta / nome
-            src = item["src"] if item["externa"] else str(ROOT / item["src"])
-            precisa = True
-            if not item["externa"] and Path(src).resolve() == dest.resolve() and dest.exists():
-                precisa = False
-            if precisa:
-                process_image(src, dest, WEB_MAX, quality=82)
-            process_image(dest, thumbs / nome, THUMB_MAX, quality=75)
-            finais.append(f"loja-fotos/{pid}/{nome}")
-        # Remove sobras (imagens excluídas da lista)
+            origem = ROOT / item["src"]
+            temp = pasta / f"ord_{k}.jpg"
+            if origem.resolve() != temp.resolve():
+                if temp.exists():
+                    temp.unlink()
+                origem.replace(temp)
+            th_origem = thumbs / origem.name
+            th_temp = thumbs / f"ord_{k}.jpg"
+            if th_origem.exists() and th_origem.resolve() != th_temp.resolve():
+                if th_temp.exists():
+                    th_temp.unlink()
+                th_origem.replace(th_temp)
+        for k in range(1, len(self.edit_images) + 1):
+            (pasta / f"ord_{k}.jpg").replace(pasta / f"{k}.jpg")
+            th = thumbs / f"ord_{k}.jpg"
+            if th.exists():
+                th.replace(thumbs / f"{k}.jpg")
+            process_image(pasta / f"{k}.jpg", thumbs / f"{k}.jpg", THUMB_MAX, quality=75)
+            finais.append(f"loja-fotos/{pid}/{k}.jpg")
+        # Remove sobras (imagens excluídas da lista; thumbs acompanham as finais)
+        esperados = set(finais) | {
+            f"loja-fotos/{pid}/thumbs/{k}.jpg" for k in range(1, len(self.edit_images) + 1)
+        }
         for arq in list(pasta.glob("*.jpg")) + list(thumbs.glob("*.jpg")):
             rel = f"loja-fotos/{pid}/" + ("thumbs/" if arq.parent == thumbs else "") + arq.name
-            if rel not in finais:
+            if rel not in esperados:
                 arq.unlink(missing_ok=True)
         p["imagens"] = finais
         p["thumb"] = f"loja-fotos/{pid}/thumbs/1.jpg" if finais else ""
