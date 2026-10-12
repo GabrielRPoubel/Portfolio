@@ -18,7 +18,9 @@ Duplo clique em `loja-admin.py` (precisa Python + Pillow):
   tags invisíveis (vírgula), ativo/oculto; imagens ilimitadas com preview
   (arraste a ordem, 1ª = capa)
 - Categorias e tags: botões Gerenciar (criar/remover; categoria em uso não apaga)
-- Frete automático: base R$ + adicional por kg + grátis acima de R$
+- Frete automático: base R$ + adicional por kg + grátis acima de R$ + margem %;
+  peso cobrado = maior entre real e cúbico (C×L×A/6000); sem contrato Correios,
+  é simulação (ViaCEP só valida o CEP)
 - Salvar tudo: grava `produtos.json`, processa imagens em `loja-fotos/<id>/`
   (web 1600px + thumbs) e roda `gerar.py`, que embute tudo no site
 - No site: cards com preço, estimativa de frete e pedido via WhatsApp;

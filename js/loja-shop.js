@@ -106,18 +106,20 @@
     var L = window.Loja;
     var valor = L.freteValor(p);
     var txt = valor === 0 ? 'Frete grátis' : L.brl(valor);
+    var kg = L.pesoCobrado(p);
+    var kgTxt = kg.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + ' kg cobrados';
     out.textContent = 'Calculando…';
     fetch('https://viacep.com.br/ws/' + cep + '/json/')
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (j && !j.erro && j.localidade) {
-          out.textContent = 'Para ' + j.localidade + '/' + j.uf + ': ' + txt + ' (simulação Correios pelo peso)';
+          out.textContent = 'Para ' + j.localidade + '/' + j.uf + ': ' + txt + ' (' + kgTxt + ' · simulação)';
         } else {
-          out.textContent = 'CEP não encontrado. Estimativa: ' + txt + ' (simulação)';
+          out.textContent = 'CEP não encontrado. Estimativa: ' + txt + ' (' + kgTxt + ' · simulação)';
         }
       })
       .catch(function () {
-        out.textContent = 'Sem conexão para validar o CEP. Estimativa: ' + txt + ' (simulação)';
+        out.textContent = 'Sem conexão para validar o CEP. Estimativa: ' + txt + ' (' + kgTxt + ' · simulação)';
       });
   };
 

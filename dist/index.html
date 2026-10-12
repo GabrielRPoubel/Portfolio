@@ -1721,18 +1721,39 @@ function showToast(msg) {
     if (!isFinite(n)) return 'R$ —';
     return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
-  // Estimativa: base cobre o 1º kg + por_kg por kg adicional; grátis acima do limite.
-  function frete(p) {
+  // Peso cobrado: maior entre real e cúbico (C×L×A/6000, padrão Correios).
+  function pesoCobrado(p) {
+    var real = Number(p.peso_g) / 1000;
+    if (!isFinite(real) || real < 0) real = 0;
+    var c = Number(p.comp_cm), l = Number(p.larg_cm), a = Number(p.alt_cm);
+    var cub = (isFinite(c) && isFinite(l) && isFinite(a) && c > 0 && l > 0 && a > 0)
+      ? (c * l * a) / 6000 : 0;
+    return Math.max(real, cub);
+  }
+  // Estimativa anti-prejuízo: base cobre o 1º kg cobrado + por_kg por kg
+  // adicional, com margem de segurança; grátis acima do limite.
+  function freteValorNum(p) {
     var f = (data && data.frete) || {};
     var base = Number(f.base), porKg = Number(f.por_kg), gratis = Number(f.gratis_acima);
-    if (!isFinite(base) || base < 0) return null;
+    var margem = Number(f.margem_pct);
+    if (!isFinite(base) || base < 0) return 0;
     var preco = Number(p.preco);
-    if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 'Frete grátis';
-    var kg = Number(p.peso_g) / 1000;
-    if (!isFinite(kg) || kg < 0) kg = 0;
-    var extra = Math.max(0, Math.ceil(kg - 1));
+    if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 0;
+    var extra = Math.max(0, Math.ceil(pesoCobrado(p) - 1));
     var total = base + extra * (isFinite(porKg) && porKg > 0 ? porKg : 0);
-    return 'Frete estimado ' + total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (isFinite(margem) && margem > 0) total = total * (1 + margem / 100);
+    return Math.round(total * 100) / 100;
+  }
+  function frete(p) {
+    var v = freteValorNum(p);
+    if (v === 0) {
+      var f = (data && data.frete) || {};
+      var gratis = Number(f.gratis_acima), preco = Number(p.preco);
+      if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 'Frete grátis';
+      var base = Number(f.base);
+      if (!isFinite(base) || base < 0) return null;
+    }
+    return 'Frete estimado ' + v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
   function orderUrl(p) {
     var msg = 'Olá! Tenho interesse em "' + (p.titulo || 'peça') + '"' +
@@ -1822,16 +1843,8 @@ function showToast(msg) {
     imgSrc: imgSrc,
     brl: brl,
     freteTexto: frete,
-    freteValor: function (p) {
-      var f = (data && data.frete) || {};
-      var base = Number(f.base), porKg = Number(f.por_kg), gratis = Number(f.gratis_acima);
-      if (!isFinite(base) || base < 0) return 0;
-      var preco = Number(p.preco);
-      if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 0;
-      var kg = Number(p.peso_g) / 1000;
-      if (!isFinite(kg) || kg < 0) kg = 0;
-      return base + Math.max(0, Math.ceil(kg - 1)) * (isFinite(porKg) && porKg > 0 ? porKg : 0);
-    }
+    pesoCobrado: pesoCobrado,
+    freteValor: freteValorNum
   };
   if (produtos.length) {
     renderPills();
@@ -1962,18 +1975,20 @@ function showToast(msg) {
     var L = window.Loja;
     var valor = L.freteValor(p);
     var txt = valor === 0 ? 'Frete grátis' : L.brl(valor);
+    var kg = L.pesoCobrado(p);
+    var kgTxt = kg.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + ' kg cobrados';
     out.textContent = 'Calculando…';
     fetch('https://viacep.com.br/ws/' + cep + '/json/')
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (j && !j.erro && j.localidade) {
-          out.textContent = 'Para ' + j.localidade + '/' + j.uf + ': ' + txt + ' (simulação Correios pelo peso)';
+          out.textContent = 'Para ' + j.localidade + '/' + j.uf + ': ' + txt + ' (' + kgTxt + ' · simulação)';
         } else {
-          out.textContent = 'CEP não encontrado. Estimativa: ' + txt + ' (simulação)';
+          out.textContent = 'CEP não encontrado. Estimativa: ' + txt + ' (' + kgTxt + ' · simulação)';
         }
       })
       .catch(function () {
-        out.textContent = 'Sem conexão para validar o CEP. Estimativa: ' + txt + ' (simulação)';
+        out.textContent = 'Sem conexão para validar o CEP. Estimativa: ' + txt + ' (' + kgTxt + ' · simulação)';
       });
   };
 

@@ -212,6 +212,18 @@ class LojaAdmin(tk.Tk):
         ttk.Checkbutton(row, text="Ativo no site", variable=self.var_ativo).pack(side=tk.LEFT, padx=(12, 0))
         r += 1
 
+        dimrow = ttk.Frame(right)
+        dimrow.grid(row=r, column=1, sticky="ew", pady=2)
+        ttk.Label(right, text="Embalagem (cm):").grid(row=r, column=0, sticky="w")
+        self.var_comp = tk.StringVar()
+        self.var_larg = tk.StringVar()
+        self.var_alt = tk.StringVar()
+        for rot, var in (("C:", self.var_comp), ("L:", self.var_larg), ("A:", self.var_alt)):
+            ttk.Label(dimrow, text=" " + rot).pack(side=tk.LEFT)
+            ttk.Entry(dimrow, textvariable=var, width=8).pack(side=tk.LEFT)
+        ttk.Label(dimrow, text="  (p/ peso cúbico; vazio = ignora)").pack(side=tk.LEFT)
+        r += 1
+
         ttk.Label(right, text="Categoria:").grid(row=r, column=0, sticky="w")
         catrow = ttk.Frame(right)
         catrow.grid(row=r, column=1, sticky="ew", pady=2)
@@ -261,6 +273,9 @@ class LojaAdmin(tk.Tk):
         ttk.Entry(frete, textvariable=self.var_porkg, width=8).pack(side=tk.LEFT, padx=(2, 10))
         ttk.Label(frete, text="Grátis acima de R$:").pack(side=tk.LEFT)
         ttk.Entry(frete, textvariable=self.var_gratis, width=8).pack(side=tk.LEFT, padx=(2, 10))
+        ttk.Label(frete, text="Margem %:").pack(side=tk.LEFT)
+        self.var_margem = tk.StringVar(value=str(self.data["frete"].get("margem_pct", 15)))
+        ttk.Entry(frete, textvariable=self.var_margem, width=6).pack(side=tk.LEFT, padx=(2, 10))
         ttk.Label(frete, text="CEP origem:").pack(side=tk.LEFT)
         ttk.Entry(frete, textvariable=self.var_cep_origem, width=10).pack(side=tk.LEFT, padx=(2, 0))
         r += 1
@@ -309,6 +324,7 @@ class LojaAdmin(tk.Tk):
         pid = next_id(self.data["produtos"])
         self.data["produtos"].append({
             "id": pid, "titulo": "Nova peça", "preco": 0.0, "peso_g": 0,
+            "comp_cm": 0, "larg_cm": 0, "alt_cm": 0,
             "descricao": "", "categoria": (self.data["categorias"] or [""])[0],
             "tags": [], "imagens": [], "thumb": "", "ativo": True,
         })
@@ -341,6 +357,9 @@ class LojaAdmin(tk.Tk):
         self.var_titulo.set("")
         self.var_preco.set("")
         self.var_peso.set("")
+        self.var_comp.set("")
+        self.var_larg.set("")
+        self.var_alt.set("")
         self.var_tags.set("")
         self.txt_desc.delete("1.0", tk.END)
         self.var_ativo.set(True)
@@ -355,6 +374,9 @@ class LojaAdmin(tk.Tk):
         self.var_titulo.set(p.get("titulo", ""))
         self.var_preco.set(str(p.get("preco", "")))
         self.var_peso.set(str(p.get("peso_g", "")))
+        self.var_comp.set(str(p.get("comp_cm", "") or ""))
+        self.var_larg.set(str(p.get("larg_cm", "") or ""))
+        self.var_alt.set(str(p.get("alt_cm", "") or ""))
         self.var_tags.set(", ".join(p.get("tags", [])))
         self.txt_desc.delete("1.0", tk.END)
         self.txt_desc.insert("1.0", p.get("descricao", ""))
@@ -492,11 +514,17 @@ class LojaAdmin(tk.Tk):
             raise ValueError("Título é obrigatório.")
         preco = self.parse_float(self.var_preco.get(), "Preço")
         peso = self.parse_float(self.var_peso.get(), "Peso")
+        comp = self.parse_float(self.var_comp.get() or "0", "Comprimento")
+        larg = self.parse_float(self.var_larg.get() or "0", "Largura")
+        alt = self.parse_float(self.var_alt.get() or "0", "Altura")
         if not self.edit_images:
             raise ValueError("Inclua ao menos 1 imagem.")
         p["titulo"] = titulo
         p["preco"] = round(preco, 2)
         p["peso_g"] = int(round(peso))
+        p["comp_cm"] = round(comp, 1)
+        p["larg_cm"] = round(larg, 1)
+        p["alt_cm"] = round(alt, 1)
         p["categoria"] = self.combo_cat.get().strip()
         if p["categoria"] and p["categoria"] not in self.data["categorias"]:
             self.data["categorias"].append(p["categoria"])
@@ -567,10 +595,11 @@ class LojaAdmin(tk.Tk):
             base = self.parse_float(self.var_base.get(), "Frete base")
             porkg = self.parse_float(self.var_porkg.get(), "Frete por kg")
             gratis = self.parse_float(self.var_gratis.get(), "Frete grátis acima")
+            margem = self.parse_float(self.var_margem.get() or "0", "Margem")
             cep_origem = re.sub(r"\D", "", self.var_cep_origem.get())
             if cep_origem and len(cep_origem) != 8:
                 raise ValueError("CEP de origem deve ter 8 dígitos.")
-            self.data["frete"] = {"base": base, "por_kg": porkg, "gratis_acima": gratis, "cep_origem": cep_origem}
+            self.data["frete"] = {"base": base, "por_kg": porkg, "gratis_acima": gratis, "margem_pct": margem, "cep_origem": cep_origem}
             if self.current_id:
                 p = self._get(self.current_id)
                 if p:
