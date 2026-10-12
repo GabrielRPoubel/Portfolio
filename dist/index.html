@@ -1695,10 +1695,15 @@ function showToast(msg) {
   var catsEl = document.getElementById('loja-cats');
   if (!grid || !catsEl) return;
   var data = (typeof LOJA !== 'undefined' && LOJA) ? LOJA : null;
-  var produtos = (data && Array.isArray(data.produtos))
-    ? data.produtos.filter(function (p) { return p && p.ativo !== false; })
-    : [];
-  if (!produtos.length) return;
+  var produtos = [];
+  var activeCat = 'TODAS';
+  function setData(d) {
+    data = d;
+    produtos = (data && Array.isArray(data.produtos))
+      ? data.produtos.filter(function (p) { return p && p.ativo !== false; })
+      : [];
+  }
+  setData(data);
 
   // Só caminhos relativos simples (anti XSS / path traversal).
   var SAFE_SRC = /^(?!.*\.\.)[A-Za-z0-9_\-./]+\.(jpg|jpeg|png|webp)$/i;
@@ -1735,14 +1740,15 @@ function showToast(msg) {
     return 'https://wa.me/?text=' + encodeURIComponent(msg);
   }
 
-  var cats = ['TODAS'].concat((((data && Array.isArray(data.categorias)) ? data.categorias : [])).filter(function (c, i, a) {
-    return typeof c === 'string' && c && a.indexOf(c) === i &&
-      produtos.some(function (p) { return p.categoria === c; });
-  }));
-  var activeCat = 'TODAS';
+  function curCats() {
+    return ['TODAS'].concat((((data && Array.isArray(data.categorias)) ? data.categorias : [])).filter(function (c, i, a) {
+      return typeof c === 'string' && c && a.indexOf(c) === i &&
+        produtos.some(function (p) { return p.categoria === c; });
+    }));
+  }
   function renderPills() {
     catsEl.textContent = '';
-    cats.forEach(function (c) {
+    curCats().forEach(function (c) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'loja-pill' + (c === activeCat ? ' active' : '');
@@ -1827,8 +1833,28 @@ function showToast(msg) {
       return base + Math.max(0, Math.ceil(kg - 1)) * (isFinite(porKg) && porKg > 0 ? porKg : 0);
     }
   };
-  renderPills();
-  renderGrid();
+  if (produtos.length) {
+    renderPills();
+    renderGrid();
+  }
+
+  // Auto-atualização: se o HTML chegou velho, busca produtos.json fresco
+  // (com timestamp anti-cache) e re-renderiza quando mudar. Offline/file://
+  // mantém o embutido sem erros.
+  try {
+    fetch('produtos.json?ts=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (remote) {
+        if (!remote || !Array.isArray(remote.produtos)) return;
+        var antes = JSON.stringify((data && data.produtos) || []);
+        if (JSON.stringify(remote.produtos) === antes) return;
+        setData(remote);
+        if (activeCat !== 'TODAS' && curCats().indexOf(activeCat) < 0) activeCat = 'TODAS';
+        renderPills();
+        renderGrid();
+      })
+      .catch(function () {});
+  } catch (e) {}
 })();
 
 // Loja shop: detalhe do produto, frete (CEP/ViaCEP), carrinho,
