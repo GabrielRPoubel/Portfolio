@@ -68,6 +68,9 @@ function showPage(id, el) {
   if (el) el.classList.add('active');
   // Modo loja: esconde o header do site e mostra a barra própria da loja.
   document.body.classList.toggle('loja-mode', ['loja', 'produto', 'carrinho', 'checkout', 'andamento'].includes(id));
+  // Pop-up Em breve ao abrir a loja; sair dela fecha o pop-up.
+  if (id === 'loja') { if (typeof openSoon === 'function') openSoon(); }
+  else if (typeof closeSoon === 'function') closeSoon();
   // Troca de página sempre reexibe os headers (evita herdar fade do scroll).
   clearTimeout(navHideTimer);
   navEl.classList.remove('scrolled');

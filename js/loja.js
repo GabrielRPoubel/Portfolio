@@ -161,6 +161,21 @@
     renderGrid();
   }
 
+  // ── Pop-up Em breve: trava a loja; só a tecla K fecha (atalho do dev) ───
+  window.openSoon = function () {
+    document.body.classList.add('soon-open');
+    document.getElementById('soon-overlay').setAttribute('aria-hidden', 'false');
+  };
+  window.closeSoon = function () {
+    document.body.classList.remove('soon-open');
+    document.getElementById('soon-overlay').setAttribute('aria-hidden', 'true');
+  };
+  document.addEventListener('keydown', function (e) {
+    if (!document.body.classList.contains('soon-open')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (String(e.key || '').toLowerCase() === 'k') closeSoon();
+  });
+
   // Auto-atualização: se o HTML chegou velho, busca produtos.json fresco
   // (com timestamp anti-cache) e re-renderiza quando mudar. Offline/file://
   // mantém o embutido sem erros.

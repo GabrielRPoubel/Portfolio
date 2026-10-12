@@ -109,9 +109,28 @@ body.loja-mode .store-bar { display: flex; }
   body.loja-mode #loja { padding-top: 5.5rem; }
   .store-bar { padding: 1.4rem 1.2rem; }
   .store-title { font-size: 1.8rem; }
+  .soon-overlay { top: 5.5rem; }
+  .soon-title { font-size: 2rem; }
   .loja-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
   .loja-ph-em { font-size: 1.1rem; }
 }
+
+/* ── Pop-up Em breve: trava a loja, só o voltar fica acessível ── */
+.soon-overlay {
+  display: none;
+  position: fixed; left: 0; right: 0; bottom: 0; top: 7rem; z-index: 150;
+  background: rgba(0,0,0,0.92);
+  align-items: center; justify-content: center;
+}
+body.soon-open { overflow: hidden; }
+body.soon-open .soon-overlay { display: flex; }
+body.soon-open .store-cart { display: none; }
+.soon-title {
+  font-family: 'ClassyVogue', Georgia, serif; font-style: italic; font-weight: normal;
+  font-size: 3rem; letter-spacing: 0.08em; color: #e8e8e8;
+  animation: soonIn 0.6s ease;
+}
+@keyframes soonIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 /* ── CTA / badge ── */
 .loja-cta {
