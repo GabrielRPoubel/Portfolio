@@ -398,6 +398,71 @@ white-space: nowrap;
 @media (max-width: 768px) {
 .share-circle { width: 60px; height: 60px; }
 .share-circle svg { width: 34px; height: 34px; }
+}
+#loja { padding: 7rem 1.5rem 3rem; }
+.loja-head { text-align: center; margin-bottom: 2rem; }
+.loja-title {
+font-family: 'ClassyVogue', Georgia, serif; font-weight: normal;
+font-size: 3rem; letter-spacing: 0.14em; color: #fff;
+}
+.loja-sub {
+margin-top: 0.8rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.72rem; letter-spacing: 0.3em; color: #777;
+}
+.loja-cats {
+display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap;
+margin-bottom: 2rem;
+}
+.loja-pill {
+background: none; border: 1px solid rgba(255,255,255,0.15);
+color: #777; font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.72rem; letter-spacing: 0.18em;
+padding: 0.55rem 1.2rem; border-radius: 999px;
+cursor: default; transition: color 0.3s ease, border-color 0.3s ease;
+}
+.loja-pill.active { color: #000; background: #fff; border-color: #fff; }
+.loja-grid {
+display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
+max-width: 1200px; margin: 0 auto;
+}
+.loja-card { background: #050505; overflow: hidden; }
+.loja-ph {
+aspect-ratio: 4 / 5; position: relative;
+background: linear-gradient(160deg, #161616 0%, #050505 80%);
+border: 1px solid rgba(255,255,255,0.06);
+display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.6rem;
+transition: border-color 0.4s ease;
+}
+.loja-card:hover .loja-ph { border-color: rgba(255,255,255,0.18); }
+.loja-ph-em {
+font-family: 'ClassyVogue', Georgia, serif; font-style: italic;
+font-size: 1.4rem; color: #2e2e2e; letter-spacing: 0.08em;
+}
+.loja-ph-ref {
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.62rem; letter-spacing: 0.3em; color: #3a3a3a;
+}
+.loja-info { padding: 0.9rem 0.2rem 1.2rem; text-align: center; }
+.loja-name {
+font-family: 'ClassyVogue', Georgia, serif;
+font-size: 1.1rem; letter-spacing: 0.06em; color: #e8e8e8;
+}
+.loja-price {
+margin-top: 0.4rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.72rem; letter-spacing: 0.25em; color: #777;
+}
+.loja-note {
+margin-top: 2.5rem; text-align: center;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.65rem; letter-spacing: 0.3em; color: #444;
+}
+@media (max-width: 768px) {
+#loja { padding: 5.5rem 0.5rem 2rem; }
+.loja-title { font-size: 2rem; }
+.loja-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
+.loja-ph-em { font-size: 1.1rem; }
 }</style>
 </head>
 <body>
@@ -461,7 +526,28 @@ white-space: nowrap;
   <div class="grid-gallery" id="grid-novas"></div>
 </div>
 <div id="loja" class="page">
-  <!-- LOJA: conteúdo futuro -->
+  <!-- LOJA: esqueleto com fillers (sem produtos reais) -->
+  <div class="loja-head">
+    <div class="loja-title">LOJA</div>
+    <div class="loja-sub">CATÁLOGO EM CONSTRUÇÃO</div>
+  </div>
+  <div class="loja-cats">
+    <span class="loja-pill active">TODAS</span>
+    <span class="loja-pill">IMPRESSÕES</span>
+    <span class="loja-pill">DIGITAIS</span>
+    <span class="loja-pill">PÔSTERES</span>
+  </div>
+  <div class="loja-grid">
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 001</span></div><div class="loja-info"><div class="loja-name">Peça 01</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 002</span></div><div class="loja-info"><div class="loja-name">Peça 02</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 003</span></div><div class="loja-info"><div class="loja-name">Peça 03</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 004</span></div><div class="loja-info"><div class="loja-name">Peça 04</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 005</span></div><div class="loja-info"><div class="loja-name">Peça 05</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 006</span></div><div class="loja-info"><div class="loja-name">Peça 06</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 007</span></div><div class="loja-info"><div class="loja-name">Peça 07</div><div class="loja-price">R$ —</div></div></div>
+    <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 008</span></div><div class="loja-info"><div class="loja-name">Peça 08</div><div class="loja-price">R$ —</div></div></div>
+  </div>
+  <div class="loja-note">PAGAMENTO E ENTREGA — A DEFINIR</div>
 </div>
 
 <!-- BACK TO TOP -->

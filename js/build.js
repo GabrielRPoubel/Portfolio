@@ -22,6 +22,7 @@ const cssFiles = [
   'css/galeria.css',
   'css/lightbox.css',
   'css/ui.css',
+  'css/loja.css',
 ];
 const cssMin = minifyCssSafe(readAll(cssFiles));
 
