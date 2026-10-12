@@ -25,7 +25,7 @@ echo.
 echo [3/5] Verificando alteracoes...
 git rm -r --cached node_modules >nul 2>&1
 git status --short
-git add index.html fotos.json fotos/thumbs/ dist/index.html css/ js/ vercel.json package.json gerar.py publicar.bat favicon.png .gitignore produtos.json loja-fotos/ loja-admin.py rodar-local.bat
+git add --sparse index.html fotos.json fotos/thumbs/ dist/index.html css/ js/ vercel.json package.json gerar.py publicar.bat favicon.png .gitignore produtos.json loja-fotos/ loja-admin.py rodar-local.bat
 git diff --cached --quiet
 if not errorlevel 1 (
     echo Nenhuma alteracao detectada. Site ja esta atualizado.
