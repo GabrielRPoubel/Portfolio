@@ -474,6 +474,11 @@ margin-top: 0.4rem;
 font-family: 'NexaHeavy', Georgia, serif;
 font-size: 0.72rem; letter-spacing: 0.25em; color: #777;
 }
+.loja-frete {
+margin-top: 0.35rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.62rem; letter-spacing: 0.22em; color: #555;
+}
 .loja-note {
 margin-top: 2.5rem; text-align: center;
 font-family: 'NexaHeavy', Georgia, serif;
@@ -564,13 +569,13 @@ body.loja-mode #loja { padding-top: 5.5rem; }
   <div class="loja-head">
     <div class="loja-sub">CATÁLOGO EM CONSTRUÇÃO</div>
   </div>
-  <div class="loja-cats">
+  <div class="loja-cats" id="loja-cats">
     <span class="loja-pill active">TODAS</span>
     <span class="loja-pill">IMPRESSÕES</span>
     <span class="loja-pill">DIGITAIS</span>
     <span class="loja-pill">PÔSTERES</span>
   </div>
-  <div class="loja-grid">
+  <div class="loja-grid" id="grid-loja">
     <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 001</span></div><div class="loja-info"><div class="loja-name">Peça 01</div><div class="loja-price">R$ —</div></div></div>
     <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 002</span></div><div class="loja-info"><div class="loja-name">Peça 02</div><div class="loja-price">R$ —</div></div></div>
     <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 003</span></div><div class="loja-info"><div class="loja-name">Peça 03</div><div class="loja-price">R$ —</div></div></div>
@@ -697,6 +702,10 @@ body.loja-mode #loja { padding-top: 5.5rem; }
     171,172,
   ].map(n => ({ n, src: `fotos/${n}.jpg`, thumb: `fotos/thumbs/${n}.jpg` }));
   const fotosExif = {"1":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/6.3","iso":"ISO 400","focal":"66mm"},"2":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/25s","aperture":"f/22.0","iso":"ISO 12800","focal":"105mm"},"3":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/250s","aperture":"f/10.0","iso":"ISO 400","focal":"48mm"},"4":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/5.3","iso":"ISO 1600","focal":"66mm"},"5":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/80s","aperture":"f/22.0","iso":"ISO 800","focal":"22mm"},"6":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/60s","aperture":"f/8.0","iso":"ISO 800","focal":"34mm"},"7":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/22.0","iso":"ISO 800","focal":"75mm"},"8":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/200s","aperture":"f/22.0","iso":"ISO 800","focal":"58mm"},"9":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/80s","aperture":"f/22.0","iso":"ISO 800","focal":"98mm"},"10":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/22.0","iso":"ISO 3200","focal":"40mm"},"11":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/22.0","iso":"ISO 720","focal":"70mm"},"12":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/22.0","iso":"ISO 3200","focal":"40mm"},"13":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/8.0","iso":"ISO 400","focal":"105mm"},"14":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/22.0","iso":"ISO 3200","focal":"90mm"},"15":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/1000s","aperture":"f/5.6","iso":"ISO 560","focal":"105mm"},"16":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/25s","aperture":"f/7.1","iso":"ISO 400","focal":"25mm"},"17":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/8.0","iso":"ISO 220","focal":"105mm"},"18":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/7.1","iso":"ISO 1600","focal":"75mm"},"19":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 900","focal":"35mm"},"20":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/9.0","iso":"ISO 400","focal":"32mm"},"21":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/7.1","iso":"ISO 1600","focal":"105mm"},"22":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/200s","aperture":"f/10.0","iso":"ISO 400","focal":"105mm"},"23":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"35mm"},"24":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/40s","aperture":"f/7.1","iso":"ISO 400","focal":"52mm"},"25":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/40s","aperture":"f/7.1","iso":"ISO 400","focal":"66mm"},"26":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/5.6","iso":"ISO 1600","focal":"70mm"},"27":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/200s","aperture":"f/10.0","iso":"ISO 400","focal":"18mm"},"28":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/250s","aperture":"f/10.0","iso":"ISO 400","focal":"105mm"},"29":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/10.0","iso":"ISO 400","focal":"52mm"},"30":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/6.3","iso":"ISO 1600","focal":"70mm"},"31":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"30mm"},"32":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"105mm"},"33":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 1400","focal":"24mm"},"34":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"58mm"},"35":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/9.0","iso":"ISO 400","focal":"52mm"},"36":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/200s","aperture":"f/10.0","iso":"ISO 400","focal":"105mm"},"37":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 500","focal":"48mm"},"38":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/9.0","iso":"ISO 400","focal":"40mm"},"39":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"48mm"},"40":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/7.1","iso":"ISO 1600","focal":"66mm"},"41":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 1600","focal":"34mm"},"42":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"50mm"},"43":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"18mm"},"44":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/2s","aperture":"f/5.3","iso":"ISO 1600","focal":"70mm"},"45":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/125s","aperture":"f/9.0","iso":"ISO 400","focal":"40mm"},"46":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/7.1","iso":"ISO 400","focal":"70mm"},"47":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"18mm"},"48":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/20s","aperture":"f/6.3","iso":"ISO 400","focal":"52mm"},"49":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 720","focal":"45mm"},"50":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 220","focal":"105mm"},"51":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/30s","aperture":"f/5.6","iso":"ISO 1600","focal":"62mm"},"52":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/250s","aperture":"f/10.0","iso":"ISO 400","focal":"98mm"},"53":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 400","focal":"105mm"},"54":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/2s","aperture":"f/4.8","iso":"ISO 1600","focal":"48mm"},"55":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/5.6","iso":"ISO 1600","focal":"34mm"},"56":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 1600","focal":"32mm"},"57":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"30mm"},"58":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"98mm"},"59":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 200","focal":"105mm"},"60":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/15s","aperture":"f/6.3","iso":"ISO 900","focal":"18mm"},"61":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"52mm"},"62":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"52mm"},"63":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 200","focal":"105mm"},"64":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"66mm"},"65":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"90mm"},"66":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"58mm"},"67":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1250s","aperture":"f/8.0","iso":"ISO 80","focal":"22mm"},"68":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1250s","aperture":"f/8.0","iso":"ISO 80","focal":"20mm"},"69":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/8s","aperture":"f/5.6","iso":"ISO 80","focal":"99mm"},"70":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/5s","aperture":"f/5.6","iso":"ISO 80","focal":"85mm"},"71":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/800s","aperture":"f/5.6","iso":"ISO 80","focal":"16mm"},"72":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/20s","aperture":"f/8.0","iso":"ISO 80","focal":"15mm"},"73":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1000s","aperture":"f/8.0","iso":"ISO 80","focal":"12mm"},"74":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/10s","aperture":"f/5.6","iso":"ISO 100","focal":"17mm"},"75":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/160s","aperture":"f/5.6","iso":"ISO 80","focal":"50mm"},"76":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1250s","aperture":"f/8.0","iso":"ISO 80","focal":"4mm"},"77":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/160s","aperture":"f/5.6","iso":"ISO 80","focal":"20mm"},"78":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/10s","aperture":"f/5.6","iso":"ISO 100","focal":"97mm"},"79":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/400s","aperture":"f/8.0","iso":"ISO 80","focal":"20mm"},"80":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/800s","aperture":"f/8.0","iso":"ISO 80","focal":"12mm"},"81":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/6s","aperture":"f/5.6","iso":"ISO 80","focal":"10mm"},"82":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1600s","aperture":"f/5.6","iso":"ISO 80","focal":"7mm"},"83":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"3/10s","aperture":"f/5.6","iso":"ISO 100","focal":"80mm"},"84":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/6s","aperture":"f/8.0","iso":"ISO 80","focal":"129mm"},"85":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/400s","aperture":"f/5.6","iso":"ISO 80","focal":"80mm"},"86":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/25s","aperture":"f/8.0","iso":"ISO 80","focal":"6mm"},"87":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/125s","aperture":"f/5.6","iso":"ISO 100","focal":"54mm"},"88":{},"89":{},"90":{},"91":{},"92":{},"93":{},"94":{},"95":{},"96":{},"97":{},"98":{},"99":{},"100":{},"101":{},"102":{},"103":{},"104":{},"105":{},"106":{},"107":{},"108":{},"109":{},"110":{},"111":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/800s","aperture":"f/5.0","iso":"ISO 80","focal":"13mm"},"112":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/6s","aperture":"f/5.6","iso":"ISO 800","focal":"26mm"},"113":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/500s","aperture":"f/5.8","iso":"ISO 125","focal":"129mm"},"114":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/4s","aperture":"f/5.6","iso":"ISO 800","focal":"123mm"},"115":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/125s","aperture":"f/5.0","iso":"ISO 400","focal":"15mm"},"116":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/8s","aperture":"f/5.8","iso":"ISO 800","focal":"129mm"},"117":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/25s","aperture":"f/5.8","iso":"ISO 800","focal":"129mm"},"118":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/125s","aperture":"f/5.6","iso":"ISO 800","focal":"105mm"},"119":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/160s","aperture":"f/5.0","iso":"ISO 80","focal":"13mm"},"120":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1000s","aperture":"f/5.6","iso":"ISO 100","focal":"10mm"},"121":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/160s","aperture":"f/8.0","iso":"ISO 80","focal":"31mm"},"122":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1600s","aperture":"f/5.0","iso":"ISO 80","focal":"4mm"},"123":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1000s","aperture":"f/7.1","iso":"ISO 100","focal":"4mm"},"124":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/400s","aperture":"f/8.0","iso":"ISO 80","focal":"28mm"},"125":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/800s","aperture":"f/4.0","iso":"ISO 160","focal":"4mm"},"126":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/15s","aperture":"f/5.6","iso":"ISO 80","focal":"113mm"},"127":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/400s","aperture":"f/5.6","iso":"ISO 80","focal":"80mm"},"128":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/400s","aperture":"f/8.0","iso":"ISO 80","focal":"21mm"},"129":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/500s","aperture":"f/5.8","iso":"ISO 80","focal":"129mm"},"130":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/160s","aperture":"f/4.0","iso":"ISO 160","focal":"4mm"},"131":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/800s","aperture":"f/8.0","iso":"ISO 80","focal":"61mm"},"132":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/60s","aperture":"f/8.0","iso":"ISO 80","focal":"21mm"},"133":{},"134":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/50s","aperture":"f/5.8","iso":"ISO 80","focal":"129mm"},"135":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/40s","aperture":"f/8.0","iso":"ISO 80","focal":"18mm"},"136":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/250s","aperture":"f/3.5","iso":"ISO 80","focal":"5mm"},"137":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/45s","aperture":"f/3.5","iso":"ISO 200","focal":"5mm"},"138":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/20s","aperture":"f/3.9","iso":"ISO 200","focal":"13mm"},"139":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/125s","aperture":"f/3.5","iso":"ISO 80","focal":"5mm"},"140":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/750s","aperture":"f/3.5","iso":"ISO 80","focal":"5mm"},"141":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/10s","aperture":"f/3.5","iso":"ISO 400","focal":"5mm"},"142":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/60s","aperture":"f/5.6","iso":"ISO 80","focal":"11mm"},"143":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/60s","aperture":"f/5.6","iso":"ISO 200","focal":"11mm"},"144":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/60s","aperture":"f/5.0","iso":"ISO 80","focal":"20mm"},"145":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/60s","aperture":"f/3.5","iso":"ISO 80","focal":"5mm"},"146":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/60s","aperture":"f/5.9","iso":"ISO 200","focal":"24mm"},"147":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/100s","aperture":"f/9.0","iso":"ISO 400","focal":"25mm"},"148":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/45s","aperture":"f/3.5","iso":"ISO 200","focal":"5mm"},"149":{"camera":"moto e20","make":"motorola","exposure":"1/20s","aperture":"f/2.0","iso":"ISO 400","focal":"4mm"},"150":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/500s","aperture":"f/5.0","iso":"ISO 80","focal":"9mm"},"151":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1s","aperture":"f/5.6","iso":"ISO 400","focal":"11mm"},"152":{"camera":"moto e20","make":"motorola","exposure":"1/490s","aperture":"f/2.0","iso":"ISO 50","focal":"4mm"},"153":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/45s","aperture":"f/5.9","iso":"ISO 200","focal":"24mm"},"154":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/125s","aperture":"f/9.0","iso":"ISO 1000","focal":"75mm"},"155":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/160s","aperture":"f/9.0","iso":"ISO 400","focal":"52mm"},"156":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 220","focal":"105mm"},"157":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1/125s","aperture":"f/5.9","iso":"ISO 80","focal":"24mm"},"158":{"camera":"SAMSUNG PL150 / VLUU PL150 / SAMSUNG TL210 / SAMSUNG PL151","make":"SAMSUNG","exposure":"1s","aperture":"f/5.0","iso":"ISO 400","focal":"9mm"},"159":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/320s","aperture":"f/5.0","iso":"ISO 160","focal":"12mm"},"160":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/125s","aperture":"f/9.0","iso":"ISO 640","focal":"105mm"},"161":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"40mm"},"162":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"105mm"},"163":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/320s","aperture":"f/10.0","iso":"ISO 400","focal":"18mm"},"164":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/25s","aperture":"f/7.1","iso":"ISO 400","focal":"18mm"},"165":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1000s","aperture":"f/7.1","iso":"ISO 80","focal":"4mm"},"166":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/25s","aperture":"f/7.1","iso":"ISO 400","focal":"45mm"},"167":{"camera":"Canon PowerShot SX510 HS","make":"Canon","lens":"4.3-129.0 mm","exposure":"1/1600s","aperture":"f/7.1","iso":"ISO 3200","focal":"19mm"},"168":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/60s","aperture":"f/8.0","iso":"ISO 400","focal":"62mm"},"169":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/250s","aperture":"f/10.0","iso":"ISO 400","focal":"105mm"},"170":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 400","focal":"18mm"},"171":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/400s","aperture":"f/11.0","iso":"ISO 400","focal":"62mm"},"172":{"camera":"NIKON D3300","make":"NIKON CORPORATION","lens":"18.0-105.0 mm f/3.5-5.6","exposure":"1/500s","aperture":"f/11.0","iso":"ISO 400","focal":"105mm"}};
+/* ─── LOJA ────────────────────────────────────────────────────────────────────
+  // Gerado automaticamente por gerar.py — não edite manualmente
+  const LOJA = {"versao":1,"frete":{"base":14.9,"por_kg":6.0,"gratis_acima":299.0},"categorias":["Impressões","Digitais","Pôsteres"],"tags":[],"produtos":[]};
+  /* FIM-LOJA */
 const backTop    = document.getElementById('back-top');
 const navEl      = document.getElementById('nav');
 const mobileNavEl = document.getElementById('mobile-nav');
@@ -1259,6 +1268,125 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
+
+// Loja: renderiza os produtos do LOJA embutido pelo gerar.py.
+// Sem produtos ativos, mantém os fillers estáticos do HTML.
+(function () {
+  var grid = document.getElementById('grid-loja');
+  var catsEl = document.getElementById('loja-cats');
+  if (!grid || !catsEl) return;
+  var data = (typeof LOJA !== 'undefined' && LOJA) ? LOJA : null;
+  var produtos = (data && Array.isArray(data.produtos))
+    ? data.produtos.filter(function (p) { return p && p.ativo !== false; })
+    : [];
+  if (!produtos.length) return;
+
+  // Só caminhos relativos simples (anti XSS / path traversal).
+  var SAFE_SRC = /^(?!.*\.\.)[A-Za-z0-9_\-./]+\.(jpg|jpeg|png|webp)$/i;
+  function imgSrc(p) {
+    var cands = [];
+    if (p.thumb) cands.push(p.thumb);
+    if (Array.isArray(p.imagens)) cands = cands.concat(p.imagens);
+    for (var i = 0; i < cands.length; i++) {
+      if (typeof cands[i] === 'string' && SAFE_SRC.test(cands[i])) return cands[i];
+    }
+    return null;
+  }
+  function brl(v) {
+    var n = Number(v);
+    if (!isFinite(n)) return 'R$ —';
+    return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+  // Estimativa: base cobre o 1º kg + por_kg por kg adicional; grátis acima do limite.
+  function frete(p) {
+    var f = (data && data.frete) || {};
+    var base = Number(f.base), porKg = Number(f.por_kg), gratis = Number(f.gratis_acima);
+    if (!isFinite(base) || base < 0) return null;
+    var preco = Number(p.preco);
+    if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 'Frete grátis';
+    var kg = Number(p.peso_g) / 1000;
+    if (!isFinite(kg) || kg < 0) kg = 0;
+    var extra = Math.max(0, Math.ceil(kg - 1));
+    var total = base + extra * (isFinite(porKg) && porKg > 0 ? porKg : 0);
+    return 'Frete estimado ' + total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+  function orderUrl(p) {
+    var msg = 'Olá! Tenho interesse em "' + (p.titulo || 'peça') + '"' +
+      (p.id ? ' (' + p.id + ')' : '') + ' — ' + brl(p.preco);
+    return 'https://wa.me/?text=' + encodeURIComponent(msg);
+  }
+
+  var cats = ['TODAS'].concat((((data && Array.isArray(data.categorias)) ? data.categorias : [])).filter(function (c, i, a) {
+    return typeof c === 'string' && c && a.indexOf(c) === i &&
+      produtos.some(function (p) { return p.categoria === c; });
+  }));
+  var activeCat = 'TODAS';
+  function renderPills() {
+    catsEl.textContent = '';
+    cats.forEach(function (c) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'loja-pill' + (c === activeCat ? ' active' : '');
+      b.textContent = c;
+      b.style.cursor = 'pointer';
+      b.setAttribute('aria-pressed', c === activeCat ? 'true' : 'false');
+      b.onclick = function () { activeCat = c; renderPills(); renderGrid(); };
+      catsEl.appendChild(b);
+    });
+  }
+  function renderGrid() {
+    grid.textContent = '';
+    produtos.filter(function (p) { return activeCat === 'TODAS' || p.categoria === activeCat; }).forEach(function (p) {
+      var card = document.createElement('article');
+      card.className = 'loja-card';
+      var ph = document.createElement('div');
+      ph.className = 'loja-ph';
+      var src = imgSrc(p);
+      if (src) {
+        var im = document.createElement('img');
+        im.src = src;
+        im.alt = String(p.titulo || 'Peça');
+        im.loading = 'lazy';
+        im.decoding = 'async';
+        im.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+        ph.appendChild(im);
+      } else {
+        var em = document.createElement('span');
+        em.className = 'loja-ph-em';
+        em.textContent = 'Em breve';
+        var ref = document.createElement('span');
+        ref.className = 'loja-ph-ref';
+        ref.textContent = String(p.id || '').toUpperCase();
+        ph.appendChild(em);
+        ph.appendChild(ref);
+      }
+      var info = document.createElement('div');
+      info.className = 'loja-info';
+      var nm = document.createElement('div');
+      nm.className = 'loja-name';
+      nm.textContent = p.titulo || 'Sem título';
+      var pr = document.createElement('div');
+      pr.className = 'loja-price';
+      pr.textContent = brl(p.preco);
+      info.appendChild(nm);
+      info.appendChild(pr);
+      var fest = frete(p);
+      if (fest) {
+        var fr = document.createElement('div');
+        fr.className = 'loja-frete';
+        fr.textContent = fest;
+        info.appendChild(fr);
+      }
+      card.appendChild(ph);
+      card.appendChild(info);
+      card.style.cursor = 'pointer';
+      card.onclick = function () { window.open(orderUrl(p), '_blank'); };
+      grid.appendChild(card);
+    });
+  }
+  renderPills();
+  renderGrid();
+})();
 
 document.addEventListener('contextmenu', e => {
   if (e.target.tagName === 'IMG') e.preventDefault();

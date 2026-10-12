@@ -82,6 +82,11 @@ body.loja-mode .store-bar { display: flex; }
   font-family: 'NexaHeavy', Georgia, serif;
   font-size: 0.72rem; letter-spacing: 0.25em; color: #777;
 }
+.loja-frete {
+  margin-top: 0.35rem;
+  font-family: 'NexaHeavy', Georgia, serif;
+  font-size: 0.62rem; letter-spacing: 0.22em; color: #555;
+}
 
 .loja-note {
   margin-top: 2.5rem; text-align: center;

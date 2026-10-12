@@ -40,6 +40,10 @@ const fotosMatch = indexSrc.match(/\/\/ ─── FOTOS ─+[\s\S]*?\/\/ ─+/);
 if (!fotosMatch) { console.error('Bloco de fotos não encontrado no index.html'); process.exit(1); }
 const fotosBlock = fotosMatch[0];
 
+// Bloco LOJA (produtos embutidos pelo gerar.py); ausente = loja sem produtos.
+const lojaMatch = indexSrc.match(/\/\* ─── LOJA ─+[\s\S]*?\/\* FIM-LOJA \*\//);
+const lojaBlock = lojaMatch ? lojaMatch[0] : 'const LOJA = null;';
+
 const jsFiles = [
   'js/nav.js',
   'js/lightbox.js',
@@ -48,9 +52,10 @@ const jsFiles = [
   'js/novas.js',
   'js/columns.js',
   'js/share.js',
+  'js/loja.js',
   'js/ui.js',
 ];
-const jsRaw = stripBannerComments(fotosBlock + '\n' + readAll(jsFiles));
+const jsRaw = stripBannerComments(fotosBlock + '\n' + lojaBlock + '\n' + readAll(jsFiles));
 
 // ── Monta o index.html final (dist/) ──
 const faviconMatch = indexSrc.match(/<link rel="icon"[^>]+>/);

@@ -218,3 +218,36 @@ with open(INDEX, "w", encoding="utf-8") as f:
     f.write(novo)
 
 print("index.html atualizado com sucesso.")
+
+# ── Atualiza bloco LOJA (produtos embutidos; site funciona até em file://) ──
+LOJA_JSON = "produtos.json"
+try:
+    with open(LOJA_JSON, "r", encoding="utf-8") as f:
+        loja_data = json.load(f)
+    loja_json = json.dumps(loja_data, ensure_ascii=False, separators=(",", ":"))
+except (FileNotFoundError, json.JSONDecodeError) as e:
+    print(f"produtos.json ausente ou inválido ({e}) — bloco LOJA zerado.")
+    loja_data = {}
+    loja_json = '{"versao":1,"frete":{"base":0,"por_kg":0,"gratis_acima":0},"categorias":[],"tags":[],"produtos":[]}'
+
+loja_bloco = f"""/* ─── LOJA ────────────────────────────────────────────────────────────────────
+  // Gerado automaticamente por gerar.py — não edite manualmente
+  const LOJA = {loja_json};
+  /* FIM-LOJA */"""
+
+with open(INDEX, "r", encoding="utf-8") as f:
+    conteudo_loja = f.read()
+
+novo_loja, n_loja = re.subn(
+    r"/\* ─── LOJA ─+[\s\S]*?/\* FIM-LOJA \*/",
+    lambda m: loja_bloco,
+    conteudo_loja,
+    flags=re.DOTALL,
+)
+if n_loja == 0:
+    print("Aviso: bloco LOJA não encontrado no index.html — produtos não embutidos.")
+else:
+    with open(INDEX, "w", encoding="utf-8") as f:
+        f.write(novo_loja)
+    n_prods = len(loja_data.get("produtos", [])) if isinstance(loja_data, dict) else 0
+    print(f"bloco LOJA atualizado com {n_prods} produto(s).")
