@@ -3,7 +3,8 @@
   "frete": {
     "base": 18.0,
     "por_kg": 8.0,
-    "gratis_acima": 299.0
+    "gratis_acima": 299.0,
+    "cep_origem": ""
   },
   "categorias": [
     "Impressões",
