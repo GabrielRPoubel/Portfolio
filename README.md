@@ -14,7 +14,6 @@ Prefira sempre o `http://localhost:8000/index.html`. Clone parcial sem
 ## Administrar a loja
 
 Duplo clique em `loja-admin.py` (precisa Python + Pillow):
-
 - Produtos: novo/excluir, título, preço R$, peso em g, descrição, categoria,
   tags invisíveis (vírgula), ativo/oculto; imagens ilimitadas com preview
   (arraste a ordem, 1ª = capa)
@@ -29,6 +28,9 @@ Segurança: a ferramenta é local e não fala com a internet; o site monta
 os cards com `textContent` (sem HTML injetável) e só aceita caminhos de
 imagem relativos simples; nenhum dado de pagamento trafega (pedido por
 WhatsApp). `produtos.json` é público — não coloque segredos nele.
+
+Para gerar o `LojaAdmin.exe` (não vai pro git): com PyInstaller instalado,
+na raiz do repo: `pyinstaller --noconfirm --onefile --windowed --name LojaAdmin --icon icon.ico --distpath . --workpath .build-exe loja-admin.py`
 
 ## Como publicar
 

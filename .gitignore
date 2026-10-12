@@ -7,6 +7,11 @@ __pycache__/
 *.pyc
 .venv/
 
+# PyInstaller (o .exe é gerado local, não vai pro git/Vercel)
+*.exe
+*.spec
+.build-exe/
+
 # thumbs cache
 fotos/thumbs/.cache.json
 

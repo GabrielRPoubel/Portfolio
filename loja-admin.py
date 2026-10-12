@@ -23,7 +23,7 @@ try:
 except ImportError:
     sys.exit("Pillow não instalado. Rode: pip install Pillow")
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
 PRODUTOS_JSON = ROOT / "produtos.json"
 FOTOS_DIR = ROOT / "loja-fotos"
 GERAR_PY = ROOT / "gerar.py"
