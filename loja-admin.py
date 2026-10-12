@@ -363,7 +363,13 @@ class LojaAdmin(tk.Tk):
         cat = p.get("categoria", "")
         self.combo_cat.set(cat if cat in self.data["categorias"] else "")
         self.edit_images = [{"src": rel, "externa": False} for rel in p.get("imagens", [])]
+        # Descarta fantasmas (arquivo sumiu do disco fora da ferramenta).
+        antes = len(self.edit_images)
+        self.edit_images = [it for it in self.edit_images if (ROOT / it["src"]).exists()]
+        perdidas = antes - len(self.edit_images)
         self.render_img_bar()
+        if perdidas:
+            self.set_status(f"{perdidas} imagem(ns) não encontrada(s) no disco e removida(s) da lista — confira e salve.")
 
     # ── Imagens ─────────────────────────────────────────────────────────
     def _thumb_tk(self, path, box=96):
