@@ -16,3 +16,13 @@ buildFeed(fotos);
 buildGrid(fotos);
 buildNovas(novasFotos);
 openFromUrl();
+
+// Abre a aba direto pelo hash (#/galeria, #/loja, #/carrinho…).
+(function () {
+  var h = String(window.location.hash || '').replace('#/', '');
+  if (['galeria', 'novas', 'loja', 'carrinho', 'checkout', 'andamento'].indexOf(h) < 0) return;
+  showPage(h);
+  if (h === 'carrinho' && typeof renderCarrinho === 'function') renderCarrinho();
+  if (h === 'checkout' && typeof renderCheckout === 'function') renderCheckout();
+  if (h === 'andamento' && typeof renderAndamento === 'function') renderAndamento();
+})();

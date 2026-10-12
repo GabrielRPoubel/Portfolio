@@ -73,6 +73,10 @@ function showPage(id, el) {
   navEl.classList.remove('scrolled');
   mobileNavEl.classList.remove('scrolled');
   storeBarEl.classList.remove('scrolled');
+  // URL acompanha a aba (links compartilháveis; INÍCIO fica sem hash).
+  try {
+    history.replaceState(null, '', id === 'home' ? window.location.pathname : '#/' + id);
+  } catch (e) {}
   window.scrollTo(0, 0);
 }
 
