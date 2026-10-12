@@ -587,29 +587,38 @@ class LojaAdmin(tk.Tk):
         self.run_gerar()
 
     def run_gerar(self):
-        """Roda gerar.py + build do dist (igual ao publicar.bat, sem o push)."""
+        """Atualiza o site: executa gerar.py no próprio processo (funciona no
+        .exe, onde sys.executable é o app e não há Python separado) e depois
+        o build do dist via node, igual ao publicar.bat (sem o push)."""
+        import runpy
         self.set_status("Salvo. Atualizando site (gerar.py + build)…")
         self.update_idletasks()
-        try:
-            r = subprocess.run(
-                [sys.executable, str(GERAR_PY)],
-                cwd=str(ROOT),
-                capture_output=True, text=True, timeout=300,
-            )
-        except Exception as e:
-            messagebox.showerror("gerar.py", f"Não executou: {e}")
-            self.set_status("Erro ao rodar gerar.py.")
+        if not GERAR_PY.exists():
+            messagebox.showerror("gerar.py", f"Não encontrado: {GERAR_PY}")
+            self.set_status("gerar.py não encontrado.")
             return
-        if r.returncode != 0:
-            messagebox.showerror("gerar.py falhou", (r.stderr or r.stdout)[-2000:])
+        try:
+            runpy.run_path(str(GERAR_PY), run_name="__main__")
+        except SystemExit as e:
+            if e.code not in (None, 0):
+                messagebox.showerror("gerar.py falhou", f"gerar.py saiu com código {e.code}.")
+                self.set_status("gerar.py falhou — veja a mensagem.")
+                return
+        except Exception as e:
+            messagebox.showerror("gerar.py falhou", str(e)[-2000:])
             self.set_status("gerar.py falhou — veja a mensagem.")
             return
         node = shutil.which("node")
         if node:
+            si = None
+            if os.name == "nt":
+                si = subprocess.STARTUPINFO()
+                si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             b = subprocess.run(
                 [node, "js/build.js"],
                 cwd=str(ROOT),
                 capture_output=True, text=True, timeout=300,
+                startupinfo=si,
             )
             if b.returncode != 0:
                 messagebox.showerror("build falhou", (b.stderr or b.stdout)[-2000:])
