@@ -63,6 +63,17 @@
   <a onclick="showPage('loja',this);closeDrawer()">LOJA</a>
 </div>
 
+<!-- BARRA DA LOJA (só aparece no modo loja) -->
+<div class="store-bar" id="store-bar">
+  <button class="store-back" onclick="backToSite()" aria-label="Voltar ao site">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+  </button>
+  <span class="store-title">LOJA</span>
+</div>
+
 <!-- PAGES -->
 <noscript><p style="text-align:center;padding:2rem">Ative o JavaScript para ver as fotos.</p></noscript>
 <div id="home" class="page active">
@@ -87,7 +98,6 @@
 <div id="loja" class="page">
   <!-- LOJA: esqueleto com fillers (sem produtos reais) -->
   <div class="loja-head">
-    <div class="loja-title">LOJA</div>
     <div class="loja-sub">CATÁLOGO EM CONSTRUÇÃO</div>
   </div>
   <div class="loja-cats">

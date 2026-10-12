@@ -61,7 +61,15 @@ function showPage(id, el) {
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav-links a:not(.ig-link), .drawer a').forEach(a => a.classList.remove('active'));
   if (el) el.classList.add('active');
+  // Modo loja: esconde o header do site e mostra a barra própria da loja.
+  document.body.classList.toggle('loja-mode', id === 'loja');
   window.scrollTo(0, 0);
+}
+
+// ── Voltar da loja para o site ───────────────────────────────────────────────
+function backToSite() {
+  closeDrawer();
+  showPage('home', document.querySelector('.nav-links a'));
 }
 
 // ── Tecla espaço volta ao topo ────────────────────────────────────────────────
