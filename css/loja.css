@@ -4,28 +4,30 @@
 /* Modo loja: header do site some, entra a barra própria */
 body.loja-mode #nav,
 body.loja-mode .mobile-nav { display: none; }
-body.loja-mode #loja { padding-top: 6rem; }
+body.loja-mode #loja { padding-top: 7rem; }
 
 .store-bar {
   display: none;
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   align-items: center; justify-content: center;
-  padding: 1.2rem;
+  padding: 1.8rem;
   background: rgba(0,0,0,0.45);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.5s ease;
 }
+.store-bar.scrolled { opacity: 0; pointer-events: none; }
 body.loja-mode .store-bar { display: flex; }
 .store-back {
-  position: absolute; left: 1.2rem;
+  position: absolute; left: 1.5rem;
   background: none; border: none; cursor: pointer; padding: 4px;
   color: #777; display: flex; align-items: center; justify-content: center;
   transition: color 0.3s;
 }
 .store-back:hover { color: #fff; }
-.store-back svg { width: 24px; height: 24px; }
+.store-back svg { width: 28px; height: 28px; }
 .store-title {
   font-family: 'ClassyVogue', Georgia, serif; font-weight: normal;
-  font-size: 1.6rem; letter-spacing: 0.14em; color: #fff;
+  font-size: 2.4rem; letter-spacing: 0.14em; color: #fff;
 }
 
 .loja-head { text-align: center; margin-bottom: 2rem; }
@@ -90,9 +92,9 @@ body.loja-mode .store-bar { display: flex; }
 /* Mobile */
 @media (max-width: 768px) {
   #loja { padding: 5.5rem 0.5rem 2rem; }
-  body.loja-mode #loja { padding-top: 5rem; }
-  .store-bar { padding: 1rem 1.2rem; }
-  .store-title { font-size: 1.3rem; }
+  body.loja-mode #loja { padding-top: 5.5rem; }
+  .store-bar { padding: 1.4rem 1.2rem; }
+  .store-title { font-size: 1.8rem; }
   .loja-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
   .loja-ph-em { font-size: 1.1rem; }
 }

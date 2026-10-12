@@ -2,6 +2,7 @@
 const backTop    = document.getElementById('back-top');
 const navEl      = document.getElementById('nav');
 const mobileNavEl = document.getElementById('mobile-nav');
+const storeBarEl = document.getElementById('store-bar');
 const progressFill = document.getElementById('progress-fill');
 
 let lastScrollY  = window.scrollY;
@@ -13,14 +14,16 @@ function updateProgress() {
   progressFill.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
 }
 
-// ── Nav fade ──────────────────────────────────────────────────────────────────
+// ── Nav fade (vale para o header do site e a barra da loja) ────────────────
 function showNav() {
   navEl.classList.remove('scrolled');
   mobileNavEl.classList.remove('scrolled');
+  storeBarEl.classList.remove('scrolled');
   clearTimeout(navHideTimer);
   navHideTimer = setTimeout(() => {
     navEl.classList.add('scrolled');
     mobileNavEl.classList.add('scrolled');
+    storeBarEl.classList.add('scrolled');
   }, 2000);
 }
 
@@ -36,12 +39,14 @@ window.addEventListener('scroll', () => {
     clearTimeout(navHideTimer);
     navEl.classList.remove('scrolled');
     mobileNavEl.classList.remove('scrolled');
+    storeBarEl.classList.remove('scrolled');
   } else if (delta < 0) {
     showNav();
   } else if (delta > 0) {
     clearTimeout(navHideTimer);
     navEl.classList.add('scrolled');
     mobileNavEl.classList.add('scrolled');
+    storeBarEl.classList.add('scrolled');
   }
 }, { passive: true });
 
@@ -63,6 +68,11 @@ function showPage(id, el) {
   if (el) el.classList.add('active');
   // Modo loja: esconde o header do site e mostra a barra própria da loja.
   document.body.classList.toggle('loja-mode', id === 'loja');
+  // Troca de página sempre reexibe os headers (evita herdar fade do scroll).
+  clearTimeout(navHideTimer);
+  navEl.classList.remove('scrolled');
+  mobileNavEl.classList.remove('scrolled');
+  storeBarEl.classList.remove('scrolled');
   window.scrollTo(0, 0);
 }
 
