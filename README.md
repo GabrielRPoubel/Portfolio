@@ -51,6 +51,13 @@ node js/build.js
 Cache (nunca ver coisa velha): `css/js` saem com `?v=<commit>`, fotos com
 `?h=<md5>` (só muda se os bytes mudarem) e o HTML carrega `<!-- BUILD <commit> -->`.
 
+## Deploy (Vercel)
+
+Push no `main` gera deploy automático (integração GitHub em Settings → Git).
+Para auditar o que está no ar: ver o fonte da página e procurar
+`<!-- BUILD <commit> -->`. Nunca use commit vazio para forçar deploy —
+a Vercel ignora push sem diff (Ignored Build Step).
+
 Requer Python 3 + Pillow (`pip install Pillow`) e Node 18+.
 
 `node_modules/` não vai para o git (`.gitignore`). Para remover do remoto uma vez:
