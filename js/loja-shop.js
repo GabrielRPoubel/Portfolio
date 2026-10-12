@@ -272,6 +272,18 @@
     tot.className = 'co-total';
     tot.textContent = 'Total ' + L.brl(t.total) + (t.frete === 0 ? ' (frete grátis)' : ' (inclui ' + L.brl(t.frete) + ' de frete)');
     box.appendChild(tot);
+    // Reserva: link de pagamento manual do Mercado Pago (cadastrado na ferramenta).
+    var pag = (L.data && L.data.pagamento) || {};
+    if (pag.link) {
+      var a = document.createElement('a');
+      a.className = 'loja-cta';
+      a.style.cssText = 'display:block;text-align:center;margin-top:.6rem;text-decoration:none';
+      a.textContent = 'PAGAR PELO LINK DO MERCADO PAGO';
+      a.href = pag.link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      box.appendChild(a);
+    }
   };
   window.buscarCepCheckout = function () {
     var cep = cepNums(document.getElementById('co-cep').value);
@@ -298,46 +310,114 @@
         addr.textContent = 'Sem conexão. Preencha manual.';
       });
   };
-  window.confirmarPedido = function (e) {
-    if (e) e.preventDefault();
+  // Monta e valida o pedido sem efeitos colaterais (usado pelos 2 fluxos).
+  function montarPedido() {
     var items = cartItems();
-    var err = document.getElementById('co-erro');
-    if (!items.length) {
-      err.textContent = 'Carrinho vazio.';
-      return false;
-    }
+    if (!items.length) return { ok: false, err: 'Carrinho vazio.' };
     function v(id) { return document.getElementById(id).value.trim(); }
     var nome = v('co-nome'), email = v('co-email'), fone = v('co-fone');
     var cep = cepNums(v('co-cep'));
     var log = v('co-log'), num = v('co-num'), comp = v('co-comp');
     var bairro = v('co-bairro'), cid = v('co-cid'), uf = v('co-uf').toUpperCase();
-    if (!nome) { err.textContent = 'Informe seu nome.'; return false; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'E-mail inválido.'; return false; }
-    if (cepNums(fone).length < 10) { err.textContent = 'Telefone inválido (com DDD).'; return false; }
-    if (cep.length !== 8) { err.textContent = 'CEP inválido (8 dígitos).'; return false; }
-    if (!log || !num || !bairro || !cid || uf.length !== 2) { err.textContent = 'Endereço incompleto.'; return false; }
+    if (!nome) return { ok: false, err: 'Informe seu nome.' };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, err: 'E-mail inválido.' };
+    if (cepNums(fone).length < 10) return { ok: false, err: 'Telefone inválido (com DDD).' };
+    if (cep.length !== 8) return { ok: false, err: 'CEP inválido (8 dígitos).' };
+    if (!log || !num || !bairro || !cid || uf.length !== 2) return { ok: false, err: 'Endereço incompleto.' };
     var t = cartTotais(items);
     var now = new Date();
     var code = 'GP-' + now.getFullYear() +
       String(now.getMonth() + 1).padStart(2, '0') +
       String(now.getDate()).padStart(2, '0') + '-' +
       Math.random().toString(36).slice(2, 6).toUpperCase();
-    var order = {
-      code: code,
-      data: now.toISOString(),
-      items: items.map(function (it) {
-        return { id: it.p.id, titulo: it.p.titulo, foto: it.foto, qty: it.qty, preco: Number(it.p.preco || 0), img: it.img };
-      }),
-      subtotal: t.sub, frete: t.frete, total: t.total,
-      cliente: { nome: nome, email: email, fone: fone },
-      entrega: { cep: cep, log: log, num: num, comp: comp, bairro: bairro, cid: cid, uf: uf },
-      status: 'em progresso'
+    return {
+      ok: true,
+      order: {
+        code: code,
+        data: now.toISOString(),
+        items: items.map(function (it) {
+          return { id: it.p.id, titulo: it.p.titulo, foto: it.foto, qty: it.qty, preco: Number(it.p.preco || 0), img: it.img };
+        }),
+        subtotal: t.sub, frete: t.frete, total: t.total,
+        cliente: { nome: nome, email: email, fone: fone },
+        entrega: { cep: cep, log: log, num: num, comp: comp, bairro: bairro, cid: cid, uf: uf },
+        status: 'em progresso'
+      }
     };
-    store(ORDER_KEY, order);
+  }
+  // Fluxo manual (Pix direto): confirma sem passar pelo Mercado Pago.
+  window.confirmarPedido = function (e) {
+    if (e) e.preventDefault();
+    var err = document.getElementById('co-erro');
+    var m = montarPedido();
+    if (!m.ok) {
+      err.textContent = m.err;
+      return false;
+    }
+    store(ORDER_KEY, m.order);
     setCart([]);
     renderCarrinho();
     showPage('andamento');
     renderAndamento();
+    return false;
+  };
+  // Fluxo Mercado Pago: cria a preferência no servidor e redireciona.
+  window.pagarMercadoPago = function (e) {
+    if (e) e.preventDefault();
+    var err = document.getElementById('co-erro');
+    var m = montarPedido();
+    if (!m.ok) {
+      err.textContent = m.err;
+      return false;
+    }
+    var btn = document.querySelector('#co-form button[type="submit"]');
+    var orig = btn ? btn.textContent : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'GERANDO PAGAMENTO…';
+    }
+    function libera() {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    }
+    fetch('/api/mp-preference', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: m.order.items.map(function (it) { return { id: it.id, qty: it.qty }; }),
+        total: m.order.total,
+        code: m.order.code,
+        cliente: m.order.cliente,
+        entrega: m.order.entrega
+      })
+    })
+      .then(function (r) {
+        return r.json().then(function (j) { return { st: r.status, j: j }; });
+      })
+      .then(function (x) {
+        if (x.st === 200 && x.j && x.j.init_point) {
+          m.order.status = 'aguardando pagamento';
+          store(ORDER_KEY, m.order);
+          setCart([]);
+          window.location.href = x.j.init_point;
+          return;
+        }
+        libera();
+        if (x.st === 501) {
+          err.textContent = 'Pagamento online ainda não configurado — use o link do Mercado Pago ou confirme o pedido.';
+        } else if (x.st === 400) {
+          err.textContent = 'Dados do pedido recusados. Recarregue a página e tente de novo.';
+          renderCheckout();
+        } else {
+          err.textContent = 'Falha ao gerar o pagamento. Tente de novo ou confirme o pedido.';
+        }
+      })
+      .catch(function () {
+        libera();
+        err.textContent = 'Sem conexão com o pagamento. Tente de novo ou confirme o pedido.';
+      });
     return false;
   };
 
@@ -368,7 +448,15 @@
     code.className = 'and-code';
     code.textContent = o.code;
     box.appendChild(code);
-    line('Status', 'EM PROGRESSO — pagamento em breve');
+    // Volta do Mercado Pago traz ?status=approved|pending|failure no hash.
+    var qs = String(window._hashQuery || '');
+    var sm = qs.match(/(?:^|&)status=([a-z_]+)/);
+    var stt = sm ? sm[1] : '';
+    line('Status', stt === 'approved' ? 'PAGAMENTO APROVADO ✓' :
+      (stt === 'pending' || stt === 'in_process' ? 'PAGAMENTO PENDENTE' :
+      (stt === 'failure' || stt === 'rejected' ? 'PAGAMENTO NÃO CONCLUÍDO — tente de novo' :
+      (o.status === 'aguardando pagamento' ? 'AGUARDANDO PAGAMENTO NO MERCADO PAGO' :
+      'EM PROGRESSO — pagamento em breve'))));
     line('Itens', o.items.map(function (it) { return it.titulo + ' (foto nº ' + it.foto + ') × ' + it.qty; }).join('; '));
     line('Total', (window.Loja ? window.Loja.brl(o.total) : o.total));
     line('Entrega', o.entrega.log + ', ' + o.entrega.num + ' — ' + o.entrega.bairro + ', ' + o.entrega.cid + '/' + o.entrega.uf + ' — CEP ' + o.entrega.cep);

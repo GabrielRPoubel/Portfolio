@@ -1,8 +1,9 @@
 {
-  "name": "portfolio-fotografia",
+  "name": "portfolio-loja",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "build": "node js/build.js",
-    "fotos": "python gerar.py"
+  "description": "Site estático + função serverless do Mercado Pago (/api/mp-preference)",
+  "dependencies": {
+    "mercadopago": "^2.0.0"
   }
 }

@@ -15,16 +15,16 @@
 <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 
 <!-- CSS -->
-<link rel="stylesheet" href="css/base.css?v=46dcfe7">
-<link rel="stylesheet" href="css/nav.css?v=46dcfe7">
-<link rel="stylesheet" href="css/feed.css?v=46dcfe7">
-<link rel="stylesheet" href="css/galeria.css?v=46dcfe7">
-<link rel="stylesheet" href="css/lightbox.css?v=46dcfe7">
-<link rel="stylesheet" href="css/ui.css?v=46dcfe7">
-<link rel="stylesheet" href="css/loja.css?v=46dcfe7">
+<link rel="stylesheet" href="css/base.css?v=3241d0e">
+<link rel="stylesheet" href="css/nav.css?v=3241d0e">
+<link rel="stylesheet" href="css/feed.css?v=3241d0e">
+<link rel="stylesheet" href="css/galeria.css?v=3241d0e">
+<link rel="stylesheet" href="css/lightbox.css?v=3241d0e">
+<link rel="stylesheet" href="css/ui.css?v=3241d0e">
+<link rel="stylesheet" href="css/loja.css?v=3241d0e">
 </head>
 <body>
-<!-- BUILD 46dcfe7 -->
+<!-- BUILD 3241d0e -->
 
 <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
@@ -175,7 +175,7 @@
   <div class="loja-head"><div class="loja-sub">FINALIZAR COMPRA</div></div>
   <div class="co-wrap">
     <div class="co-resumo" id="co-resumo"></div>
-    <form id="co-form" onsubmit="return confirmarPedido(event)">
+    <form id="co-form" onsubmit="return pagarMercadoPago(event)">
       <label>Nome<input id="co-nome" autocomplete="name"></label>
       <label>E-mail<input id="co-email" type="email" autocomplete="email"></label>
       <label>Telefone<input id="co-fone" inputmode="tel" autocomplete="tel" placeholder="(00) 90000-0000"></label>
@@ -195,7 +195,8 @@
         <label>UF<input id="co-uf" maxlength="2"></label>
       </div>
       <div class="co-erro" id="co-erro"></div>
-      <button class="loja-cta" type="submit">CONFIRMAR PEDIDO</button>
+      <button class="loja-cta" type="submit">PAGAR COM MERCADO PAGO</button>
+      <button class="loja-cta loja-cta-sm" type="button" style="margin-top:.6rem" onclick="return confirmarPedido(event)">CONFIRMAR PEDIDO (PIX MANUAL)</button>
     </form>
   </div>
 </div>
@@ -299,7 +300,7 @@
 
 <!-- JS: ordem importa -->
 <script>
-                                                                                                      // ─── FOTOS ───────────────────────────────────────────────────────────────
+                                                                                                              // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
     { n: 1, src: 'fotos/1.jpg?h=d76d7ec7', thumb: 'fotos/thumbs/1.jpg?h=d76d7ec7' },
@@ -479,19 +480,19 @@
   // ─────────────────────────────────────────────────────────────────────────
   /* ─── LOJA ────────────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
-  const LOJA = {"versao":1,"frete":{"base":25.0,"por_kg":8.0,"gratis_acima":550.0,"margem_pct":15.0,"cep_origem":"28625630"},"categorias":["Impressões","Digitais","Pôsteres","Quadros"],"tags":["Quadros","fine-art","impressoes"],"produtos":[{"id":"p001","titulo":"Quadro Fine Art 80x120","preco":250.0,"peso_g":6000,"descricao":"Um quadro em fine art muito bonito","categoria":"Quadros","tags":["Quadros","fine-art","impressoes"],"imagens":["loja-fotos/p001/1.jpg"],"thumb":"loja-fotos/p001/thumbs/1.jpg","ativo":true,"comp_cm":80.0,"larg_cm":120.0,"alt_cm":10.0}]};
+  const LOJA = {"versao":1,"frete":{"base":25.0,"por_kg":8.0,"gratis_acima":550.0,"margem_pct":15.0,"cep_origem":"28625630"},"categorias":["QUADROS"],"tags":["Quadros","fine-art","impressoes"],"pagamento":{"provedor":"mercadopago","link":""},"produtos":[{"id":"p001","titulo":"Quadro Fine Art 80x120","preco":250.0,"peso_g":6000,"descricao":"Um quadro em fine art muito bonito","categoria":"QUADROS","tags":["Quadros","fine-art","impressoes"],"imagens":["loja-fotos/p001/1.jpg"],"thumb":"loja-fotos/p001/thumbs/1.jpg","ativo":true,"comp_cm":80.0,"larg_cm":120.0,"alt_cm":10.0}]};
   /* FIM-LOJA */
 </script>
-<script src="js/nav.js?v=46dcfe7"></script>
-<script src="js/lightbox.js?v=46dcfe7"></script>
-<script src="js/feed.js?v=46dcfe7"></script>
-<script src="js/galeria.js?v=46dcfe7"></script>
-<script src="js/novas.js?v=46dcfe7"></script>
-<script src="js/columns.js?v=46dcfe7"></script>
-<script src="js/share.js?v=46dcfe7"></script>
-<script src="js/loja.js?v=46dcfe7"></script>
-<script src="js/loja-shop.js?v=46dcfe7"></script>
-<script src="js/ui.js?v=46dcfe7"></script>
+<script src="js/nav.js?v=3241d0e"></script>
+<script src="js/lightbox.js?v=3241d0e"></script>
+<script src="js/feed.js?v=3241d0e"></script>
+<script src="js/galeria.js?v=3241d0e"></script>
+<script src="js/novas.js?v=3241d0e"></script>
+<script src="js/columns.js?v=3241d0e"></script>
+<script src="js/share.js?v=3241d0e"></script>
+<script src="js/loja.js?v=3241d0e"></script>
+<script src="js/loja-shop.js?v=3241d0e"></script>
+<script src="js/ui.js?v=3241d0e"></script>
 
 </body>
 </html>

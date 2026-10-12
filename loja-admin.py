@@ -37,6 +37,7 @@ def default_data():
     return {
         "versao": 1,
         "frete": {"base": 14.9, "por_kg": 6.0, "gratis_acima": 299.0},
+        "pagamento": {"provedor": "mercadopago", "link": ""},
         "categorias": ["Impressões", "Digitais", "Pôsteres"],
         "tags": [],
         "produtos": [],
@@ -278,6 +279,14 @@ class LojaAdmin(tk.Tk):
         ttk.Entry(frete, textvariable=self.var_margem, width=6).pack(side=tk.LEFT, padx=(2, 10))
         ttk.Label(frete, text="CEP origem:").pack(side=tk.LEFT)
         ttk.Entry(frete, textvariable=self.var_cep_origem, width=10).pack(side=tk.LEFT, padx=(2, 0))
+        r += 1
+
+        # Pagamento — Mercado Pago (link reserva; o botão principal é automático)
+        pag = ttk.LabelFrame(right, text="Pagamento — Mercado Pago (link reserva)", padding=8)
+        pag.grid(row=r, column=0, columnspan=2, sticky="ew", pady=(10, 0))
+        self.var_mplink = tk.StringVar(value=str(self.data.get("pagamento", {}).get("link", "")))
+        ttk.Label(pag, text="Link:").pack(side=tk.LEFT)
+        ttk.Entry(pag, textvariable=self.var_mplink, width=70).pack(side=tk.LEFT, padx=(4, 0), fill=tk.X, expand=True)
         r += 1
 
         # Ações
@@ -600,6 +609,7 @@ class LojaAdmin(tk.Tk):
             if cep_origem and len(cep_origem) != 8:
                 raise ValueError("CEP de origem deve ter 8 dígitos.")
             self.data["frete"] = {"base": base, "por_kg": porkg, "gratis_acima": gratis, "margem_pct": margem, "cep_origem": cep_origem}
+            self.data["pagamento"] = {"provedor": "mercadopago", "link": self.var_mplink.get().strip()}
             if self.current_id:
                 p = self._get(self.current_id)
                 if p:
