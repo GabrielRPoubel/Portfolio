@@ -464,6 +464,14 @@ class LojaAdmin(tk.Tk):
 
     def materialize_images(self, p):
         """Grava loja-fotos/<id>/ na ordem da lista (1ª = capa)."""
+        faltando = [
+            item["src"] for item in self.edit_images
+            if not item["externa"] and not (ROOT / item["src"]).exists()
+        ]
+        if faltando:
+            raise ValueError(
+                "Arquivo(s) sumiram do disco — anexe novamente:\n" + "\n".join(faltando)
+            )
         pid = p["id"]
         pasta = FOTOS_DIR / pid
         thumbs = pasta / "thumbs"
