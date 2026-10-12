@@ -35,6 +35,7 @@
     <li><a tabindex="0" role="button" onclick="showPage('galeria',this)">GALERIA</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('novas',this)">NOVAS</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('loja',this)">LOJA</a></li>
+    <li><a tabindex="0" role="button" onclick="showPage('carrinho',this);renderCarrinho()">CARRINHO <span class="cart-count" style="display:none">0</span></a></li>
     <li>
       <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="ig-link" title="Instagram">
         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#777" stroke="none"/></svg>
@@ -61,11 +62,12 @@
   <a onclick="showPage('galeria',this);closeDrawer()">GALERIA</a>
   <a onclick="showPage('novas',this);closeDrawer()">NOVAS</a>
   <a onclick="showPage('loja',this);closeDrawer()">LOJA</a>
+  <a onclick="showPage('carrinho',this);closeDrawer();renderCarrinho()">CARRINHO <span class="cart-count" style="display:none">0</span></a>
 </div>
 
 <!-- BARRA DA LOJA (só aparece no modo loja) -->
 <div class="store-bar" id="store-bar">
-  <button class="store-back" onclick="backToSite()" aria-label="Voltar ao site">
+  <button class="store-back" onclick="storeBack()" aria-label="Voltar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="19" y1="12" x2="5" y2="12"/>
       <polyline points="12 19 5 12 12 5"/>
@@ -117,6 +119,78 @@
     <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 008</span></div><div class="loja-info"><div class="loja-name">Peça 08</div><div class="loja-price">R$ —</div></div></div>
   </div>
   <div class="loja-note">PAGAMENTO E ENTREGA — A DEFINIR</div>
+</div>
+<div id="produto" class="page">
+  <div class="pd-wrap">
+    <div class="pd-media">
+      <div class="pd-main"><img id="pd-img" src="" alt=""></div>
+      <div class="pd-count" id="pd-count"></div>
+      <div class="pd-thumbs" id="pd-thumbs"></div>
+    </div>
+    <div class="pd-info">
+      <div class="pd-cat" id="pd-cat"></div>
+      <h2 class="pd-title" id="pd-title"></h2>
+      <div class="pd-price" id="pd-price"></div>
+      <p class="pd-desc" id="pd-desc"></p>
+      <div class="pd-frete">
+        <div class="pd-frete-tit">SIMULAR FRETE</div>
+        <div class="pd-frete-row">
+          <input id="pd-cep" inputmode="numeric" maxlength="9" placeholder="Seu CEP" aria-label="Seu CEP">
+          <button class="loja-cta loja-cta-sm" id="pd-cep-btn" onclick="calcFreteDetalhe()">CALCULAR</button>
+        </div>
+        <div class="pd-frete-result" id="pd-frete-result"></div>
+      </div>
+      <button class="loja-cta" id="pd-buy" onclick="comprarDetalhe()">COMPRAR</button>
+    </div>
+  </div>
+</div>
+<div id="carrinho" class="page">
+  <div class="loja-head"><div class="loja-sub">SEU CARRINHO</div></div>
+  <div class="cart-wrap">
+    <div id="cart-list"></div>
+    <div class="cart-empty" id="cart-empty" style="display:none">
+      <p>Carrinho vazio.</p>
+      <button class="loja-cta loja-cta-sm" onclick="showPage('loja')">VER LOJA</button>
+    </div>
+    <div class="cart-foot" id="cart-foot">
+      <div class="cart-line"><span>Subtotal</span><span id="cart-subtotal"></span></div>
+      <div class="cart-line"><span>Frete (estimativa)</span><span id="cart-frete"></span></div>
+      <div class="cart-line cart-total"><span>Total</span><span id="cart-total"></span></div>
+      <button class="loja-cta" onclick="showPage('checkout');renderCheckout()">FINALIZAR COMPRA</button>
+    </div>
+  </div>
+</div>
+<div id="checkout" class="page">
+  <div class="loja-head"><div class="loja-sub">FINALIZAR COMPRA</div></div>
+  <div class="co-wrap">
+    <div class="co-resumo" id="co-resumo"></div>
+    <form id="co-form" onsubmit="return confirmarPedido(event)">
+      <label>Nome<input id="co-nome" autocomplete="name"></label>
+      <label>E-mail<input id="co-email" type="email" autocomplete="email"></label>
+      <label>Telefone<input id="co-fone" inputmode="tel" autocomplete="tel" placeholder="(00) 90000-0000"></label>
+      <div class="co-row">
+        <label>CEP<input id="co-cep" inputmode="numeric" maxlength="9"></label>
+        <button type="button" class="loja-cta loja-cta-sm" onclick="buscarCepCheckout()">BUSCAR</button>
+      </div>
+      <div class="co-addr" id="co-addr"></div>
+      <label>Endereço<input id="co-log" placeholder="Rua / Avenida"></label>
+      <div class="co-row2">
+        <label>Número<input id="co-num" inputmode="numeric"></label>
+        <label>Complemento<input id="co-comp" placeholder="Opcional"></label>
+      </div>
+      <label>Bairro<input id="co-bairro"></label>
+      <div class="co-row2">
+        <label>Cidade<input id="co-cid"></label>
+        <label>UF<input id="co-uf" maxlength="2"></label>
+      </div>
+      <div class="co-erro" id="co-erro"></div>
+      <button class="loja-cta" type="submit">CONFIRMAR PEDIDO</button>
+    </form>
+  </div>
+</div>
+<div id="andamento" class="page">
+  <div class="loja-head"><div class="loja-sub">PEDIDO EM PROGRESSO</div></div>
+  <div class="and-wrap" id="and-wrap"></div>
 </div>
 
 <!-- BACK TO TOP -->
@@ -251,6 +325,7 @@
 <script src="js/columns.js"></script>
 <script src="js/share.js"></script>
 <script src="js/loja.js"></script>
+<script src="js/loja-shop.js"></script>
 <script src="js/ui.js"></script>
 
 </body>

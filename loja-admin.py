@@ -253,12 +253,15 @@ class LojaAdmin(tk.Tk):
         self.var_base = tk.StringVar(value=str(self.data["frete"].get("base", "")))
         self.var_porkg = tk.StringVar(value=str(self.data["frete"].get("por_kg", "")))
         self.var_gratis = tk.StringVar(value=str(self.data["frete"].get("gratis_acima", "")))
+        self.var_cep_origem = tk.StringVar(value=str(self.data["frete"].get("cep_origem", "")))
         ttk.Label(frete, text="Base R$:").pack(side=tk.LEFT)
         ttk.Entry(frete, textvariable=self.var_base, width=8).pack(side=tk.LEFT, padx=(2, 10))
         ttk.Label(frete, text="+ por kg R$:").pack(side=tk.LEFT)
         ttk.Entry(frete, textvariable=self.var_porkg, width=8).pack(side=tk.LEFT, padx=(2, 10))
         ttk.Label(frete, text="Grátis acima de R$:").pack(side=tk.LEFT)
-        ttk.Entry(frete, textvariable=self.var_gratis, width=8).pack(side=tk.LEFT, padx=(2, 0))
+        ttk.Entry(frete, textvariable=self.var_gratis, width=8).pack(side=tk.LEFT, padx=(2, 10))
+        ttk.Label(frete, text="CEP origem:").pack(side=tk.LEFT)
+        ttk.Entry(frete, textvariable=self.var_cep_origem, width=10).pack(side=tk.LEFT, padx=(2, 0))
         r += 1
 
         # Ações
@@ -495,7 +498,10 @@ class LojaAdmin(tk.Tk):
             base = self.parse_float(self.var_base.get(), "Frete base")
             porkg = self.parse_float(self.var_porkg.get(), "Frete por kg")
             gratis = self.parse_float(self.var_gratis.get(), "Frete grátis acima")
-            self.data["frete"] = {"base": base, "por_kg": porkg, "gratis_acima": gratis}
+            cep_origem = re.sub(r"\D", "", self.var_cep_origem.get())
+            if cep_origem and len(cep_origem) != 8:
+                raise ValueError("CEP de origem deve ter 8 dígitos.")
+            self.data["frete"] = {"base": base, "por_kg": porkg, "gratis_acima": gratis, "cep_origem": cep_origem}
             if self.current_id:
                 p = self._get(self.current_id)
                 if p:
@@ -512,8 +518,8 @@ class LojaAdmin(tk.Tk):
         self.run_gerar()
 
     def run_gerar(self):
-        """Roda gerar.py para embutir tudo no site (mesmo processo do publicar.bat)."""
-        self.set_status("Salvo. Atualizando site (gerar.py)…")
+        """Roda gerar.py + build do dist (igual ao publicar.bat, sem o push)."""
+        self.set_status("Salvo. Atualizando site (gerar.py + build)…")
         self.update_idletasks()
         try:
             r = subprocess.run(
@@ -528,9 +534,22 @@ class LojaAdmin(tk.Tk):
         if r.returncode != 0:
             messagebox.showerror("gerar.py falhou", (r.stderr or r.stdout)[-2000:])
             self.set_status("gerar.py falhou — veja a mensagem.")
+            return
+        node = shutil.which("node")
+        if node:
+            b = subprocess.run(
+                [node, "js/build.js"],
+                cwd=str(ROOT),
+                capture_output=True, text=True, timeout=300,
+            )
+            if b.returncode != 0:
+                messagebox.showerror("build falhou", (b.stderr or b.stdout)[-2000:])
+                self.set_status("gerar.py ok, mas o build do dist falhou.")
+                return
         else:
-            self.set_status("Tudo salvo e site atualizado. Confira em rodar-local.bat.")
-            messagebox.showinfo("Pronto", "Salvo! Confira no rodar-local.bat e publique com publicar.bat.")
+            messagebox.showwarning("Node ausente", "gerar.py ok, mas Node não encontrado: dist/ ficou desatualizado.")
+        self.set_status("Tudo salvo e site atualizado. Confira em rodar-local.bat.")
+        messagebox.showinfo("Pronto", "Salvo! Confira no rodar-local.bat e publique com publicar.bat.")
 
     def set_status(self, msg):
         self.status.config(text=msg)

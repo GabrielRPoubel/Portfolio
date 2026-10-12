@@ -109,10 +109,34 @@
       card.appendChild(ph);
       card.appendChild(info);
       card.style.cursor = 'pointer';
-      card.onclick = function () { window.open(orderUrl(p), '_blank'); };
+      card.onclick = function () { openDetail(p.id); };
       grid.appendChild(card);
     });
   }
+  // Compartilhado com o detalhe/carrinho/checkout (js/loja-shop.js).
+  window.Loja = {
+    data: data,
+    produtos: produtos,
+    byId: function (id) {
+      for (var i = 0; i < produtos.length; i++) {
+        if (produtos[i] && produtos[i].id === id) return produtos[i];
+      }
+      return null;
+    },
+    imgSrc: imgSrc,
+    brl: brl,
+    freteTexto: frete,
+    freteValor: function (p) {
+      var f = (data && data.frete) || {};
+      var base = Number(f.base), porKg = Number(f.por_kg), gratis = Number(f.gratis_acima);
+      if (!isFinite(base) || base < 0) return 0;
+      var preco = Number(p.preco);
+      if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 0;
+      var kg = Number(p.peso_g) / 1000;
+      if (!isFinite(kg) || kg < 0) kg = 0;
+      return base + Math.max(0, Math.ceil(kg - 1)) * (isFinite(porKg) && porKg > 0 ? porKg : 0);
+    }
+  };
   renderPills();
   renderGrid();
 })();

@@ -67,7 +67,7 @@ function showPage(id, el) {
   document.querySelectorAll('.nav-links a:not(.ig-link), .drawer a').forEach(a => a.classList.remove('active'));
   if (el) el.classList.add('active');
   // Modo loja: esconde o header do site e mostra a barra própria da loja.
-  document.body.classList.toggle('loja-mode', id === 'loja');
+  document.body.classList.toggle('loja-mode', ['loja', 'produto', 'carrinho', 'checkout', 'andamento'].includes(id));
   // Troca de página sempre reexibe os headers (evita herdar fade do scroll).
   clearTimeout(navHideTimer);
   navEl.classList.remove('scrolled');
@@ -80,6 +80,13 @@ function showPage(id, el) {
 function backToSite() {
   closeDrawer();
   showPage('home', document.querySelector('.nav-links a'));
+}
+
+// ── Voltar da barra da loja: do produto volta à loja, do resto ao site ─────
+function storeBack() {
+  closeDrawer();
+  if (document.getElementById('produto').classList.contains('active')) showPage('loja');
+  else backToSite();
 }
 
 // ── Tecla espaço volta ao topo ────────────────────────────────────────────────

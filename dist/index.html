@@ -491,6 +491,171 @@ body.loja-mode #loja { padding-top: 5.5rem; }
 .store-title { font-size: 1.8rem; }
 .loja-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
 .loja-ph-em { font-size: 1.1rem; }
+}
+.loja-cta {
+display: block; width: 100%; max-width: 340px; margin: 1.2rem auto 0;
+background: #fff; color: #000; border: 1px solid #fff; border-radius: 999px;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.75rem; letter-spacing: 0.25em;
+padding: 0.9rem 1rem; cursor: pointer;
+transition: opacity 0.3s ease, transform 0.2s ease;
+}
+.loja-cta:hover { opacity: 0.88; }
+.loja-cta:active { transform: scale(0.98); }
+.loja-cta-sm { max-width: 240px; padding: 0.7rem 1rem; font-size: 0.68rem; }
+.cart-count {
+display: inline-block; min-width: 1.3em; text-align: center;
+background: #fff; color: #000; border-radius: 999px;
+font-size: 0.62rem; letter-spacing: 0; padding: 0.1em 0.3em; margin-left: 0.4em;
+vertical-align: 0.15em;
+}
+.pd-wrap {
+max-width: 1000px; margin: 0 auto; padding: 7rem 1.5rem 3rem;
+display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: start;
+}
+.pd-main {
+background: #050505; border: 1px solid rgba(255,255,255,0.06);
+aspect-ratio: 4 / 5; overflow: hidden;
+display: flex; align-items: center; justify-content: center;
+}
+.pd-main img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.pd-count {
+margin-top: 0.6rem; text-align: center;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.62rem; letter-spacing: 0.3em; color: #555;
+}
+.pd-thumbs { display: flex; gap: 5px; margin-top: 0.6rem; flex-wrap: wrap; }
+.pd-thumb {
+position: relative; width: 64px; height: 80px; padding: 0;
+background: #050505; border: 1px solid rgba(255,255,255,0.12); cursor: pointer;
+}
+.pd-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pd-thumb.active { border-color: #fff; }
+.pd-num {
+position: absolute; left: 4px; bottom: 4px;
+background: rgba(0,0,0,0.75); color: #fff; border-radius: 999px;
+font-family: 'NexaHeavy', Georgia, serif; font-size: 0.6rem;
+min-width: 1.4em; text-align: center; padding: 0.15em 0.3em;
+}
+.pd-cat {
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.65rem; letter-spacing: 0.3em; color: #777;
+}
+.pd-title {
+font-family: 'ClassyVogue', Georgia, serif; font-weight: normal;
+font-size: 2.2rem; letter-spacing: 0.06em; color: #fff; margin-top: 0.5rem;
+}
+.pd-price {
+margin-top: 0.6rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 1rem; letter-spacing: 0.15em; color: #e8e8e8;
+}
+.pd-desc {
+margin-top: 1rem; color: #aaa; font-size: 0.95rem; line-height: 1.7;
+white-space: pre-wrap;
+}
+.pd-frete {
+margin-top: 1.4rem; padding: 1rem;
+border: 1px solid rgba(255,255,255,0.12);
+}
+.pd-frete-tit {
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.65rem; letter-spacing: 0.3em; color: #777; margin-bottom: 0.7rem;
+}
+.pd-frete-row { display: flex; gap: 0.6rem; }
+.pd-frete-row input {
+flex: 1; min-width: 0;
+background: #0a0a0a; border: 1px solid rgba(255,255,255,0.15);
+color: #e8e8e8; padding: 0.7rem 0.8rem;
+font-family: 'NexaHeavy', Georgia, serif; font-size: 0.75rem; letter-spacing: 0.15em;
+}
+.pd-frete-row .loja-cta { margin: 0; width: auto; }
+.pd-frete-result {
+margin-top: 0.7rem; color: #aaa;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.68rem; letter-spacing: 0.12em; line-height: 1.8;
+}
+.cart-wrap { max-width: 720px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+.cart-row {
+display: flex; gap: 1rem; align-items: center;
+padding: 1rem 0; border-bottom: 1px solid #1a1a1a;
+}
+.cart-thumb { width: 64px; height: 80px; object-fit: cover; display: block; background: #050505; }
+.cart-mid { flex: 1; min-width: 0; }
+.cart-name { font-family: 'ClassyVogue', Georgia, serif; font-size: 1.05rem; color: #e8e8e8; }
+.cart-foto {
+margin-top: 0.2rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.62rem; letter-spacing: 0.25em; color: #777;
+}
+.cart-qty { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.5rem; }
+.cart-qty button {
+width: 26px; height: 26px; border-radius: 50%;
+background: none; border: 1px solid rgba(255,255,255,0.25);
+color: #fff; cursor: pointer; font-size: 0.9rem; line-height: 1;
+}
+.cart-qty span { font-family: 'NexaHeavy', Georgia, serif; font-size: 0.75rem; color: #fff; }
+.cart-right { text-align: right; }
+.cart-val { font-family: 'NexaHeavy', Georgia, serif; font-size: 0.8rem; color: #e8e8e8; }
+.cart-rm {
+margin-top: 0.4rem; background: none; border: none; cursor: pointer;
+color: #555; font-size: 0.7rem; letter-spacing: 0.1em;
+}
+.cart-rm:hover { color: #fff; }
+.cart-empty { text-align: center; color: #777; padding: 2rem 0; }
+.cart-foot { margin-top: 1.5rem; }
+.cart-line {
+display: flex; justify-content: space-between;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.72rem; letter-spacing: 0.2em; color: #aaa; margin-bottom: 0.5rem;
+}
+.cart-total { color: #fff; font-size: 0.85rem; margin: 0.8rem 0 0.4rem; }
+.co-wrap, .and-wrap { max-width: 560px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+.co-resumo {
+border: 1px solid rgba(255,255,255,0.12); padding: 1rem; margin-bottom: 1.4rem;
+font-size: 0.85rem; color: #aaa; line-height: 2;
+}
+.co-total { margin-top: 0.6rem; color: #fff; font-family: 'NexaHeavy', Georgia, serif; font-size: 0.75rem; letter-spacing: 0.15em; }
+#co-form label {
+display: block; margin-bottom: 0.9rem;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.65rem; letter-spacing: 0.25em; color: #777;
+}
+#co-form input {
+display: block; width: 100%; margin-top: 0.35rem;
+background: #0a0a0a; border: 1px solid rgba(255,255,255,0.15);
+color: #e8e8e8; padding: 0.75rem 0.8rem; font-size: 0.9rem; letter-spacing: 0.02em;
+}
+.co-row { display: flex; gap: 0.6rem; align-items: flex-end; margin-bottom: 0.9rem; }
+.co-row label { flex: 1; margin-bottom: 0 !important; }
+.co-row .loja-cta { margin: 0; width: auto; flex-shrink: 0; }
+.co-row2 { display: flex; gap: 0.6rem; }
+.co-row2 label { flex: 1; }
+.co-addr, .co-erro {
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.68rem; letter-spacing: 0.12em; margin-bottom: 0.9rem;
+}
+.co-addr { color: #777; }
+.co-erro { color: #ff9a9a; }
+.and-line {
+display: flex; justify-content: space-between; gap: 1rem;
+padding: 0.8rem 0; border-bottom: 1px solid #1a1a1a;
+font-size: 0.85rem; color: #aaa;
+}
+.and-line span:first-child {
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 0.65rem; letter-spacing: 0.25em; color: #777; flex-shrink: 0;
+}
+.and-code {
+text-align: center;
+font-family: 'NexaHeavy', Georgia, serif;
+font-size: 1.1rem; letter-spacing: 0.2em; color: #fff;
+border: 1px solid rgba(255,255,255,0.2); padding: 1rem; margin-bottom: 1rem;
+}
+.and-vazio { text-align: center; color: #777; }
+@media (max-width: 768px) {
+.pd-wrap { grid-template-columns: 1fr; padding: 6rem 0.5rem 2rem; }
+.pd-title { font-size: 1.7rem; }
 }</style>
 </head>
 <body>
@@ -504,6 +669,7 @@ body.loja-mode #loja { padding-top: 5.5rem; }
     <li><a tabindex="0" role="button" onclick="showPage('galeria',this)">GALERIA</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('novas',this)">NOVAS</a></li>
     <li><a tabindex="0" role="button" onclick="showPage('loja',this)">LOJA</a></li>
+    <li><a tabindex="0" role="button" onclick="showPage('carrinho',this);renderCarrinho()">CARRINHO <span class="cart-count" style="display:none">0</span></a></li>
     <li>
       <a href="https://instagram.com/gabrielrpoubel" target="_blank" class="ig-link" title="Instagram">
         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="#777" stroke="none"/></svg>
@@ -530,11 +696,12 @@ body.loja-mode #loja { padding-top: 5.5rem; }
   <a onclick="showPage('galeria',this);closeDrawer()">GALERIA</a>
   <a onclick="showPage('novas',this);closeDrawer()">NOVAS</a>
   <a onclick="showPage('loja',this);closeDrawer()">LOJA</a>
+  <a onclick="showPage('carrinho',this);closeDrawer();renderCarrinho()">CARRINHO <span class="cart-count" style="display:none">0</span></a>
 </div>
 
 <!-- BARRA DA LOJA (só aparece no modo loja) -->
 <div class="store-bar" id="store-bar">
-  <button class="store-back" onclick="backToSite()" aria-label="Voltar ao site">
+  <button class="store-back" onclick="storeBack()" aria-label="Voltar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="19" y1="12" x2="5" y2="12"/>
       <polyline points="12 19 5 12 12 5"/>
@@ -586,6 +753,78 @@ body.loja-mode #loja { padding-top: 5.5rem; }
     <div class="loja-card"><div class="loja-ph"><span class="loja-ph-em">Em breve</span><span class="loja-ph-ref">REF 008</span></div><div class="loja-info"><div class="loja-name">Peça 08</div><div class="loja-price">R$ —</div></div></div>
   </div>
   <div class="loja-note">PAGAMENTO E ENTREGA — A DEFINIR</div>
+</div>
+<div id="produto" class="page">
+  <div class="pd-wrap">
+    <div class="pd-media">
+      <div class="pd-main"><img id="pd-img" src="" alt=""></div>
+      <div class="pd-count" id="pd-count"></div>
+      <div class="pd-thumbs" id="pd-thumbs"></div>
+    </div>
+    <div class="pd-info">
+      <div class="pd-cat" id="pd-cat"></div>
+      <h2 class="pd-title" id="pd-title"></h2>
+      <div class="pd-price" id="pd-price"></div>
+      <p class="pd-desc" id="pd-desc"></p>
+      <div class="pd-frete">
+        <div class="pd-frete-tit">SIMULAR FRETE</div>
+        <div class="pd-frete-row">
+          <input id="pd-cep" inputmode="numeric" maxlength="9" placeholder="Seu CEP" aria-label="Seu CEP">
+          <button class="loja-cta loja-cta-sm" id="pd-cep-btn" onclick="calcFreteDetalhe()">CALCULAR</button>
+        </div>
+        <div class="pd-frete-result" id="pd-frete-result"></div>
+      </div>
+      <button class="loja-cta" id="pd-buy" onclick="comprarDetalhe()">COMPRAR</button>
+    </div>
+  </div>
+</div>
+<div id="carrinho" class="page">
+  <div class="loja-head"><div class="loja-sub">SEU CARRINHO</div></div>
+  <div class="cart-wrap">
+    <div id="cart-list"></div>
+    <div class="cart-empty" id="cart-empty" style="display:none">
+      <p>Carrinho vazio.</p>
+      <button class="loja-cta loja-cta-sm" onclick="showPage('loja')">VER LOJA</button>
+    </div>
+    <div class="cart-foot" id="cart-foot">
+      <div class="cart-line"><span>Subtotal</span><span id="cart-subtotal"></span></div>
+      <div class="cart-line"><span>Frete (estimativa)</span><span id="cart-frete"></span></div>
+      <div class="cart-line cart-total"><span>Total</span><span id="cart-total"></span></div>
+      <button class="loja-cta" onclick="showPage('checkout');renderCheckout()">FINALIZAR COMPRA</button>
+    </div>
+  </div>
+</div>
+<div id="checkout" class="page">
+  <div class="loja-head"><div class="loja-sub">FINALIZAR COMPRA</div></div>
+  <div class="co-wrap">
+    <div class="co-resumo" id="co-resumo"></div>
+    <form id="co-form" onsubmit="return confirmarPedido(event)">
+      <label>Nome<input id="co-nome" autocomplete="name"></label>
+      <label>E-mail<input id="co-email" type="email" autocomplete="email"></label>
+      <label>Telefone<input id="co-fone" inputmode="tel" autocomplete="tel" placeholder="(00) 90000-0000"></label>
+      <div class="co-row">
+        <label>CEP<input id="co-cep" inputmode="numeric" maxlength="9"></label>
+        <button type="button" class="loja-cta loja-cta-sm" onclick="buscarCepCheckout()">BUSCAR</button>
+      </div>
+      <div class="co-addr" id="co-addr"></div>
+      <label>Endereço<input id="co-log" placeholder="Rua / Avenida"></label>
+      <div class="co-row2">
+        <label>Número<input id="co-num" inputmode="numeric"></label>
+        <label>Complemento<input id="co-comp" placeholder="Opcional"></label>
+      </div>
+      <label>Bairro<input id="co-bairro"></label>
+      <div class="co-row2">
+        <label>Cidade<input id="co-cid"></label>
+        <label>UF<input id="co-uf" maxlength="2"></label>
+      </div>
+      <div class="co-erro" id="co-erro"></div>
+      <button class="loja-cta" type="submit">CONFIRMAR PEDIDO</button>
+    </form>
+  </div>
+</div>
+<div id="andamento" class="page">
+  <div class="loja-head"><div class="loja-sub">PEDIDO EM PROGRESSO</div></div>
+  <div class="and-wrap" id="and-wrap"></div>
 </div>
 
 <!-- BACK TO TOP -->
@@ -770,7 +1009,7 @@ function showPage(id, el) {
   document.querySelectorAll('.nav-links a:not(.ig-link), .drawer a').forEach(a => a.classList.remove('active'));
   if (el) el.classList.add('active');
   // Modo loja: esconde o header do site e mostra a barra própria da loja.
-  document.body.classList.toggle('loja-mode', id === 'loja');
+  document.body.classList.toggle('loja-mode', ['loja', 'produto', 'carrinho', 'checkout', 'andamento'].includes(id));
   // Troca de página sempre reexibe os headers (evita herdar fade do scroll).
   clearTimeout(navHideTimer);
   navEl.classList.remove('scrolled');
@@ -782,6 +1021,12 @@ function showPage(id, el) {
 function backToSite() {
   closeDrawer();
   showPage('home', document.querySelector('.nav-links a'));
+}
+
+function storeBack() {
+  closeDrawer();
+  if (document.getElementById('produto').classList.contains('active')) showPage('loja');
+  else backToSite();
 }
 
 window.addEventListener('keydown', e => {
@@ -1380,12 +1625,412 @@ function showToast(msg) {
       card.appendChild(ph);
       card.appendChild(info);
       card.style.cursor = 'pointer';
-      card.onclick = function () { window.open(orderUrl(p), '_blank'); };
+      card.onclick = function () { openDetail(p.id); };
       grid.appendChild(card);
     });
   }
+  // Compartilhado com o detalhe/carrinho/checkout (js/loja-shop.js).
+  window.Loja = {
+    data: data,
+    produtos: produtos,
+    byId: function (id) {
+      for (var i = 0; i < produtos.length; i++) {
+        if (produtos[i] && produtos[i].id === id) return produtos[i];
+      }
+      return null;
+    },
+    imgSrc: imgSrc,
+    brl: brl,
+    freteTexto: frete,
+    freteValor: function (p) {
+      var f = (data && data.frete) || {};
+      var base = Number(f.base), porKg = Number(f.por_kg), gratis = Number(f.gratis_acima);
+      if (!isFinite(base) || base < 0) return 0;
+      var preco = Number(p.preco);
+      if (isFinite(gratis) && gratis > 0 && isFinite(preco) && preco >= gratis) return 0;
+      var kg = Number(p.peso_g) / 1000;
+      if (!isFinite(kg) || kg < 0) kg = 0;
+      return base + Math.max(0, Math.ceil(kg - 1)) * (isFinite(porKg) && porKg > 0 ? porKg : 0);
+    }
+  };
   renderPills();
   renderGrid();
+})();
+
+// Loja shop: detalhe do produto, frete (CEP/ViaCEP), carrinho,
+// checkout e acompanhamento. Usa window.Loja (js/loja.js).
+// Sem produtos no catálogo, as páginas mostram estado vazio.
+(function () {
+  var CART_KEY = 'gp_cart_v1';
+  var ORDER_KEY = 'gp_last_order_v1';
+
+  function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function load(k, fb) {
+    try {
+      var v = JSON.parse(localStorage.getItem(k));
+      return v === null || v === undefined ? fb : v;
+    } catch (e) { return fb; }
+  }
+  function getCart() {
+    var c = load(CART_KEY, []);
+    return Array.isArray(c) ? c : [];
+  }
+  function setCart(c) { store(CART_KEY, c); updateBadge(); }
+  function isSrc(s) {
+    return typeof s === 'string' && /^(?!.*\.\.)[A-Za-z0-9_\-./]+\.(jpg|jpeg|png|webp)$/i.test(s);
+  }
+
+  window.updateBadge = function () {
+    var n = getCart().reduce(function (a, it) { return a + (Number(it.qty) || 0); }, 0);
+    var spans = document.querySelectorAll('.cart-count');
+    for (var i = 0; i < spans.length; i++) {
+      spans[i].textContent = n;
+      spans[i].style.display = n ? '' : 'none';
+    }
+  };
+
+  var detId = null, detFoto = 1;
+  function detProduto() {
+    return (window.Loja && window.Loja.byId(detId)) || null;
+  }
+  function detImagens(p) {
+    var imgs = (Array.isArray(p.imagens) ? p.imagens : []).filter(isSrc);
+    if (!imgs.length && isSrc(p.thumb)) imgs = [p.thumb];
+    return imgs;
+  }
+  window.openDetail = function (id) {
+    if (!window.Loja) return;
+    var p = window.Loja.byId(id);
+    if (!p) return;
+    detId = id;
+    detFoto = 1;
+    renderDetail();
+    showPage('produto');
+  };
+  function renderDetail() {
+    var p = detProduto();
+    if (!p) return;
+    var L = window.Loja;
+    document.getElementById('pd-cat').textContent = p.categoria || '';
+    var t = document.getElementById('pd-title');
+    t.textContent = p.titulo || 'Sem título';
+    document.getElementById('pd-price').textContent = L.brl(p.preco);
+    document.getElementById('pd-desc').textContent = p.descricao || '';
+    document.getElementById('pd-cep').value = '';
+    document.getElementById('pd-frete-result').textContent = '';
+    var imgs = detImagens(p);
+    if (detFoto < 1 || detFoto > imgs.length) detFoto = 1;
+    var main = document.getElementById('pd-img');
+    main.src = imgs.length ? imgs[detFoto - 1] : '';
+    main.alt = p.titulo || 'Peça';
+    document.getElementById('pd-count').textContent = imgs.length ? ('FOTO ' + detFoto + ' DE ' + imgs.length) : '';
+    var th = document.getElementById('pd-thumbs');
+    th.textContent = '';
+    imgs.forEach(function (src, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pd-thumb' + (i + 1 === detFoto ? ' active' : '');
+      b.setAttribute('aria-label', 'Foto ' + (i + 1));
+      var im = document.createElement('img');
+      im.src = src;
+      im.alt = 'Foto ' + (i + 1);
+      im.loading = 'lazy';
+      var num = document.createElement('span');
+      num.className = 'pd-num';
+      num.textContent = i + 1;
+      b.appendChild(im);
+      b.appendChild(num);
+      b.onclick = function () { detFoto = i + 1; renderDetail(); };
+      th.appendChild(b);
+    });
+  }
+  window.selectFotoDetalhe = function (n) {
+    detFoto = n;
+    renderDetail();
+  };
+
+  function cepNums(v) { return String(v || '').replace(/\D/g, ''); }
+  window.calcFreteDetalhe = function () {
+    var p = detProduto();
+    if (!p || !window.Loja) return;
+    var out = document.getElementById('pd-frete-result');
+    var cep = cepNums(document.getElementById('pd-cep').value);
+    if (cep.length !== 8) {
+      out.textContent = 'Digite um CEP com 8 dígitos.';
+      return;
+    }
+    var L = window.Loja;
+    var valor = L.freteValor(p);
+    var txt = valor === 0 ? 'Frete grátis' : L.brl(valor);
+    out.textContent = 'Calculando…';
+    fetch('https://viacep.com.br/ws/' + cep + '/json/')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && !j.erro && j.localidade) {
+          out.textContent = 'Para ' + j.localidade + '/' + j.uf + ': ' + txt + ' (simulação Correios pelo peso)';
+        } else {
+          out.textContent = 'CEP não encontrado. Estimativa: ' + txt + ' (simulação)';
+        }
+      })
+      .catch(function () {
+        out.textContent = 'Sem conexão para validar o CEP. Estimativa: ' + txt + ' (simulação)';
+      });
+  };
+
+  window.comprarDetalhe = function () {
+    var p = detProduto();
+    if (!p) return;
+    var cart = getCart();
+    var found = null;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id === p.id && Number(cart[i].foto) === detFoto) { found = cart[i]; break; }
+    }
+    if (found) found.qty = (Number(found.qty) || 0) + 1;
+    else cart.push({ id: p.id, foto: detFoto, qty: 1 });
+    setCart(cart);
+    showToast('ADICIONADO AO CARRINHO');
+  };
+  function cartItems() {
+    if (!window.Loja) return [];
+    var cart = getCart();
+    var valid = [];
+    cart.forEach(function (it) {
+      var p = window.Loja.byId(it.id);
+      if (!p) return;
+      var imgs = (Array.isArray(p.imagens) ? p.imagens : []).filter(isSrc);
+      if (!imgs.length && isSrc(p.thumb)) imgs = [p.thumb];
+      var foto = Number(it.foto);
+      if (!foto || foto < 1 || foto > imgs.length) foto = 1;
+      valid.push({ p: p, foto: foto, qty: Math.max(1, Number(it.qty) || 1), img: imgs[foto - 1] || '' });
+    });
+    return valid;
+  }
+  function cartTotais(items) {
+    var L = window.Loja;
+    var sub = items.reduce(function (a, it) { return a + Number(it.p.preco || 0) * it.qty; }, 0);
+    var f = (L.data && L.data.frete) || {};
+    var gratis = Number(f.gratis_acima);
+    var frete = 0;
+    if (!(isFinite(gratis) && gratis > 0 && sub >= gratis)) {
+      frete = items.reduce(function (a, it) { return a + L.freteValor(it.p) * it.qty; }, 0);
+    }
+    return { sub: sub, frete: frete, total: sub + frete };
+  }
+  window.renderCarrinho = function () {
+    if (!window.Loja) return;
+    var L = window.Loja;
+    var items = cartItems();
+    setCart(items.map(function (it) { return { id: it.p.id, foto: it.foto, qty: it.qty }; }));
+    var list = document.getElementById('cart-list');
+    list.textContent = '';
+    var empty = document.getElementById('cart-empty');
+    var foot = document.getElementById('cart-foot');
+    if (!items.length) {
+      empty.style.display = '';
+      foot.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    foot.style.display = '';
+    items.forEach(function (it) {
+      var row = document.createElement('div');
+      row.className = 'cart-row';
+      var im = document.createElement('img');
+      im.className = 'cart-thumb';
+      im.src = it.img;
+      im.alt = it.p.titulo || 'Peça';
+      var mid = document.createElement('div');
+      mid.className = 'cart-mid';
+      var nm = document.createElement('div');
+      nm.className = 'cart-name';
+      nm.textContent = it.p.titulo || 'Sem título';
+      var fn = document.createElement('div');
+      fn.className = 'cart-foto';
+      fn.textContent = 'Foto nº ' + it.foto;
+      var q = document.createElement('div');
+      q.className = 'cart-qty';
+      var minus = document.createElement('button');
+      minus.type = 'button';
+      minus.textContent = '−';
+      minus.onclick = function () { changeQty(it.p.id, it.foto, -1); };
+      var qv = document.createElement('span');
+      qv.textContent = it.qty;
+      var plus = document.createElement('button');
+      plus.type = 'button';
+      plus.textContent = '+';
+      plus.onclick = function () { changeQty(it.p.id, it.foto, 1); };
+      q.appendChild(minus);
+      q.appendChild(qv);
+      q.appendChild(plus);
+      mid.appendChild(nm);
+      mid.appendChild(fn);
+      mid.appendChild(q);
+      var right = document.createElement('div');
+      right.className = 'cart-right';
+      var val = document.createElement('div');
+      val.className = 'cart-val';
+      val.textContent = L.brl(Number(it.p.preco || 0) * it.qty);
+      var rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'cart-rm';
+      rm.textContent = '× remover';
+      rm.onclick = function () { removeItem(it.p.id, it.foto); };
+      right.appendChild(val);
+      right.appendChild(rm);
+      row.appendChild(im);
+      row.appendChild(mid);
+      row.appendChild(right);
+      list.appendChild(row);
+    });
+    var t = cartTotais(items);
+    document.getElementById('cart-subtotal').textContent = L.brl(t.sub);
+    document.getElementById('cart-frete').textContent = t.frete === 0 ? 'Grátis' : L.brl(t.frete);
+    document.getElementById('cart-total').textContent = L.brl(t.total);
+  };
+  function changeQty(id, foto, d) {
+    var cart = getCart();
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id === id && Number(cart[i].foto) === foto) {
+        cart[i].qty = Math.max(1, (Number(cart[i].qty) || 1) + d);
+      }
+    }
+    setCart(cart);
+    renderCarrinho();
+  }
+  function removeItem(id, foto) {
+    setCart(getCart().filter(function (it) { return !(it.id === id && Number(it.foto) === foto); }));
+    renderCarrinho();
+  }
+
+  window.renderCheckout = function () {
+    if (!window.Loja) return;
+    var items = cartItems();
+    var box = document.getElementById('co-resumo');
+    box.textContent = '';
+    document.getElementById('co-erro').textContent = '';
+    if (!items.length) {
+      box.textContent = 'Carrinho vazio.';
+      return;
+    }
+    var t = cartTotais(items);
+    var L = window.Loja;
+    items.forEach(function (it) {
+      var d = document.createElement('div');
+      d.className = 'co-item';
+      d.textContent = (it.p.titulo || 'Peça') + ' (foto nº ' + it.foto + ') × ' + it.qty + ' — ' + L.brl(Number(it.p.preco || 0) * it.qty);
+      box.appendChild(d);
+    });
+    var tot = document.createElement('div');
+    tot.className = 'co-total';
+    tot.textContent = 'Total ' + L.brl(t.total) + (t.frete === 0 ? ' (frete grátis)' : ' (inclui ' + L.brl(t.frete) + ' de frete)');
+    box.appendChild(tot);
+  };
+  window.buscarCepCheckout = function () {
+    var cep = cepNums(document.getElementById('co-cep').value);
+    var addr = document.getElementById('co-addr');
+    if (cep.length !== 8) {
+      addr.textContent = 'CEP inválido (8 dígitos).';
+      return;
+    }
+    addr.textContent = 'Buscando…';
+    fetch('https://viacep.com.br/ws/' + cep + '/json/')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && !j.erro) {
+          document.getElementById('co-log').value = j.logradouro || '';
+          document.getElementById('co-bairro').value = j.bairro || '';
+          document.getElementById('co-cid').value = j.localidade || '';
+          document.getElementById('co-uf').value = j.uf || '';
+          addr.textContent = j.localidade + '/' + j.uf + ' ✓';
+        } else {
+          addr.textContent = 'CEP não encontrado. Preencha manual.';
+        }
+      })
+      .catch(function () {
+        addr.textContent = 'Sem conexão. Preencha manual.';
+      });
+  };
+  window.confirmarPedido = function (e) {
+    if (e) e.preventDefault();
+    var items = cartItems();
+    var err = document.getElementById('co-erro');
+    if (!items.length) {
+      err.textContent = 'Carrinho vazio.';
+      return false;
+    }
+    function v(id) { return document.getElementById(id).value.trim(); }
+    var nome = v('co-nome'), email = v('co-email'), fone = v('co-fone');
+    var cep = cepNums(v('co-cep'));
+    var log = v('co-log'), num = v('co-num'), comp = v('co-comp');
+    var bairro = v('co-bairro'), cid = v('co-cid'), uf = v('co-uf').toUpperCase();
+    if (!nome) { err.textContent = 'Informe seu nome.'; return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'E-mail inválido.'; return false; }
+    if (cepNums(fone).length < 10) { err.textContent = 'Telefone inválido (com DDD).'; return false; }
+    if (cep.length !== 8) { err.textContent = 'CEP inválido (8 dígitos).'; return false; }
+    if (!log || !num || !bairro || !cid || uf.length !== 2) { err.textContent = 'Endereço incompleto.'; return false; }
+    var t = cartTotais(items);
+    var now = new Date();
+    var code = 'GP-' + now.getFullYear() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0') + '-' +
+      Math.random().toString(36).slice(2, 6).toUpperCase();
+    var order = {
+      code: code,
+      data: now.toISOString(),
+      items: items.map(function (it) {
+        return { id: it.p.id, titulo: it.p.titulo, foto: it.foto, qty: it.qty, preco: Number(it.p.preco || 0), img: it.img };
+      }),
+      subtotal: t.sub, frete: t.frete, total: t.total,
+      cliente: { nome: nome, email: email, fone: fone },
+      entrega: { cep: cep, log: log, num: num, comp: comp, bairro: bairro, cid: cid, uf: uf },
+      status: 'em progresso'
+    };
+    store(ORDER_KEY, order);
+    setCart([]);
+    renderCarrinho();
+    showPage('andamento');
+    renderAndamento();
+    return false;
+  };
+
+  window.renderAndamento = function () {
+    var box = document.getElementById('and-wrap');
+    box.textContent = '';
+    var o = load(ORDER_KEY, null);
+    if (!o) {
+      var p = document.createElement('p');
+      p.className = 'and-vazio';
+      p.textContent = 'Nenhum pedido em andamento.';
+      box.appendChild(p);
+      return;
+    }
+    function line(k, val) {
+      var d = document.createElement('div');
+      d.className = 'and-line';
+      var a = document.createElement('span');
+      a.textContent = k;
+      var b = document.createElement('span');
+      b.textContent = val;
+      d.appendChild(a);
+      d.appendChild(b);
+      box.appendChild(d);
+    }
+    var code = document.createElement('div');
+    code.className = 'and-code';
+    code.textContent = o.code;
+    box.appendChild(code);
+    line('Status', 'EM PROGRESSO — pagamento em breve');
+    line('Itens', o.items.map(function (it) { return it.titulo + ' (foto nº ' + it.foto + ') × ' + it.qty; }).join('; '));
+    line('Total', (window.Loja ? window.Loja.brl(o.total) : o.total));
+    line('Entrega', o.entrega.log + ', ' + o.entrega.num + ' — ' + o.entrega.bairro + ', ' + o.entrega.cid + '/' + o.entrega.uf + ' — CEP ' + o.entrega.cep);
+    var back = document.createElement('button');
+    back.className = 'loja-cta loja-cta-sm';
+    back.textContent = 'VOLTAR À LOJA';
+    back.onclick = function () { showPage('loja'); };
+    box.appendChild(back);
+  };
+
+  updateBadge();
 })();
 
 document.addEventListener('contextmenu', e => {

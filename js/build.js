@@ -53,6 +53,7 @@ const jsFiles = [
   'js/columns.js',
   'js/share.js',
   'js/loja.js',
+  'js/loja-shop.js',
   'js/ui.js',
 ];
 const jsRaw = stripBannerComments(fotosBlock + '\n' + lojaBlock + '\n' + readAll(jsFiles));
