@@ -48,6 +48,9 @@ node js/build.js
 - `python gerar.py` → gera `fotos/thumbs/`, `fotos.json` (referência) e atualiza o bloco `// ─── FOTOS` no `index.html` (lista + EXIF embutido `fotosExif`, sem fetch)
 - `node js/build.js` (`npm run build`) → gera `dist/index.html` inline (CSS+JS, sem dependências)
 
+Cache (nunca ver coisa velha): `css/js` saem com `?v=<commit>`, fotos com
+`?h=<md5>` (só muda se os bytes mudarem) e o HTML carrega `<!-- BUILD <commit> -->`.
+
 Requer Python 3 + Pillow (`pip install Pillow`) e Node 18+.
 
 `node_modules/` não vai para o git (`.gitignore`). Para remover do remoto uma vez:

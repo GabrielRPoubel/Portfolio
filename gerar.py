@@ -2,6 +2,7 @@ import os
 import re
 import json
 import hashlib
+import subprocess
 import sys
 
 # Console Windows (cp1252) quebra em caracteres como → — força UTF-8.
@@ -136,6 +137,7 @@ print(f"Encontradas {len(arquivos)} fotos: {arquivos[0]}.jpg -> {arquivos[-1]}.j
 # ── Processa fotos ──
 cache = load_cache()
 fotos_data = []
+hashes = {}
 gerados = 0
 ignorados = 0
 
@@ -153,6 +155,7 @@ for n in arquivos:
     key = str(n)
 
     current_hash = md5(src)
+    hashes[n] = current_hash[:8]
     cached_hash = cache.get(key)
 
     if cached_hash == current_hash and os.path.exists(thumb):
@@ -186,19 +189,17 @@ with open(JSON_OUT, "w", encoding="utf-8") as f:
 print(f"fotos.json salvo com {len(fotos_data)} entradas.")
 
 # ── Atualiza index.html ──
-linhas = []
-for i in range(0, len(arquivos), 10):
-    chunk = arquivos[i:i + 10]
-    linhas.append("    " + ",".join(str(n) for n in chunk) + ",")
-
-lista = "\n".join(linhas)
+lista = "\n".join(
+    f"    {{ n: {n}, src: 'fotos/{n}.jpg?h={hashes[n]}', thumb: 'fotos/thumbs/{n}.jpg?h={hashes[n]}' }},"
+    for n in arquivos if n in hashes
+)
 exif_map = {f["n"]: f["exif"] for f in fotos_data}
 exif_json = json.dumps(exif_map, ensure_ascii=False, separators=(",", ":"))
 bloco = f"""  // ─── FOTOS ───────────────────────────────────────────────────────────────
   // Gerado automaticamente por gerar.py — não edite manualmente
   const fotos = [
 {lista}
-  ].map(n => ({{ n, src: `fotos/${{n}}.jpg`, thumb: `fotos/thumbs/${{n}}.jpg` }}));
+  ];
   const fotosExif = {exif_json};
   // ─────────────────────────────────────────────────────────────────────────"""
 
@@ -251,3 +252,41 @@ else:
         f.write(novo_loja)
     n_prods = len(loja_data.get("produtos", [])) if isinstance(loja_data, dict) else 0
     print(f"bloco LOJA atualizado com {n_prods} produto(s).")
+
+# ── Versionamento anti-cache + marcador de build ──
+# css/js ganham ?v=<commit> (muda a cada publish); fotos ganham ?h=<md5>
+# (muda só se o bytes mudarem). BUILD revela o commit exato no ar.
+def _ver():
+    try:
+        base = os.path.dirname(os.path.abspath(__file__))
+        v = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=base, stderr=subprocess.DEVNULL, text=True,
+        ).strip()
+        return v if re.fullmatch(r"[A-Za-z0-9]+", v) else "dev"
+    except Exception:
+        return "dev"
+
+VER = _ver()
+
+with open(INDEX, "r", encoding="utf-8") as f:
+    final = f.read()
+
+def _vlink(m):
+    return f"{m.group(1)}{m.group(2)}/{m.group(3)}?v={VER}{m.group(4)}"
+
+final, n_assets = re.subn(
+    r'((?:href|src)=")(css|js)/([^"]+?)(?:\?v=[A-Za-z0-9]+)?(")',
+    _vlink,
+    final,
+)
+
+marca = f"<!-- BUILD {VER} -->"
+if re.search(r"<!-- BUILD .*? -->", final):
+    final = re.sub(r"<!-- BUILD .*? -->", lambda m: marca, final, count=1)
+elif "<body>" in final:
+    final = final.replace("<body>", "<body>\n" + marca, 1)
+
+with open(INDEX, "w", encoding="utf-8") as f:
+    f.write(final)
+print(f"assets com ?v={VER} ({n_assets} link(s)); {marca}")
